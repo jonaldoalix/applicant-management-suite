@@ -30,7 +30,7 @@
 		"lottie-react": "^2.4.1",
 		"pdfjs-dist": "^4.2.67",
 		"react": "^18.2.0",
-		"react-calendar": "^4.2.1",
+		"react-calendar": "^6.0.0",
 		"react-circular-progressbar": "^2.1.0",
 		"react-dom": "^18.2.0",
 		"react-google-places-autocomplete": "^3.4.0",
