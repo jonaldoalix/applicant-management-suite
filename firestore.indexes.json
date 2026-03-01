@@ -1,0 +1,138 @@
+{
+	"indexes": [
+		{
+			"collectionGroup": "applications",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "completedBy", "order": "ASCENDING" },
+				{ "fieldPath": "status", "order": "ASCENDING" },
+				{ "fieldPath": "__name__", "order": "ASCENDING" }
+			],
+			"density": "SPARSE_ALL"
+		},
+		{
+			"collectionGroup": "applications",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "id", "order": "ASCENDING" },
+				{ "fieldPath": "status", "order": "ASCENDING" },
+				{ "fieldPath": "__name__", "order": "ASCENDING" }
+			],
+			"density": "SPARSE_ALL"
+		},
+		{
+			"collectionGroup": "applications",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "status", "order": "ASCENDING" },
+				{ "fieldPath": "window", "order": "ASCENDING" },
+				{ "fieldPath": "type", "order": "ASCENDING" },
+				{ "fieldPath": "__name__", "order": "ASCENDING" }
+			],
+			"density": "SPARSE_ALL"
+		},
+		{
+			"collectionGroup": "applications",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "submittedOn", "order": "DESCENDING" },
+				{ "fieldPath": "status", "order": "DESCENDING" },
+				{ "fieldPath": "__name__", "order": "DESCENDING" }
+			],
+			"density": "SPARSE_ALL"
+		},
+		{
+			"collectionGroup": "applications",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "type", "order": "ASCENDING" },
+				{ "fieldPath": "status", "order": "ASCENDING" },
+				{ "fieldPath": "window", "order": "ASCENDING" },
+				{ "fieldPath": "__name__", "order": "ASCENDING" }
+			],
+			"density": "SPARSE_ALL"
+		},
+		{
+			"collectionGroup": "applications",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "window", "order": "ASCENDING" },
+				{ "fieldPath": "status", "order": "ASCENDING" },
+				{ "fieldPath": "__name__", "order": "ASCENDING" }
+			],
+			"density": "SPARSE_ALL"
+		},
+		{
+			"collectionGroup": "interviews",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "deadline", "order": "ASCENDING" },
+				{ "fieldPath": "startTime", "order": "ASCENDING" },
+				{ "fieldPath": "__name__", "order": "ASCENDING" }
+			],
+			"density": "SPARSE_ALL"
+		},
+		{
+			"collectionGroup": "interviews",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "roomId", "order": "ASCENDING" },
+				{ "fieldPath": "startTime", "order": "ASCENDING" },
+				{ "fieldPath": "__name__", "order": "ASCENDING" }
+			],
+			"density": "SPARSE_ALL"
+		},
+		{
+			"collectionGroup": "interviews",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "status", "order": "ASCENDING" },
+				{ "fieldPath": "startTime", "order": "ASCENDING" },
+				{ "fieldPath": "__name__", "order": "ASCENDING" }
+			],
+			"density": "SPARSE_ALL"
+		},
+		{
+			"collectionGroup": "mail_cache",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "tags", "arrayConfig": "CONTAINS" },
+				{ "fieldPath": "folderName", "order": "ASCENDING" },
+				{ "fieldPath": "timestamp", "order": "DESCENDING" },
+				{ "fieldPath": "__name__", "order": "DESCENDING" }
+			],
+			"density": "SPARSE_ALL"
+		},
+		{
+			"collectionGroup": "notes",
+			"queryScope": "COLLECTION_GROUP",
+			"fields": [
+				{ "fieldPath": "authorId", "order": "ASCENDING" },
+				{ "fieldPath": "createdAt", "order": "DESCENDING" },
+				{ "fieldPath": "__name__", "order": "DESCENDING" }
+			],
+			"density": "SPARSE_ALL"
+		},
+		{
+			"collectionGroup": "notes",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "authorId", "order": "ASCENDING" },
+				{ "fieldPath": "createdAt", "order": "DESCENDING" },
+				{ "fieldPath": "__name__", "order": "DESCENDING" }
+			],
+			"density": "SPARSE_ALL"
+		},
+		{
+			"collectionGroup": "notes",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "visibility", "order": "ASCENDING" },
+				{ "fieldPath": "createdAt", "order": "DESCENDING" },
+				{ "fieldPath": "__name__", "order": "DESCENDING" }
+			],
+			"density": "SPARSE_ALL"
+		}
+	],
+	"fieldOverrides": []
+}

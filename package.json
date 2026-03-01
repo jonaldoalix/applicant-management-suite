@@ -1,0 +1,91 @@
+{
+	"name": "ams.fullstackboston.com",
+	"version": "1.0.0",
+	"private": true,
+	"dependencies": {
+		"@daily-co/daily-js": "^0.79.0",
+		"@daily-co/daily-react": "^0.23.0",
+		"@emotion/react": "^11.13.3",
+		"@emotion/styled": "^11.13.0",
+		"@mui/icons-material": "^5.11.11",
+		"@mui/material": "^5.11.13",
+		"@mui/x-data-grid": "^6.0.1",
+		"@mui/x-date-pickers": "^6.2.1",
+		"@testing-library/jest-dom": "^5.16.5",
+		"@testing-library/react": "^13.4.0",
+		"@testing-library/user-event": "^13.5.0",
+		"@wojtekmaj/react-timerange-picker": "^5.0.3",
+		"autosuggest-highlight": "^3.3.4",
+		"axios": "^1.7.7",
+		"core-js": "^3.45.1",
+		"crypto-js": "^4.2.0",
+		"date-fns": "^2.30.0",
+		"dayjs": "^1.11.19",
+		"dotenv": "^17.2.3",
+		"firebase": "^12.6.0",
+		"he": "^1.2.0",
+		"jotai": "^2.12.5",
+		"jspdf": "^3.0.2",
+		"lodash": "^4.17.21",
+		"lottie-react": "^2.4.1",
+		"pdfjs-dist": "^4.2.67",
+		"react": "^18.2.0",
+		"react-calendar": "^4.2.1",
+		"react-circular-progressbar": "^2.1.0",
+		"react-dom": "^18.2.0",
+		"react-google-places-autocomplete": "^3.4.0",
+		"react-helmet-async": "^2.0.5",
+		"react-router-dom": "^6.9.0",
+		"react-scripts": "5.0.1",
+		"recharts": "^2.4.3",
+		"require-directory": "^2.1.1",
+		"ua-parser-js": "^1.0.39",
+		"uuid": "^10.0.0",
+		"web-vitals": "^2.1.4"
+	},
+	"scripts": {
+		"prestart": "node scripts/build-static.js",
+		"prebuild": "node scripts/build-static.js",
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"debug": "react-scripts test --onlyChanged",
+		"test": "react-scripts test --coverage --watchAll=false",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		],
+		"env": {
+			"browser": true,
+			"node": true,
+			"es2020": true
+		}
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"baseline-browser-mapping": "^2.10.0",
+		"sass": "^1.77.6",
+		"undici": "^7.16.0",
+		"webpack-dev-server": ">=5.2.1"
+	},
+	"jest": {
+		"coverageThreshold": {
+			"global": {
+				"lines": 80
+			}
+		}
+	}
+}

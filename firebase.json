@@ -1,0 +1,47 @@
+{
+	"firestore": {
+		"database": "(default)",
+		"location": "nam5",
+		"rules": "firestore.rules",
+		"indexes": "firestore.indexes.json"
+	},
+	"functions": [
+		{
+			"source": "./functions",
+			"codebase": "default",
+			"ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log", "*.local"],
+			"predeploy": ["cd functions && npm run lint"]
+		}
+	],
+	"hosting": {
+		"site": "ams-fsb",
+		"public": "build",
+		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+		"rewrites": [
+			{
+				"source": "**",
+				"destination": "/index.html"
+			}
+		],
+		"headers": [
+			{
+				"source": "/service-worker.js",
+				"headers": [
+					{
+						"key": "Cache-Control",
+						"value": "no-cache, no-store, must-revalidate"
+					}
+				]
+			},
+			{
+				"source": "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css|eot|otf|ttf|ttc|woff|woff2|font.css)",
+				"headers": [
+					{
+						"key": "Cache-Control",
+						"value": "max-age=31536000"
+					}
+				]
+			}
+		]
+	}
+}

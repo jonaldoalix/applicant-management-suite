@@ -1,0 +1,328 @@
+.formSmallInput {
+    label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .icon {
+            cursor: pointer;
+        }
+    }
+
+    input {
+        width: 100%;
+        padding: 5px;
+        border: none;
+        border-bottom: 1px solid gray;
+    }
+}
+
+.formLooperCount {
+    .inputs {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 3.75px;
+        border-bottom: 1px solid gray;
+
+        input {
+            margin-left: 14px;
+            margin-right: 14px;
+            border: none;
+        }
+    }
+}
+
+.formFreeSwitch {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start;
+    color: gray;
+    padding-left: 8px;
+
+    .itemSwitch {
+        padding-left: 8px;
+    }
+
+    .switchGroup {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        padding-left: 5px;
+
+        .itemValue {
+            color: gray;
+            padding-right: 3px;
+            align-self: center;
+        }
+    }
+}
+
+.formUpload {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 170px;
+    gap: 10px;
+    align-items: center;
+    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+    box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    label {
+        display: flex;
+        align-self: flex-start;
+        padding-bottom: 10px;
+    }
+
+    .uploadCTA {
+        display: flex;
+        gap: 5px;
+
+        span {
+            text-decoration: underline;
+        }
+    }
+
+    img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-top: -15px;
+    }
+}
+
+.datatable {
+    .datatableTitle {
+        width: 100%;
+        font-size: 24px;
+        color: gray;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .bulkActionsContainer {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
+        padding-bottom: 15px;
+
+        .buttonContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            font-weight: 400;
+            font-size: 10px;
+            padding: 5px;
+            color: black;
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid black;
+            border-radius: 8px;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            width: 80px;
+            cursor: pointer;
+        }
+
+    }
+
+    .cellWithImg {
+        display: flex;
+        align-items: center;
+
+        .cellImg {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+    }
+
+    .cellWithStatus {
+        padding: 5px;
+        text-align: center;
+        width: 150px;
+        padding-left: 15px;
+        padding-right: 15px;
+        border-radius: 14px;
+        text-transform: uppercase;
+        font-weight: bold;
+
+        &._1 {
+            background-color: navajowhite;
+        }
+
+        &._2 {
+            background-color: violet;
+        }
+
+        &._3 {
+            background-color: gold;
+        }
+
+        &._4 {
+            background-color: goldenrod;
+        }
+
+        &._5 {
+            background-color: pink;
+        }
+
+        &._6 {
+            background-color: palegreen;
+        }
+
+        &._7 {
+            background-color: lightgreen;
+        }
+
+        &._8 {
+            background-color: lightgray;
+        }
+        &._9 {
+            background-color: lightblue;
+        }
+
+        &._10 {
+            background-color: red;
+        }
+    }
+
+    .cellAction {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-wrap: wrap;
+
+        .buttonContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            font-weight: 400;
+            font-size: 9px;
+            text-align: center;
+            justify-content: center;
+            align-content: center;
+            padding-top: 5px;
+            align-items: center;
+
+            .viewButton {
+                padding: 2px 5px;
+                border-radius: 5px;
+                color: darkblue;
+                border: 1px dotted rgba(0, 0, 139, 0.596);
+                cursor: pointer;
+            }
+
+            .cancelButton {
+                padding: 2px 5px;
+                border-radius: 5px;
+                color: crimson;
+                border: 1px dotted rgba(220, 20, 60, 0.6);
+                cursor: pointer;
+            }
+
+            .editButton {
+                padding: 2px 5px;
+                border-radius: 5px;
+                color: green;
+                border: 1px dotted green;
+                cursor: pointer;
+            }
+            .pushButton {
+                padding: 2px 5px;
+                border-radius: 5px;
+                color: darkblue;
+                border: 1px dotted rgba(0, 0, 139, 0.596);
+                cursor: pointer;
+            }
+
+            .promoteButton {
+                padding: 2px 5px;
+                border-radius: 5px;
+                color: crimson;
+                border: 1px dotted rgba(220, 20, 60, 0.6);
+                cursor: pointer;
+            }
+
+            .reviewButton {
+                padding: 2px 5px;
+                border-radius: 5px;
+                color: green;
+                border: 1px dotted green;
+                cursor: pointer;
+            }
+
+            .contactButton {
+                padding: 2px 5px;
+                border-radius: 5px;
+                color: darkblue;
+                border: 1px dotted rgba(0, 0, 139, 0.596);
+                cursor: pointer;
+            }
+
+            .closeButton {
+                padding: 2px 5px;
+                border-radius: 5px;
+                color: crimson;
+                border: 1px dotted rgba(220, 20, 60, 0.6);
+                cursor: pointer;
+            }
+
+            .payButton {
+                padding: 2px 5px;
+                border-radius: 5px;
+                color: green;
+                border: 1px dotted green;
+                cursor: pointer;
+            }
+            .distributeButton {
+                padding: 2px 5px;
+                border-radius: 5px;
+                color: darkblue;
+                border: 1px dotted rgba(0, 0, 139, 0.596);
+                cursor: pointer;
+            }
+
+            .relistButton {
+                padding: 2px 5px;
+                border-radius: 5px;
+                color: crimson;
+                border: 1px dotted rgba(220, 20, 60, 0.6);
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.unread-row-dark {
+    .MuiDataGrid-cell {
+        background-color: rgba(0, 0, 0, 0.5) !important; 
+    }
+}
+
+.unread-row-light {
+    .MuiDataGrid-cell {
+        background-color: #EEEEEE !important; 
+    }
+}
+
+.read-row-dark .MuiDataGrid-cell,
+.read-row-light .MuiDataGGrid-cell {
+    background-color: inherit !important;
+}

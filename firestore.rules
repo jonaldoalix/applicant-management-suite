@@ -1,0 +1,156 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- Helper Functions ---
+
+    // verify user exists in 'members' collection
+    function isOversightMember(userId) {
+      return exists(/databases/$(database)/documents/members/$(userId));
+    }
+
+    // verify user exists in 'applicants' collection
+    function isApplicant(userId) {
+      return exists(/databases/$(database)/documents/applicants/$(userId));
+    }
+
+    // check if request is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // verify ownership of data
+    function canRead(userId, doc) {
+      return doc.completedBy == userId || doc.id == userId;
+    }
+
+    // prevent users from reassigning document ownership
+    function canWrite(userId, newData) {
+      return isAuthenticated() &&
+             (newData.completedBy == userId || newData.id == userId);
+    }
+
+    // --- Collection Rules ---
+
+    // Site Config: Public read, Admin write
+    match /siteConfiguration/{document=**} {
+      allow read: if true;
+      allow write: if isOversightMember(request.auth.uid);
+      allow delete: if false;
+    }
+
+    // Communication Logs: Admin read, Auth write (for system triggers)
+    match /emails/{document=**} {
+      allow read: if isOversightMember(request.auth.uid);
+      allow write: if isAuthenticated();
+      allow delete: if false;
+    }
+
+    match /sms/{document=**} {
+      allow read: if isOversightMember(request.auth.uid);
+      allow write: if isAuthenticated();
+      allow delete: if false;
+    }
+
+    // Audit Logs: Admin read, System write only
+    match /dblog/{document=**} {
+      allow read: if isOversightMember(request.auth.uid);
+      allow create: if isAuthenticated(); // Allow triggers to write logs
+      allow update, delete: if false;
+    }
+
+    match /sitelog/{document=**} {
+      allow read: if isOversightMember(request.auth.uid);
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // Members: Self read/write, Admin read/write
+    match /members/{memberId} {
+      allow read: if isOversightMember(request.auth.uid) || request.auth.uid == memberId;
+      allow create: if isOversightMember(request.auth.uid);
+      allow update: if isOversightMember(request.auth.uid) || request.auth.uid == memberId;
+      allow delete: if isOversightMember(request.auth.uid); // Only admins can remove members
+    }
+
+    // Applicants: Admin read, Self read/write
+    match /applicants/{applicantId} {
+      allow read: if isOversightMember(request.auth.uid) || request.auth.uid == applicantId;
+      allow create: if isAuthenticated();
+      allow update: if isOversightMember(request.auth.uid) || request.auth.uid == applicantId;
+      allow delete: if isOversightMember(request.auth.uid);
+    }
+
+    // Applications: Admin read, Applicant read/write own
+    match /applications/{applicationId} {
+      allow read: if isOversightMember(request.auth.uid) || resource.data.completedBy == request.auth.uid;
+      allow create: if canWrite(request.auth.uid, request.resource.data);
+      allow update: if isOversightMember(request.auth.uid) || (canWrite(request.auth.uid, request.resource.data) && resource.data.status == 'Started');
+      allow delete: if isOversightMember(request.auth.uid);
+    }
+
+    // Applicant Sub-Collections (Profiles, Families, etc.)
+    // Standard pattern: Admin access + Owner access
+    match /{collectionName}/{docId} {
+      allow read: if (
+        collectionName in ['profiles', 'families', 'educationRecords', 'experienceRecords', 'expenseReports', 'incomeReports', 'contributions', 'projections', 'attachments']
+      ) && (isOversightMember(request.auth.uid) || resource.data.completedBy == request.auth.uid);
+
+      allow create: if (
+        collectionName in ['profiles', 'families', 'educationRecords', 'experienceRecords', 'expenseReports', 'incomeReports', 'contributions', 'projections', 'attachments']
+      ) && canWrite(request.auth.uid, request.resource.data);
+
+      allow update: if (
+        collectionName in ['profiles', 'families', 'educationRecords', 'experienceRecords', 'expenseReports', 'incomeReports', 'contributions', 'projections', 'attachments']
+      ) && (isOversightMember(request.auth.uid) || canWrite(request.auth.uid, request.resource.data));
+      
+      allow delete: if false;
+    }
+
+    // Notes: Author or Admin only
+    match /notes/{noteId} {
+      allow read: if isOversightMember(request.auth.uid) || resource.data.authorId == request.auth.uid;
+      allow create: if isOversightMember(request.auth.uid);
+      allow update: if resource.data.authorId == request.auth.uid;
+      allow delete: if false;
+    }
+
+    // Interviews: Admin access + Applicant read
+    // Special rule: Allow unauthenticated RSVP updates via email links
+    match /interviews/{interviewId} {
+      allow update: if request.auth == null &&
+                     request.resource.data.diff(resource.data).affectedKeys().hasOnly(['rsvpStatus', 'rsvpTimestamp']) &&
+                     request.resource.data.rsvpStatus in ['yes', 'no'];
+
+      allow read, update: if isOversightMember(request.auth.uid) || resource.data.applicantId == request.auth.uid;
+      allow create: if isOversightMember(request.auth.uid);
+      allow delete: if false;
+
+      match /participants/{participantId} {
+        allow read: if isOversightMember(request.auth.uid) || resource.data.userID == request.auth.uid;
+        allow create, update: if isAuthenticated() && request.resource.data.userID == request.auth.uid;
+        allow delete: if false;
+      }
+    }
+
+    // Mail Cache: System/Admin usage
+    match /mail_cache/{document=**} {
+      allow read: if isAuthenticated();
+      allow write: if isOversightMember(request.auth.uid);
+      allow delete: if isOversightMember(request.auth.uid);
+    }
+
+    match /mail_sync/{document=**} {
+      allow read: if isAuthenticated();
+      allow write: if isOversightMember(request.auth.uid);
+      allow delete: if false;
+    }
+
+    // User Roles: Protected
+    match /authUsers/{userId} {
+      allow read: if isOversightMember(request.auth.uid) || request.auth.uid == userId;
+      allow write: if false; // Managed by Cloud Functions
+    }
+  }
+}

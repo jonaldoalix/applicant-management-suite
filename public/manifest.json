@@ -1,0 +1,18 @@
+{
+	"name": "Applicant Management Suite",
+	"short_name": "AMS",
+	"id": "https://ams.fullstackboston.com",
+	"description": "Demo application showcasing the Applicant Management Suite built by Full Stack Boston to facilitate the administration and review of applications, interviews, and deliberations.",
+	"icons": [
+		{ "src": "favicon-16x16.png", "sizes": "16x16", "type": "image/png" },
+		{ "src": "favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+		{ "src": "android-chrome-192x192.png", "type": "image/png", "sizes": "192x192", "purpose": "any" },
+		{ "src": "android-chrome-512x512.png", "type": "image/png", "sizes": "512x512", "purpose": "any" }
+	],
+	"start_url": ".",
+	"scope": "/",
+	"display": "standalone",
+	"theme_color": "#0288D1",
+	"background_color": "#0288D1",
+	"orientation": "portrait"
+}
