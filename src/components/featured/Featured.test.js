@@ -14,6 +14,7 @@ jest.mock('../../context/ConfigContext', () => ({
 jest.mock('../../config/data/firebase', () => ({
 	getCurrentlyEligibleApplicationsCountByType: jest.fn(),
 	getBenchmarkedAwardCounts: jest.fn(),
+	getAverageApplicationsPerYearByType: jest.fn(),
 }));
 
 // Mock Timer component
@@ -31,6 +32,7 @@ jest.mock('../../config/data/collections', () => ({
 const mockUseConfig = useConfig;
 const mockGetCounts = firebase.getCurrentlyEligibleApplicationsCountByType;
 const mockGetBenchmarks = firebase.getBenchmarkedAwardCounts;
+const mockGetAverage = firebase.getAverageApplicationsPerYearByType;
 
 describe('Featured', () => {
 	beforeEach(() => {
@@ -55,6 +57,13 @@ describe('Featured', () => {
 			[ApplicationType.returningGrant]: 20, // 100%
 			[ApplicationType.scholarship]: 50, // 10%
 		});
+
+		mockGetAverage.mockImplementation((type) => {
+			if (type === ApplicationType.newApplication) return Promise.resolve(20);
+			if (type === ApplicationType.returningGrant) return Promise.resolve(20);
+			if (type === ApplicationType.scholarship) return Promise.resolve(50);
+			return Promise.resolve(0);
+		});
 	});
 
 	afterEach(() => {
@@ -67,8 +76,8 @@ describe('Featured', () => {
 		});
 
 		await waitFor(() => {
-			expect(screen.getByText(/Benchmark Progress/i)).toBeInTheDocument();
-			expect(screen.getByText(/3-Year Award Trends/i)).toBeInTheDocument();
+			expect(screen.getByText(/Benchmark/i)).toBeInTheDocument();
+			expect(screen.getByText(/3-Year/i)).toBeInTheDocument();
 		});
 	});
 
