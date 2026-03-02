@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act } from 'react';
 import Information from './Information'; // Renamed to 'Information'
 import { useConfig } from '../../../context/ConfigContext';
 import { homePageContent } from '../../../config/content/content';
@@ -13,7 +14,7 @@ jest.mock('../../../config/content/content', () => ({
 		information: {
 			mainTitle: 'Main Title',
 			tabs: [
-				{ label: 'About', content: { title: 'About Title', paragraphs: ['About p1'] } },
+				{ label: 'About', content: { title: 'About Title', paragraphs: ['About p1'], applyNowSection: { enabled: false } } },
 				{
 					label: 'Requirements',
 					content: {
@@ -31,6 +32,15 @@ jest.mock('../../../config/content/content', () => ({
 										paragraphs: ['Apply Child paragraph 1'],
 										buttons: [{ label: 'Apply Button', path: '/apply' }],
 									},
+								},
+							},
+							{
+								label: 'Child Tab 2',
+								content: {
+									title: 'Child Title 2',
+									introParagraphs: ['Child p2'],
+									requirements: [],
+									applyNowSection: { enabled: false },
 								},
 							},
 						],
@@ -59,7 +69,7 @@ jest.mock('../../../config/content/content', () => ({
 					enabled: true,
 					title: 'Bottom Apply Title',
 					paragraph: 'Bottom apply p1',
-					buttons: [{ label: 'Bottom Apply Button', path: '/apply' }],
+					button: { label: 'Bottom Apply Button', path: '/apply' },
 				},
 			},
 		},
@@ -159,25 +169,50 @@ describe('Information (BasicTabs) Component', () => {
 	it('calls setChildTab when a child tab is clicked', () => {
 		render(<Information tabBarRef={mockTabBarRef} innerTabBarRef={mockInnerTabBarRef} parentTabBarValue={1} childTabBarValue={0} setParentTab={mockSetParentTab} setChildTab={mockSetChildTab} />);
 
-		fireEvent.click(screen.getByRole('tab', { name: 'Child Tab 1' }));
-		expect(mockSetChildTab).toHaveBeenCalledWith(0);
+		fireEvent.click(screen.getByRole('tab', { name: 'Child Tab 2' }));
+		expect(mockSetChildTab).toHaveBeenCalledWith(1);
 	});
 
-	it('handles scroll events to toggle sticky state', () => {
+	it('handles scroll events to toggle sticky state', async () => {
+		const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
+		const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
+		let scrollCallback = null;
+		
+		addEventListenerSpy.mockImplementation((event, cb) => {
+			if (event === 'scroll') {
+				scrollCallback = cb;
+			}
+		});
+
 		const { container } = render(<Information tabBarRef={mockTabBarRef} innerTabBarRef={mockInnerTabBarRef} parentTabBarValue={0} childTabBarValue={0} setParentTab={mockSetParentTab} setChildTab={mockSetChildTab} />);
 		
 		const stickyContainer = container.querySelector('.sticky-tabs-container');
 		expect(stickyContainer).not.toHaveClass('sticky');
 
-		// Mock window.scrollY and dispatch scroll event
-		Object.defineProperty(window, 'scrollY', { value: 1500, writable: true });
-		fireEvent.scroll(window);
+		// Mock window.scrollY and invoke the callback manually
+		act(() => {
+			Object.defineProperty(window, 'scrollY', { value: 1500, writable: true, configurable: true });
+			if (scrollCallback) {
+				scrollCallback();
+			}
+		});
 		
-		expect(stickyContainer).toHaveClass('sticky');
+		await waitFor(() => {
+			expect(stickyContainer).toHaveClass('sticky');
+		});
 
-		Object.defineProperty(window, 'scrollY', { value: 500, writable: true });
-		fireEvent.scroll(window);
+		act(() => {
+			Object.defineProperty(window, 'scrollY', { value: 500, writable: true, configurable: true });
+			if (scrollCallback) {
+				scrollCallback();
+			}
+		});
 		
-		expect(stickyContainer).not.toHaveClass('sticky');
+		await waitFor(() => {
+			expect(stickyContainer).not.toHaveClass('sticky');
+		});
+
+		addEventListenerSpy.mockRestore();
+		removeEventListenerSpy.mockRestore();
 	});
 });
