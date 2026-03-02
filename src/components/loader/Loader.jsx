@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import { Box, CircularProgress, Typography } from '@mui/material';
 
 const Loader = () => (
@@ -23,8 +23,6 @@ const Loader = () => (
 	</Box>
 );
 
-Loader.propTypes = {
-	color: PropTypes.string,
-};
+
 
 export default Loader;

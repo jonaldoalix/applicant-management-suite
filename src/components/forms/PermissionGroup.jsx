@@ -36,7 +36,7 @@ const PermissionGroup = ({ formData, onUpdate, groups, disabled }) => {
 	const handlePermissionChange = (event) => {
 		const { name, checked } = event.target;
 		// Deep clone to avoid mutating props directly
-		const newFormData = JSON.parse(JSON.stringify(formData));
+		const newFormData = structuredClone(formData);
 		set(newFormData, name, checked);
 		onUpdate(newFormData);
 	};
