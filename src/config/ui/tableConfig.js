@@ -882,12 +882,11 @@ export const getSchedulerToolbarActions = ({ navigate }) => [
 		label: 'Send Invites',
 		icon: Send,
 		requiresSelection: true,
-		onClick: (selectionModel, allRows, { showAlert, handleError }) => {
+		onClick: async (selectionModel, allRows, { showAlert, handleError }) => {
 			if (selectionModel.length === 0) return;
 			try {
-				sendInterviewInvitations({ interviewIds: selectionModel }).then((result) => {
-					showAlert({ message: result.data.message, type: 'success' });
-				});
+				const result = await sendInterviewInvitations({ interviewIds: selectionModel });
+				showAlert({ message: result.data.message, type: 'success' });
 			} catch (error) {
 				handleError(error, 'Failed to send invitations.');
 			}
@@ -1070,7 +1069,7 @@ export const getInboxToolbarActions = ({ navigate, permittedAliases, member }) =
 				.filter(Boolean);
 			if (messagesPayload.length === 0) return;
 			updateEmailReadStatus({ messages: messagesPayload, status: newStatus })
-				.then(() => {})
+				.then(() => { })
 				.catch((error) => handleError(error, `bulk-mark-${newStatus}`));
 		},
 	},
