@@ -498,7 +498,7 @@ const DynamicField = ({ fieldConfig, application, onFieldUpdate, sectionName, on
 		case 'date':
 			return (
 				<LocalizationProvider dateAdapter={AdapterDayjs}>
-					<DatePicker label={interpolatedLabel} value={value ? dayjs(value) : null} onChange={(newValue) => handleChange(newValue && newValue.isValid() ? newValue.format('YYYY-MM-DD') : null)} onClose={handleBlur} slotProps={{ textField: { ...commonTextFieldProps } }} disabled={!allowEditing || fieldConfig.readOnly} views={fieldConfig.dateFormat === 'MM/YYYY' ? ['month', 'year'] : ['year', 'month', 'day']} />
+					<DatePicker label={interpolatedLabel} value={value ? dayjs(value) : null} onChange={(newValue) => handleChange(newValue?.isValid() ? newValue.format('YYYY-MM-DD') : null)} onClose={handleBlur} slotProps={{ textField: { ...commonTextFieldProps } }} disabled={!allowEditing || fieldConfig.readOnly} views={fieldConfig.dateFormat === 'MM/YYYY' ? ['month', 'year'] : ['year', 'month', 'day']} />
 				</LocalizationProvider>
 			);
 		case 'address':
