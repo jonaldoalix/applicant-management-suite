@@ -72,4 +72,23 @@ describe('PermissionGroup Component', () => {
 		const adminCheck = screen.getByRole('checkbox', { name: /Admin/i });
 		expect(adminCheck).toBeDisabled();
 	});
+
+	test('formats permission labels correctly', () => {
+		const labelData = {
+			permissions: {
+				'interviews.canHostEvent': true,
+				'aliases.editor.canRead': false,
+			},
+		};
+		const labelGroups = {
+			Formatting: ['interviews.canHostEvent', 'aliases.editor.canRead'],
+		};
+
+		render(<PermissionGroup formData={labelData} groups={labelGroups} onUpdate={mockOnUpdate} />);
+
+		// Check camelCase spacing
+		expect(screen.getByText('Can Host Event')).toBeInTheDocument();
+		// Check alias formatting
+		expect(screen.getByText('Editor Read')).toBeInTheDocument();
+	});
 });

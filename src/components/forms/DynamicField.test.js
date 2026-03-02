@@ -433,6 +433,35 @@ describe('DynamicField Component', () => {
 			expect(mockOnChange).toHaveBeenCalledWith('testSection.num', '123');
 		});
 
+		it('renders autocomplete field', () => {
+			renderField({ name: 'vehicle', label: 'Vehicle', type: 'autocomplete', options: ['Car', 'Bike'] });
+			const autocomplete = screen.getByLabelText('Vehicle');
+			expect(autocomplete).toBeInTheDocument();
+		});
+
+		it('renders switch field', () => {
+			renderField({ name: 'feature', label: 'Feature', type: 'switch' });
+			const switchControl = screen.getByRole('checkbox');
+			expect(switchControl).toBeInTheDocument();
+			fireEvent.click(switchControl);
+			expect(mockOnChange).toHaveBeenCalledWith('testSection.feature', true);
+		});
+
+		it('renders dropdown field', () => {
+			renderField({ name: 'color', label: 'Color', type: 'dropdown', options: ['Red', 'Blue'] });
+			const dropdown = screen.getByLabelText('Color');
+			expect(dropdown).toBeInTheDocument();
+		});
+
+		it('handles DatePicker null or invalid value', async () => {
+			renderField({ name: 'dateField', label: 'Date', type: 'date', dateFormat: 'MM/DD/YYYY' });
+			const input = screen.getByTestId('mock-date-picker');
+			fireEvent.change(input, { target: { value: '' } });
+			await waitFor(() => {
+				expect(mockOnChange).toHaveBeenCalledWith('testSection.dateField', null);
+			});
+		});
+
 		it('renders unsupported field type safely', () => {
 			renderField({ name: 'what', label: 'Unknown', type: 'alien_technology' });
 			expect(screen.getByText('Unsupported field type: alien_technology')).toBeInTheDocument();
