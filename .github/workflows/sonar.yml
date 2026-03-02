@@ -34,6 +34,12 @@ jobs:
         run: npm run test --coverage --watchAll=false --forceExit
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
+          REACT_APP_apiKey: "dummy-key"
+          REACT_APP_authDomain: "dummy-domain.firebaseapp.com"
+          REACT_APP_projectId: "dummy-project"
+          REACT_APP_storageBucket: "dummy-bucket.appspot.com"
+          REACT_APP_messagingSenderId: "123456789"
+          REACT_APP_appId: "1:123456789:web:abcdef"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
