@@ -398,7 +398,8 @@ const DynamicField = ({ fieldConfig, application, onFieldUpdate, sectionName, on
 	const { name, type, required, validator, helperText, calculatedValue } = fieldConfig;
 	const { allowEditing } = useContext(ApplicationContext) || { allowEditing: true };
 
-	const valuePath = ['header', 'label', 'summaryList', 'calculatedLabel'].includes(type) ? name : sectionName === 'attachments' ? name : `${sectionName}.${name}`;
+	const isSpecialType = ['header', 'label', 'summaryList', 'calculatedLabel'].includes(type);
+	const valuePath = isSpecialType || sectionName === 'attachments' ? name : `${sectionName}.${name}`;
 	const value = calculatedValue ? processFormula(application, calculatedValue) : getNestedValue(application, valuePath);
 	const interpolatedLabel = interpolateString(fieldConfig.label, application);
 
@@ -493,7 +494,7 @@ const DynamicField = ({ fieldConfig, application, onFieldUpdate, sectionName, on
 		case 'number':
 			return <TextField {...commonTextFieldProps} type='text' label={interpolatedLabel} name={name} value={value || ''} onChange={handleChange} />;
 		case 'autocomplete':
-			return <Autocomplete options={fieldConfig.options || []} getOptionLabel={(option) => option.label || ''} value={fieldConfig.options?.find((opt) => opt.id === value) || null} onChange={(event, newValue) => handleChange(newValue ? newValue.id : '')} isOptionEqualToValue={(option, value) => option.id === value.id} renderInput={(params) => <TextField {...params} label={interpolatedLabel} {...commonTextFieldProps} />} disabled={!allowEditing || fieldConfig.readOnly} />;
+			return <Autocomplete options={fieldConfig.options || []} getOptionLabel={(option) => option.label || ''} value={fieldConfig.options?.find((opt) => opt.id === value) || null} onChange={(event, newValue) => handleChange(newValue?.id || '')} isOptionEqualToValue={(option, value) => option.id === value.id} renderInput={(params) => <TextField {...params} label={interpolatedLabel} {...commonTextFieldProps} />} disabled={!allowEditing || fieldConfig.readOnly} />;
 		case 'date':
 			return (
 				<LocalizationProvider dateAdapter={AdapterDayjs}>
