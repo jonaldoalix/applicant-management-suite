@@ -60,8 +60,10 @@ export default function BasicTabs({ tabBarRef, innerTabBarRef, parentTabBarValue
 
 	// Sticky Tab Logic
 	useEffect(() => {
+		console.error('Information.jsx useEffect attaching scroll listener');
 		const handleScroll = () => {
 			const scrollPosition = window.scrollY;
+			console.error('handleScroll executed! scrollPosition:', scrollPosition);
 			// Note: 1048 is a hardcoded threshold.
 			// Consider calculating this dynamically via ref.current.offsetTop in the future.
 			if (scrollPosition > 1048) {

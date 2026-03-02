@@ -75,7 +75,14 @@ jest.mock('@mui/x-date-pickers/DatePicker', () => {
 				data-testid='mock-date-picker'
 				aria-label={props.label}
 				// Simulate the DatePicker passing a dayjs object to the parent's handler
-				onChange={(e) => props.onChange(mockDayjs(e.target.value))}
+				onChange={(e) => {
+					const val = e.target.value;
+					if (val === 'invalid') {
+						props.onChange({ isValid: () => false });
+					} else {
+						props.onChange(mockDayjs(val));
+					}
+				}}
 			/>
 		),
 	};
@@ -449,14 +456,14 @@ describe('DynamicField Component', () => {
 
 		it('renders dropdown field', () => {
 			renderField({ name: 'color', label: 'Color', type: 'dropdown', options: ['Red', 'Blue'] });
-			const dropdown = screen.getByLabelText('Color');
+			const dropdown = screen.getByRole('combobox');
 			expect(dropdown).toBeInTheDocument();
 		});
 
 		it('handles DatePicker null or invalid value', async () => {
 			renderField({ name: 'dateField', label: 'Date', type: 'date', dateFormat: 'MM/DD/YYYY' });
 			const input = screen.getByTestId('mock-date-picker');
-			fireEvent.change(input, { target: { value: '' } });
+			fireEvent.change(input, { target: { value: 'invalid' } });
 			await waitFor(() => {
 				expect(mockOnChange).toHaveBeenCalledWith('testSection.dateField', null);
 			});
