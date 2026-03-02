@@ -25,7 +25,12 @@ jest.mock('../../../config/content/content', () => ({
 									introParagraphs: ['Child p1'],
 									deadlineMessage: 'The deadline is',
 									requirements: [{ title: 'Req 1', description: 'Req desc 1' }],
-									applyNowSection: { enabled: false, buttons: [] },
+									applyNowSection: {
+										enabled: true,
+										title: 'Apply Now Child Title',
+										paragraphs: ['Apply Child paragraph 1'],
+										buttons: [{ label: 'Apply Button', path: '/apply' }],
+									},
 								},
 							},
 						],
@@ -42,7 +47,21 @@ jest.mock('../../../config/content/content', () => ({
 					},
 				},
 			],
-			bottomSections: { enabled: false },
+			bottomSections: {
+				enabled: true,
+				supportUs: {
+					enabled: true,
+					title: 'Support Us Title',
+					paragraphs: ['Support p1', 'Support p2'],
+					mailTo: { title: 'Mail Title', lines: ['Mail line 1'] },
+				},
+				applyNow: {
+					enabled: true,
+					title: 'Bottom Apply Title',
+					paragraph: 'Bottom apply p1',
+					buttons: [{ label: 'Bottom Apply Button', path: '/apply' }],
+				},
+			},
 		},
 	},
 }));
@@ -99,6 +118,17 @@ describe('Information (BasicTabs) Component', () => {
 		expect(screen.getByText('Child Title 1')).toBeInTheDocument();
 		expect(screen.getByText('Req 1')).toBeInTheDocument();
 		expect(screen.getByText(/The deadline is/)).toBeInTheDocument();
+		expect(screen.getByText('Apply Child paragraph 1')).toBeInTheDocument();
+		expect(screen.getByText('Apply Button')).toBeInTheDocument();
+	});
+
+	it('renders bottom sections', () => {
+		render(<Information tabBarRef={mockTabBarRef} innerTabBarRef={mockInnerTabBarRef} parentTabBarValue={0} childTabBarValue={0} setParentTab={mockSetParentTab} setChildTab={mockSetChildTab} />);
+		expect(screen.getByText('Support Us Title')).toBeInTheDocument();
+		expect(screen.getByText('Support p1')).toBeInTheDocument();
+		expect(screen.getByText('Mail Title')).toBeInTheDocument();
+		expect(screen.getByText('Mail line 1')).toBeInTheDocument();
+		expect(screen.getByText('Bottom Apply Title')).toBeInTheDocument();
 	});
 
 	it('renders the "Contact" panel when parentTabValue is 2', () => {
@@ -124,5 +154,30 @@ describe('Information (BasicTabs) Component', () => {
 
 		fireEvent.click(screen.getByRole('tab', { name: 'Requirements' }));
 		expect(mockSetParentTab).toHaveBeenCalledWith(1);
+	});
+
+	it('calls setChildTab when a child tab is clicked', () => {
+		render(<Information tabBarRef={mockTabBarRef} innerTabBarRef={mockInnerTabBarRef} parentTabBarValue={1} childTabBarValue={0} setParentTab={mockSetParentTab} setChildTab={mockSetChildTab} />);
+
+		fireEvent.click(screen.getByRole('tab', { name: 'Child Tab 1' }));
+		expect(mockSetChildTab).toHaveBeenCalledWith(0);
+	});
+
+	it('handles scroll events to toggle sticky state', () => {
+		const { container } = render(<Information tabBarRef={mockTabBarRef} innerTabBarRef={mockInnerTabBarRef} parentTabBarValue={0} childTabBarValue={0} setParentTab={mockSetParentTab} setChildTab={mockSetChildTab} />);
+		
+		const stickyContainer = container.querySelector('.sticky-tabs-container');
+		expect(stickyContainer).not.toHaveClass('sticky');
+
+		// Mock window.scrollY and dispatch scroll event
+		Object.defineProperty(window, 'scrollY', { value: 1500, writable: true });
+		fireEvent.scroll(window);
+		
+		expect(stickyContainer).toHaveClass('sticky');
+
+		Object.defineProperty(window, 'scrollY', { value: 500, writable: true });
+		fireEvent.scroll(window);
+		
+		expect(stickyContainer).not.toHaveClass('sticky');
 	});
 });
