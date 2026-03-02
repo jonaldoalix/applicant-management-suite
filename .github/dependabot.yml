@@ -5,7 +5,8 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
+  - package-ecosystem: "npm" # See documentation for possible values# Dependabot configuration
+  
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
