@@ -158,7 +158,7 @@ const clearApplicantsApplications = async (conn = testDB) => {
 export const wipeCollections = async (input) => {
 	let targetDB = testDB;
 
-	if (input && input.conn) {
+	if (input?.conn) {
 		if (input.conn === '(default)') {
 			targetDB = prodDB;
 		} else if (input.conn === 'ams-test') {
@@ -406,7 +406,7 @@ export const getAuthUserByEmail = async (email) => {
 /**
  * Fetches both member and applicant profiles for a given user ID.
  * @param {string} uid - The user's ID.
- * @returns {object} An object containing member and applicant data if they exist.
+ * @returns {Promise<object>} An object containing member and applicant data if they exist.
  */
 export const getUserProfiles = async (uid) => {
 	if (uid) {

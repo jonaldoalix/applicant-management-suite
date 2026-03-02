@@ -97,8 +97,17 @@ const ExperienceInfo = ({ data }) => {
 			</Typography>
 			{data.positions?.map((pos, index) => {
 				const isCurrent = Number(index === Number(data.currentOrganization));
-				const backgroundColor = isCurrent ? (darkMode ? 'custom.green' : 'custom.black') : 'transparent';
-				const textColor = darkMode ? 'custom.white' : isCurrent ? 'custom.brightWhite' : 'custom.black';
+				let backgroundColor = 'transparent';
+				if (isCurrent) {
+					backgroundColor = darkMode ? 'custom.green' : 'custom.black';
+				}
+
+				let textColor = 'custom.black';
+				if (darkMode) {
+					textColor = 'custom.white';
+				} else if (isCurrent) {
+					textColor = 'custom.brightWhite';
+				}
 
 				return (
 					<Box key={`${pos.type}-${pos.organization}`} mb={2} bgcolor={backgroundColor} padding='10px' borderRadius='8px'>

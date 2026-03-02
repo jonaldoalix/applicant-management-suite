@@ -102,8 +102,8 @@ export default function BasicTabs({ tabBarRef, innerTabBarRef, parentTabBarValue
 						</Typography>
 					</Box>
 					<Box width={{ xs: '90vw', md: '70vw' }} alignSelf='center' paddingBottom={4}>
-						{content.tabs[0].content.paragraphs.map((p, idx) => (
-							<Typography key={idx} variant='subtitle1' component='p' dangerouslySetInnerHTML={{ __html: p }} sx={{ mb: 2 }} />
+						{content.tabs[0].content.paragraphs.map((p) => (
+							<Typography key={p} variant='subtitle1' component='p' dangerouslySetInnerHTML={{ __html: p }} sx={{ mb: 2 }} />
 						))}
 					</Box>
 				</Box>
@@ -131,8 +131,8 @@ export default function BasicTabs({ tabBarRef, innerTabBarRef, parentTabBarValue
 									</Typography>
 								</Box>
 
-								{tab.content.introParagraphs.map((p, idx) => (
-									<Typography key={idx} variant='subtitle1' component='p' dangerouslySetInnerHTML={{ __html: p }} />
+								{tab.content.introParagraphs.map((p) => (
+									<Typography key={p} variant='subtitle1' component='p' dangerouslySetInnerHTML={{ __html: p }} />
 								))}
 
 								<br />
@@ -161,8 +161,8 @@ export default function BasicTabs({ tabBarRef, innerTabBarRef, parentTabBarValue
 											<Typography variant='h4' paddingBottom={3}>
 												{tab.content.applyNowSection.title}
 											</Typography>
-											{tab.content.applyNowSection.paragraphs.map((p, idx) => (
-												<Typography key={idx} variant='subtitle1' dangerouslySetInnerHTML={{ __html: p }} />
+											{tab.content.applyNowSection.paragraphs.map((p) => (
+												<Typography key={p} variant='subtitle1' dangerouslySetInnerHTML={{ __html: p }} />
 											))}
 										</Box>
 										<Box py={3} display='flex' flexDirection='column' gap={3}>
@@ -198,8 +198,8 @@ export default function BasicTabs({ tabBarRef, innerTabBarRef, parentTabBarValue
 									{content.tabs[2].content.address.title}
 								</Typography>
 								<Typography variant='subtitle1' component='p'>
-									{content.tabs[2].content.address.lines.map((line, idx) => (
-										<span key={idx}>
+									{content.tabs[2].content.address.lines.map((line) => (
+										<span key={line}>
 											{line}
 											<br />
 										</span>
@@ -249,7 +249,7 @@ export default function BasicTabs({ tabBarRef, innerTabBarRef, parentTabBarValue
 								{content.bottomSections.supportUs.title}
 							</Typography>
 							{content.bottomSections.supportUs.paragraphs.map((p, i) => (
-								<Typography key={i} variant='subtitle1' component='p' sx={i === 1 ? { textAlign: 'center' } : {}}>
+								<Typography key={p} variant='subtitle1' component='p' sx={i === 1 ? { textAlign: 'center' } : {}}>
 									{p}
 								</Typography>
 							))}
@@ -259,8 +259,8 @@ export default function BasicTabs({ tabBarRef, innerTabBarRef, parentTabBarValue
 									{content.bottomSections.supportUs.mailTo.title}
 									<br />
 									<br />
-									{content.bottomSections.supportUs.mailTo.lines.map((line, idx) => (
-										<span key={idx}>
+									{content.bottomSections.supportUs.mailTo.lines.map((line) => (
+										<span key={line}>
 											{line}
 											<br />
 										</span>
