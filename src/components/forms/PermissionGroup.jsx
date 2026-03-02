@@ -28,7 +28,7 @@ const createLabel = (path) => {
 
 	const lastPart = parts[parts.length - 1];
 	// Add space before capital letters
-	const spacedLabel = lastPart.replace(/([A-Z])/g, ' $1').trim();
+	const spacedLabel = lastPart.replaceAll(/([A-Z])/g, ' $1').trim();
 	return spacedLabel.charAt(0).toUpperCase() + spacedLabel.slice(1);
 };
 

@@ -236,7 +236,7 @@ export const EducationDetails = ({ data }) => (
 EducationDetails.propTypes = { data: PropTypes.object.isRequired };
 
 export const ExperienceDetails = ({ data }) => {
-	const currentIndex = parseInt(data.currentOrganization, 10);
+	const currentIndex = Number.parseInt(data.currentOrganization, 10);
 	const currentPos = Array.isArray(data.positions) ? data.positions[currentIndex] : null;
 
 	const currentOrgString = currentPos ? `${currentPos.role} | ${currentPos.organization}` : 'N/A';

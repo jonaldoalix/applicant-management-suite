@@ -36,8 +36,8 @@ const formatMoney = (amount) => {
 	// If it's already formatted (contains $), return as is
 	if (typeof amount === 'string' && amount.includes('$')) return amount;
 
-	const num = parseFloat(amount);
-	return isNaN(num) ? amount : `$${num.toLocaleString()}`;
+	const num = Number.parseFloat(amount);
+	return Number.isNaN(num) ? amount : `$${num.toLocaleString()}`;
 };
 
 const calculateAge = (dob) => {
@@ -52,7 +52,7 @@ const calculateAge = (dob) => {
 };
 
 const currentOrgString = (data) => {
-	const currentIndex = parseInt(data.currentOrganization, 10);
+	const currentIndex = Number.parseInt(data.currentOrganization, 10);
 	const currentPos = Array.isArray(data.positions) ? data.positions[currentIndex] : null;
 	return currentPos ? `${currentPos.role} | ${currentPos.organization}` : 'N/A';
 };
