@@ -27,7 +27,7 @@ jobs:
         run: npm ci
 
       - name: Run Tests & Generate Coverage
-        run: npm test -- --coverage --watchAll=false
+        run: npm run test
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
