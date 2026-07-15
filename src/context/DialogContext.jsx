@@ -183,33 +183,33 @@ export const DialogProvider = ({ children }) => {
 	const contextValue = useMemo(() => ({ showDialog }), [showDialog]);
 
 	return (
-		<DialogContext.Provider value={contextValue}>
-			{children}
-			{dialog && (
+        <DialogContext.Provider value={contextValue}>
+            {children}
+            {dialog && (
 				<Dialog open={true} onClose={() => handleActionClick(null)} fullWidth maxWidth={dialog.data?.maxWidth || 'sm'}>
 					{dialog.data?.component ? (
 						// Render Custom Component if provided (e.g. complex form)
-						(() => {
+						((() => {
 							const Component = dialog.data.component;
 							return <Component onSuccess={() => handleActionClick(true)} onClose={() => handleActionClick(null)} onCancel={() => handleActionClick(null)} {...dialog.data} />;
-						})()
+						})())
 					) : (
 						// Render Standard Dialog
-						<>
-							<DialogTitle>{dialog.data?.title || dialog.config.title}</DialogTitle>
-							<DialogContent>
+						(<>
+                            <DialogTitle>{dialog.data?.title || dialog.config.title}</DialogTitle>
+                            <DialogContent>
 								<DialogContentText sx={{ mb: 2, color: 'text.active' }}>{dialog.messageOverride || dialog.config.message}</DialogContentText>
 								<Box component='form' noValidate autoComplete='off'>
 									{renderInputs()}
 								</Box>
 							</DialogContent>
-							<DialogActions>{renderActions()}</DialogActions>
-						</>
+                            <DialogActions>{renderActions()}</DialogActions>
+                        </>)
 					)}
 				</Dialog>
 			)}
-		</DialogContext.Provider>
-	);
+        </DialogContext.Provider>
+    );
 };
 
 DialogProvider.propTypes = {

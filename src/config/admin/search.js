@@ -1,5 +1,5 @@
 import React from 'react';
-import { PersonOutline, DescriptionOutlined, HelpOutline, MailOutline, AttachFileOutlined } from '@mui/icons-material';
+import { PersonOutlined, DescriptionOutlined, HelpOutlined, MailOutlined, AttachFileOutlined } from '@mui/icons-material';
 
 import { generatePath } from '../navigation/routeUtils';
 import { paths } from '../navigation/paths';
@@ -8,7 +8,7 @@ import { highlightMatch, sanitizeEmailString, findRelevantFamilyMember, findRele
 
 export const searchConfig = {
 	members: {
-		icon: <PersonOutline fontSize='small' />,
+		icon: <PersonOutlined fontSize='small' />,
 		title: 'Administrators',
 		getPath: (item) => generatePath(paths.viewMember, { id: item.id }),
 		getText: (item, term) => ({
@@ -17,7 +17,7 @@ export const searchConfig = {
 		}),
 	},
 	applicants: {
-		icon: <PersonOutline fontSize='small' />,
+		icon: <PersonOutlined fontSize='small' />,
 		title: 'Applicants',
 		getPath: (item) => generatePath(paths.viewApplicant, { id: item.id }),
 		getText: (item, term) => ({
@@ -26,7 +26,7 @@ export const searchConfig = {
 		}),
 	},
 	profiles: {
-		icon: <PersonOutline fontSize='small' />,
+		icon: <PersonOutlined fontSize='small' />,
 		title: 'Applicant Profiles',
 		getPath: (item) => generatePath(paths.viewApplicant, { id: item.id }),
 		getText: (item, term) => ({
@@ -44,7 +44,7 @@ export const searchConfig = {
 		}),
 	},
 	requests: {
-		icon: <HelpOutline fontSize='small' />,
+		icon: <HelpOutlined fontSize='small' />,
 		title: 'Reference Requests',
 		getPath: (item) => (item.applicationID ? generatePath(paths.viewApp, { id: item.applicationID }) : null),
 		getText: (item, term) => ({
@@ -53,7 +53,7 @@ export const searchConfig = {
 		}),
 	},
 	mail: {
-		icon: <MailOutline fontSize='small' />,
+		icon: <MailOutlined fontSize='small' />,
 		title: 'Mail',
 		getPath: (item) => (item.id ? generatePath(paths.viewEmail, { id: item.id }) : null),
 		getText: (item, term) => ({

@@ -81,20 +81,17 @@ export const ApplicantForm = ({ applicant }) => {
 	if (uploading) return <Loader />;
 
 	return (
-		<>
-			<GenericAdminForm formConfig={{ ...applicantFormConfig, name: 'applicant' }} initialData={initialData} onSubmit={handleSubmit} onFileUpload={handleFileUpload} />
-
-			<Divider sx={{ my: 4 }} />
-
-			<Typography variant='h5' component='h3' gutterBottom color='text.active'>
+        <>
+            <GenericAdminForm formConfig={{ ...applicantFormConfig, name: 'applicant' }} initialData={initialData} onSubmit={handleSubmit} onFileUpload={handleFileUpload} />
+            <Divider sx={{ my: 4 }} />
+            <Typography variant='h5' component='h3' gutterBottom color='text.active'>
 				Associated Applications
 			</Typography>
-
-			<Box display='flex' flexDirection='row' flexWrap='wrap' gap={2}>
+            <Box display='flex' flexDirection='row' flexWrap='wrap' gap={2}>
 				{initialData.applications?.length > 0 ? (
 					initialData.applications.map((app) => (
 						// Handle both full objects or ID strings
-						<Application key={app.id || app} id={app.id || app} />
+						(<Application key={app.id || app} id={app.id || app} />)
 					))
 				) : (
 					<Typography color='text.secondary' sx={{ fontStyle: 'italic' }}>
@@ -102,8 +99,8 @@ export const ApplicantForm = ({ applicant }) => {
 					</Typography>
 				)}
 			</Box>
-		</>
-	);
+        </>
+    );
 };
 
 ApplicantForm.propTypes = {

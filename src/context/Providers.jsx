@@ -36,9 +36,9 @@ import { PageTitleProvider } from './HelmetContext';
 
 export const Providers = ({ children }) => {
 	return (
-		// 1. Data Layer (Settings & Identity)
-		<ConfigProvider>
-			<AuthProvider>
+        // 1. Data Layer (Settings & Identity)
+        <ConfigProvider>
+            <AuthProvider>
 				{/* 2. Visual Layer (Theme & Navigation) */}
 				<ThemeProvider>
 					<SidebarProvider>
@@ -59,8 +59,8 @@ export const Providers = ({ children }) => {
 					</SidebarProvider>
 				</ThemeProvider>
 			</AuthProvider>
-		</ConfigProvider>
-	);
+        </ConfigProvider>
+    );
 };
 
 Providers.propTypes = {

@@ -85,9 +85,9 @@ export const siteManifest = [
 		path: paths.registerApplicant,
 		element: (
 			// Allow unauthed users to register, but also allow admins to access (to help users)
-			<RouteGuard allowedRoles={[UserType.member, UserType.both]} permissions={['admin']} allowUnauthed={true}>
-				<Register />
-			</RouteGuard>
+			(<RouteGuard allowedRoles={[UserType.member, UserType.both]} permissions={['admin']} allowUnauthed={true}>
+                <Register />
+            </RouteGuard>)
 		),
 	},
 	{

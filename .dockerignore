@@ -1,0 +1,14 @@
+node_modules
+build
+coverage
+.firebase
+.git
+.cursor
+*.log
+.env
+localhost+2.pem
+localhost+2-key.pem
+users_backup.json
+functions/node_modules
+docs/pf-to-ams-transfer-playbook.md
+docs/pf-ams-diff-matrix.md

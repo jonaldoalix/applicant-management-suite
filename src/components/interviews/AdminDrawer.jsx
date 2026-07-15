@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { useParticipantIds, useDaily } from '@daily-co/daily-react';
 import { Drawer, Box, Typography, IconButton, Divider, Button, CircularProgress, Switch, FormControlLabel, Card, CardContent, Chip } from '@mui/material';
-import { Close, CallEnd, Send, CheckCircleOutline } from '@mui/icons-material';
+import { Close, CallEnd, Send, CheckCircleOutlined } from '@mui/icons-material';
 
 // Firebase & Config
 import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
@@ -197,7 +197,7 @@ export default function AdminDrawer({ open, onClose, interviewId, isAdmin, isDel
 										<Typography variant='body2' color='textSecondary'>
 											Scheduled: {dayjs(nextInterview.startTime.toDate()).format('ddd, MM/DD @ h:mm A')}
 										</Typography>
-										{nextInterview.applicantPresent && <Chip icon={<CheckCircleOutline />} label='Applicant is waiting' color='success' variant='outlined' size='small' sx={{ mt: 1 }} />}
+										{nextInterview.applicantPresent && <Chip icon={<CheckCircleOutlined />} label='Applicant is waiting' color='success' variant='outlined' size='small' sx={{ mt: 1 }} />}
 										{isNavigating ? (
 											<Box sx={{ mt: 2, textAlign: 'center' }}>
 												<Typography variant='body2'>Navigating in:</Typography>

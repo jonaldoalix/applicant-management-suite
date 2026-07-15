@@ -169,9 +169,10 @@ const Datatable = ({ titleIn, rows, columns, actions, toolbarActions = [], permi
 	// --- State & Context ---
 	const title = titleIn || 'No Title';
 	const data = rows || [];
-	const [selectedData, setSelectedData] = useState([]);
+	const [selectedData, setSelectedData] = useState({ type: 'include', ids: new Set() });
 	const actionColumn = actions || []; // Row-level actions (Edit/Delete buttons)
 	const { darkMode, boxShadow } = useTheme();
+	const selectedIds = useMemo(() => Array.from(selectedData.ids), [selectedData]);
 
 	return (
 		<Box className='datatable' width='100%' display='flex' flexDirection='column' alignItems='stretch' sx={{ height: `calc(100vh - 100px)` }}>
@@ -192,7 +193,7 @@ const Datatable = ({ titleIn, rows, columns, actions, toolbarActions = [], permi
 				slotProps={{
 					toolbar: {
 						toolbarActions: toolbarActions,
-						selectionModel: selectedData,
+						selectionModel: selectedIds,
 						allRows: rows,
 						// Pass Inbox Props down to toolbar
 						permittedFolders,
@@ -210,6 +211,7 @@ const Datatable = ({ titleIn, rows, columns, actions, toolbarActions = [], permi
 						},
 					},
 				}}
+				showToolbar
 				pageSizeOptions={[15, 50, 100]}
 				checkboxSelection
 				disableRowSelectionOnClick

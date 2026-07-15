@@ -19,7 +19,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { Inbox as InboxIcon, DashboardOutlined as DashboardIcon, ListAltOutlined as ApplicationIcon, VideoCameraFrontOutlined as InterviewIcon, Groups2Outlined as MembersIcon, StackedBarChartOutlined as FinancesIcon, FiberNewOutlined as NewIcon, KeyboardReturnOutlined as ReturningIcon, SchoolOutlined as SchoolIcon, Inventory2Outlined as InventoryIcon, ArchiveOutlined as ArchiveIcon, SettingsOutlined as SettingsIcon, AssignmentLateOutlined as IncompleteStatusIcon, AssignmentTurnedInOutlined as GoodStatusIcon, AssignmentReturnOutlined as RejectedStatusIcon, AssignmentOutlined as NeutralStatusIcon, ForwardToInboxOutlined as ContactCenterIcon, MailOutline as RequestIcon, EventAvailable as EventIcon } from '@mui/icons-material';
+import { Inbox as InboxIcon, DashboardOutlined as DashboardIcon, ListAltOutlined as ApplicationIcon, VideoCameraFrontOutlined as InterviewIcon, Groups2Outlined as MembersIcon, StackedBarChartOutlined as FinancesIcon, FiberNewOutlined as NewIcon, KeyboardReturnOutlined as ReturningIcon, SchoolOutlined as SchoolIcon, Inventory2Outlined as InventoryIcon, ArchiveOutlined as ArchiveIcon, SettingsOutlined as SettingsIcon, AssignmentLateOutlined as IncompleteStatusIcon, AssignmentTurnedInOutlined as GoodStatusIcon, AssignmentReturnOutlined as RejectedStatusIcon, AssignmentOutlined as NeutralStatusIcon, ForwardToInboxOutlined as ContactCenterIcon, MailOutlined as RequestIcon, EventAvailable as EventIcon } from '@mui/icons-material';
 
 // Context & Config
 import { useAuth } from '../../context/AuthContext';

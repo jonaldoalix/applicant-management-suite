@@ -19,7 +19,7 @@ import { doc, onSnapshot, getDoc } from 'firebase/firestore';
 
 // UI Components
 import { Box, Typography, Card, CardContent, Button, useTheme } from '@mui/material';
-import { CheckCircleOutline } from '@mui/icons-material';
+import { CheckCircleOutlined } from '@mui/icons-material';
 import Loader from '../../components/loader/Loader';
 import AdminDrawer from '../../components/interviews/AdminDrawer';
 import ApplicationViewer from '../../components/interviews/ApplicationViewer';
@@ -66,7 +66,7 @@ const InterviewEnded = () => {
 		<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', textAlign: 'center', p: 3 }}>
 			<Card sx={{ maxWidth: 500, p: 4 }}>
 				<CardContent>
-					<CheckCircleOutline color='success' sx={{ fontSize: 60, mb: 2 }} />
+					<CheckCircleOutlined color='success' sx={{ fontSize: 60, mb: 2 }} />
 					<Typography variant='h4' gutterBottom>
 						Interview Concluded
 					</Typography>
