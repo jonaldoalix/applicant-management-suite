@@ -347,7 +347,7 @@ describe('DynamicField Component', () => {
 
 			const troop1Title = screen.getByText('Org 1');
 			const card = troop1Title.closest('.MuiPaper-root');
-			expect(card).toHaveStyle('border: 3px solid black');
+			expect(card).toHaveStyle({ borderTopWidth: '3px', borderTopStyle: 'solid', borderTopColor: 'rgb(0, 0, 0)' });
 		});
 
 		it('shows empty state message', () => {
@@ -457,7 +457,7 @@ describe('DynamicField Component', () => {
 
 		it('renders switch field', () => {
 			renderField({ name: 'feature', label: 'Feature', type: 'switch' });
-			const switchControl = screen.getByRole('checkbox');
+			const switchControl = screen.getByRole('switch');
 			expect(switchControl).toBeInTheDocument();
 			fireEvent.click(switchControl);
 			expect(mockOnChange).toHaveBeenCalledWith('testSection.feature', true);

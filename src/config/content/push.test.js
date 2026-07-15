@@ -11,11 +11,16 @@ vi.mock('../data/firebase', () => ({
 	getConfigFromDb: jest.fn(),
 }));
 
+const { mockBatchSet, mockBatchCommit } = vi.hoisted(() => ({
+	mockBatchSet: jest.fn(),
+	mockBatchCommit: jest.fn(() => Promise.resolve()),
+}));
+
 vi.mock('firebase/firestore', () => ({
 	doc: jest.fn(),
 	setDoc: jest.fn(),
 	collection: jest.fn(),
-	writeBatch: jest.fn(() => ({ set: jest.fn(), commit: jest.fn(() => Promise.resolve()) })),
+	writeBatch: jest.fn(() => ({ set: mockBatchSet, commit: mockBatchCommit })),
 	serverTimestamp: jest.fn(() => 'SERVER_TIMESTAMP'),
 }));
 
@@ -87,9 +92,9 @@ describe('push.js', () => {
 			await send(ContactTemplate.welcome, to, from, cc, [], data);
 
 			expect(getConfigFromDb).toHaveBeenCalled();
-			expect(unsubscribeLink).toHaveBeenCalledWith('1');
+			expect(unsubscribeLink).toHaveBeenCalledWith('1', mockConfig);
 			expect(emailFooter).toHaveBeenCalledWith('http://unsub.link');
-			expect(setDoc).toHaveBeenCalledWith(
+			expect(mockBatchSet).toHaveBeenCalledWith(
 				'mockDocRef',
 				expect.objectContaining({
 					to: 'Test User <test@example.com>',
@@ -103,25 +108,27 @@ describe('push.js', () => {
 					}),
 				})
 			);
+			expect(mockBatchCommit).toHaveBeenCalled();
 		});
 
 		it('sends an SMS with correct data', async () => {
 			await send(ContactTemplate.welcome, [], from, [], smsTo, data);
 
-			expect(setDoc).toHaveBeenCalledWith(
+			expect(mockBatchSet).toHaveBeenCalledWith(
 				'mockDocRef',
 				expect.objectContaining({
 					to: '+11234567890',
 					body: 'Hello, SMS User. Your ID is 2. Best regards, Test Board',
 				})
 			);
+			expect(mockBatchCommit).toHaveBeenCalled();
 		});
 
 		it('merges dynamic data with template', async () => {
 			const awardData = { award: { type: 'Test Grant', amount: '$500' } };
 			await send(ContactTemplate.appApproved, to, from, [], [], awardData);
 
-			expect(setDoc).toHaveBeenCalledWith(
+			expect(mockBatchSet).toHaveBeenCalledWith(
 				'mockDocRef',
 				expect.objectContaining({
 					message: expect.objectContaining({
@@ -180,7 +187,7 @@ describe('push.js', () => {
 			await pushNotice(ContactTemplate.appApproved, user, data);
 
 			expect(getConfigFromDb).toHaveBeenCalled();
-			expect(unsubscribeLink).toHaveBeenCalledWith('user-1');
+			expect(unsubscribeLink).toHaveBeenCalledWith('user-1', mockConfig);
 			expect(setDoc).toHaveBeenCalledWith(
 				'mockDocRef',
 				expect.objectContaining({

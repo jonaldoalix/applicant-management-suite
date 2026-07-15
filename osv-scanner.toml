@@ -1,0 +1,10 @@
+# Intentional ignores for dependencies with no usable fixed release on npm.
+# Review when bumping SheetJS / xlsx usage in Cloud Functions.
+
+[[IgnoredVulns]]
+id = "GHSA-4r6h-8v6p-xvw6"
+reason = "xlsx comes from the SheetJS CDN tarball (see functions/package.json). No fixed npm release is published for this advisory; revisit when upgrading the import path."
+
+[[IgnoredVulns]]
+id = "GHSA-5pgg-2g8v-p4x9"
+reason = "xlsx comes from the SheetJS CDN tarball (see functions/package.json). No fixed npm release is published for this advisory; revisit when upgrading the import path."
