@@ -27,11 +27,11 @@ jest.mock('../../components/footer/CopyrightFooter', () => () => <div data-testi
 
 // Mock react-router-dom
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => {
+jest.mock('react-router-dom', async () => {
 	// Lazily require React *inside* the mock factory
 	const React = require('react');
 	return {
-		...jest.requireActual('react-router-dom'),
+		...(await vi.importActual('react-router-dom')),
 		useNavigate: () => mockNavigate,
 		Link: React.forwardRef(({ children, to, ...props }, ref) => (
 			<a href={to} {...props} ref={ref}>

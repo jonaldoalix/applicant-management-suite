@@ -18,8 +18,8 @@ jest.mock('react-router-dom', () => ({
 }));
 
 // 2. Material UI & Theme
-jest.mock('@mui/material', () => {
-	const actual = jest.requireActual('@mui/material');
+jest.mock('@mui/material', async () => {
+	const actual = await vi.importActual('@mui/material');
 	return {
 		...actual,
 		useMediaQuery: jest.fn(),

@@ -32,8 +32,8 @@ const mockNavigate = jest.fn();
 // FIX: We will control this variable in each test
 let mockParams = {};
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router-dom', async () => ({
+	...(await vi.importActual('react-router-dom')),
 	useNavigate: () => mockNavigate,
 	// FIX: The mock now reads from the variable
 	useParams: () => mockParams,
@@ -100,8 +100,8 @@ jest.mock('../../../config/navigation/routeUtils', () => ({
 }));
 
 // Critical Fix: Mock useMediaQuery directly
-jest.mock('@mui/material', () => {
-	const original = jest.requireActual('@mui/material');
+jest.mock('@mui/material', async () => {
+	const original = await vi.importActual('@mui/material');
 	return {
 		...original,
 		useMediaQuery: jest.fn(() => false),
@@ -109,8 +109,8 @@ jest.mock('@mui/material', () => {
 });
 
 // Mock MUI Styles hooks
-jest.mock('@mui/material/styles', () => {
-	const original = jest.requireActual('@mui/material/styles');
+jest.mock('@mui/material/styles', async () => {
+	const original = await vi.importActual('@mui/material/styles');
 	return {
 		...original,
 		useTheme: () => ({
@@ -173,7 +173,7 @@ jest.mock('../../breadcrumbs/Breadcrumbs', () => () => <div>Crumbs</div>);
 let onValidationSuccessCallback;
 let onValidationFailureCallback;
 
-jest.mock('../../forms/GenericFormPage', () => {
+jest.mock('../../forms/GenericFormPage', async () => {
 	return (props) => {
 		const { onValidationSuccess, onValidationFailure, setApplication } = props;
 		onValidationSuccessCallback = onValidationSuccess;

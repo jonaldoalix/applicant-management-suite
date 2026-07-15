@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { generatePath } from '../../config/navigation/routeUtils'; // This imports the mock
 
 // Mock dependencies
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router-dom', async () => ({
+	...(await vi.importActual('react-router-dom')),
 	useNavigate: jest.fn(),
 }));
 

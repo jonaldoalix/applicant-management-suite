@@ -85,10 +85,10 @@ jest.mock('../../context/AuthContext');
 jest.mock('../../context/MailboxContext');
 
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => {
+jest.mock('react-router-dom', async () => {
 	const React = require('react');
 	return {
-		...jest.requireActual('react-router-dom'),
+		...(await vi.importActual('react-router-dom')),
 		useNavigate: () => mockNavigate,
 		useLocation: jest.fn(),
 		Link: React.forwardRef(({ children, to, ...props }, ref) => (
