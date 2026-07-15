@@ -10,11 +10,11 @@ import { useTheme } from '../../context/ThemeContext';
 // Mock dependencies
 
 // 1. Mock the deepest dependencies
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	db: { id: 'mockDb' },
 	getConfigFromDb: jest.fn(),
 }));
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	collections: {
 		emails: 'emails',
 		sms: 'sms',
@@ -23,7 +23,7 @@ jest.mock('../../config/data/collections', () => ({
 }));
 
 // 2. Mock Constants.js
-jest.mock('../../config/Constants', () => ({
+vi.mock('../../config/Constants', () => ({
 	senders: [{ name: 'Admin', email: 'admin@test.com' }],
 	emailHeader: '<div>HEADER</div>',
 	staticEmailFooter: '<div>FOOTER</div>',
@@ -34,18 +34,18 @@ jest.mock('../../config/Constants', () => ({
 }));
 
 // 3. Mock dialogConfig.js
-jest.mock('../../config/ui/dialogConfig', () => ({
+vi.mock('../../config/ui/dialogConfig', () => ({
 	dialogs: {},
 }));
 
 // 4. Mock Contexts
-jest.mock('../../context/DialogContext');
-jest.mock('../../context/AlertContext');
-jest.mock('../../context/ConfigContext');
-jest.mock('../../context/ThemeContext');
+vi.mock('../../context/DialogContext');
+vi.mock('../../context/AlertContext');
+vi.mock('../../context/ConfigContext');
+vi.mock('../../context/ThemeContext');
 
 // 5. Mock remaining dependencies
-jest.mock('../../config/content/push', () => ({
+vi.mock('../../config/content/push', () => ({
 	send: jest.fn(),
 	templates: [
 		{
@@ -59,7 +59,7 @@ jest.mock('../../config/content/push', () => ({
 }));
 
 // Mock firestore and define mocks INLINE to avoid hoisting ReferenceError
-jest.mock('firebase/firestore', async () => ({
+vi.mock('firebase/firestore', async () => ({
 	...(await vi.importActual('firebase/firestore')),
 	setDoc: jest.fn(() => Promise.resolve()),
 	collection: jest.fn(() => ({ id: 'mockCollection' })),

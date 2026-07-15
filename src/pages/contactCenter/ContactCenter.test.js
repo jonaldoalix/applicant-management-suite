@@ -7,7 +7,7 @@ import '@testing-library/jest-dom';
 // --- Mocks ---
 
 // 1. Mock Collections (includes ApplicationStatus)
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	ApplicationType: {
 		newApplication: 'New Application',
 		returningGrant: 'Returning Grant',
@@ -44,15 +44,14 @@ jest.mock('../../config/data/collections', () => ({
 	},
 }));
 
-jest.mock('firebase/app', () => ({ initializeApp: jest.fn() }));
-jest.mock('firebase/analytics', () => ({ getAnalytics: jest.fn() }));
-jest.mock('firebase/auth', () => ({ getAuth: jest.fn(), createUserWithEmailAndPassword: jest.fn(), signInWithEmailAndPassword: jest.fn(), signOut: jest.fn() }));
-jest.mock('firebase/storage', () => ({ getStorage: jest.fn(), ref: jest.fn(), uploadBytes: jest.fn(), getDownloadURL: jest.fn(), deleteObject: jest.fn() }));
-jest.mock('firebase/functions', () => ({ __esModule: true, getFunctions: jest.fn(() => ({})), httpsCallable: jest.fn(() => jest.fn()) }));
+vi.mock('firebase/app', () => ({ initializeApp: jest.fn() }));
+vi.mock('firebase/analytics', () => ({ getAnalytics: jest.fn() }));
+vi.mock('firebase/auth', () => ({ getAuth: jest.fn(), createUserWithEmailAndPassword: jest.fn(), signInWithEmailAndPassword: jest.fn(), signOut: jest.fn() }));
+vi.mock('firebase/storage', () => ({ getStorage: jest.fn(), ref: jest.fn(), uploadBytes: jest.fn(), getDownloadURL: jest.fn(), deleteObject: jest.fn() }));
+vi.mock('firebase/functions', () => ({ __esModule: true, getFunctions: jest.fn(() => ({})), httpsCallable: jest.fn(() => jest.fn())  }));
 
 // 2. FIX: Mock factory + Explicit import allows forcing return values in setup
-jest.mock('firebase/firestore', () => ({
-	__esModule: true,
+vi.mock('firebase/firestore', () => ({ __esModule: true,
 	getFirestore: jest.fn(() => ({})),
 	doc: jest.fn(),
 	collection: jest.fn(),
@@ -62,30 +61,32 @@ jest.mock('firebase/firestore', () => ({
 	getDocs: jest.fn(),
 	query: jest.fn(),
 	where: jest.fn(),
+	writeBatch: jest.fn(() => ({ set: jest.fn(), commit: jest.fn(() => Promise.resolve()) })),
+	serverTimestamp: jest.fn(() => 'SERVER_TIMESTAMP'),
 }));
 
-jest.mock('uuid', () => ({ v4: () => 'mock-uuid' }));
-jest.mock('../../context/ThemeContext');
-jest.mock('../../context/HelmetContext');
-jest.mock('../../config/content/push');
+vi.mock('uuid', () => ({ v4: () => 'mock-uuid'  }));
+vi.mock('../../context/ThemeContext');
+vi.mock('../../context/HelmetContext');
+vi.mock('../../config/content/push');
 
 // Mock Firebase Config
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	getRealTimeApplicationsByWindow: jest.fn(),
 	getRealTimeCollection: jest.fn(),
 	getRealTimeApplicantsByApplicationID: jest.fn(),
 	db: {},
 }));
 
-jest.mock('../../context/ConfigContext');
-jest.mock('../../config/Constants');
-jest.mock('../../context/AlertContext');
-jest.mock('../../context/DialogContext');
-jest.mock('../../context/AuthContext');
-jest.mock('../../context/MailboxContext');
+vi.mock('../../context/ConfigContext');
+vi.mock('../../config/Constants');
+vi.mock('../../context/AlertContext');
+vi.mock('../../context/DialogContext');
+vi.mock('../../context/AuthContext');
+vi.mock('../../context/MailboxContext');
 
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', async () => {
+vi.mock('react-router-dom', async () => {
 	const React = require('react');
 	return {
 		...(await vi.importActual('react-router-dom')),

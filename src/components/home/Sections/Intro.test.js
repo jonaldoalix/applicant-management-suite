@@ -5,11 +5,11 @@ import { useTheme } from '../../../context/ThemeContext';
 import { homePageContent } from '../../../config/content/content';
 
 // Mock Dependencies
-jest.mock('../../../context/ThemeContext', () => ({
+vi.mock('../../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
-jest.mock('../../../config/content/content', () => ({
+vi.mock('../../../config/content/content', () => ({
 	homePageContent: {
 		intro: {
 			backgroundImages: { light: 'light.jpg', dark: 'dark.jpg' },
@@ -22,7 +22,7 @@ jest.mock('../../../config/content/content', () => ({
 }));
 
 // Mock Child Components
-jest.mock('../../timer/WindowInfo', () => () => <div data-testid='mock-window-info' />);
+vi.mock('../../timer/WindowInfo', () => ({ default: () => <div data-testid='mock-window-info' /> }));
 
 describe('Intro Component', () => {
 	const mockAppBarRef = { current: { scrollIntoView: jest.fn() } };

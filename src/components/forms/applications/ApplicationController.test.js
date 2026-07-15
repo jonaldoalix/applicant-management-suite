@@ -32,21 +32,21 @@ const mockNavigate = jest.fn();
 // FIX: We will control this variable in each test
 let mockParams = {};
 
-jest.mock('react-router-dom', async () => ({
+vi.mock('react-router-dom', async () => ({
 	...(await vi.importActual('react-router-dom')),
 	useNavigate: () => mockNavigate,
 	// FIX: The mock now reads from the variable
 	useParams: () => mockParams,
 }));
 
-jest.mock('../../../context/AuthContext', () => ({ useAuth: jest.fn() }));
-jest.mock('../../../context/AlertContext', () => ({ useAlert: jest.fn() }));
-jest.mock('../../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
-jest.mock('../../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
-jest.mock('../../../context/HelmetContext', () => ({ useTitle: jest.fn() }));
+vi.mock('../../../context/AuthContext', () => ({ useAuth: jest.fn() }));
+vi.mock('../../../context/AlertContext', () => ({ useAlert: jest.fn() }));
+vi.mock('../../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
+vi.mock('../../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../../context/HelmetContext', () => ({ useTitle: jest.fn() }));
 
 // Mock Collections
-jest.mock('../../../config/data/collections', () => ({
+vi.mock('../../../config/data/collections', () => ({
 	__esModule: true,
 	collections: {
 		profiles: 'profiles',
@@ -72,7 +72,7 @@ jest.mock('../../../config/data/collections', () => ({
 }));
 
 // Mock pushNotice
-jest.mock('../../../config/content/push', () => ({
+vi.mock('../../../config/content/push', () => ({
 	__esModule: true,
 	ContactTemplate: {
 		appCompleted: 'completed',
@@ -84,23 +84,23 @@ import { pushNotice } from '../../../config/content/push';
 const mockPushNotice = pushNotice;
 
 // Mock Constants
-jest.mock('../../../config/Constants', () => ({
+vi.mock('../../../config/Constants', () => ({
 	__esModule: true,
 	attachmentFields: [{ key: 'testDoc', label: 'Test Doc', requiredBy: ['Scholarship'] }],
 }));
 
 // Mock Paths for navigation
-jest.mock('../../../config/navigation/paths', () => ({
+vi.mock('../../../config/navigation/paths', () => ({
 	paths: {
 		apply: 'mock-apply-path',
 	},
 }));
-jest.mock('../../../config/navigation/routeUtils', () => ({
+vi.mock('../../../config/navigation/routeUtils', () => ({
 	generatePath: jest.fn((path) => path),
 }));
 
 // Critical Fix: Mock useMediaQuery directly
-jest.mock('@mui/material', async () => {
+vi.mock('@mui/material', async () => {
 	const original = await vi.importActual('@mui/material');
 	return {
 		...original,
@@ -109,7 +109,7 @@ jest.mock('@mui/material', async () => {
 });
 
 // Mock MUI Styles hooks
-jest.mock('@mui/material/styles', async () => {
+vi.mock('@mui/material/styles', async () => {
 	const original = await vi.importActual('@mui/material/styles');
 	return {
 		...original,
@@ -130,7 +130,7 @@ jest.mock('@mui/material/styles', async () => {
 });
 
 // Firebase Mocks
-jest.mock('../../../config/data/firebase', () => ({
+vi.mock('../../../config/data/firebase', () => ({
 	__esModule: true,
 	getApplication: jest.fn(),
 	getCollectionData: jest.fn(),
@@ -142,7 +142,7 @@ jest.mock('../../../config/data/firebase', () => ({
 
 // Config Mocks
 // FIX: Define the 3-step config *inline*
-jest.mock('../../../config/ui/applicationConfig', () => ({
+vi.mock('../../../config/ui/applicationConfig', () => ({
 	applicationConfigurations: {
 		scholarship: {
 			type: 'Scholarship',
@@ -164,17 +164,18 @@ jest.mock('../../../config/ui/applicationConfig', () => ({
 }));
 
 // Mock Child Components
-jest.mock('../../loader/Loader', () => () => <div>Loading...</div>);
-jest.mock('../../layout/NotFound', () => () => <div>Not Found</div>);
-jest.mock('../../footer/CopyrightFooter', () => () => <div>Footer</div>);
-jest.mock('../../breadcrumbs/Breadcrumbs', () => () => <div>Crumbs</div>);
+vi.mock('../../loader/Loader', () => ({ default: () => <div>Loading...</div> }));
+vi.mock('../../layout/NotFound', () => ({ default: () => <div>Not Found</div> }));
+vi.mock('../../footer/CopyrightFooter', () => ({ default: () => <div>Footer</div> }));
+vi.mock('../../breadcrumbs/Breadcrumbs', () => ({ default: () => <div>Crumbs</div> }));
 
 // Mock Form Page
 let onValidationSuccessCallback;
 let onValidationFailureCallback;
 
-jest.mock('../../forms/GenericFormPage', async () => {
-	return (props) => {
+vi.mock('../../forms/GenericFormPage', async () => {
+	return {
+		default: (props) => {
 		const { onValidationSuccess, onValidationFailure, setApplication } = props;
 		onValidationSuccessCallback = onValidationSuccess;
 		onValidationFailureCallback = onValidationFailure;
@@ -195,6 +196,7 @@ jest.mock('../../forms/GenericFormPage', async () => {
 				</button>
 			</div>
 		);
+		},
 	};
 });
 

@@ -3,13 +3,13 @@ import { render, screen } from '@testing-library/react';
 import Construction from './Construction';
 
 // --- Mocks ---
-jest.mock('lottie-react', () => {
-	return function MockLottie() {
+vi.mock('lottie-react', () => ({
+	default: function MockLottie() {
 		return <div data-testid='lottie-animation'>Under Construction Animation</div>;
-	};
-});
+	},
+}));
 
-jest.mock('../../config/Constants', () => ({
+vi.mock('../../config/Constants', () => ({
 	Assets: { underContructionLottie: 'mock-data' },
 }));
 

@@ -8,20 +8,20 @@ import { getRealTimeDocument, logoutUser } from '../config/data/firebase';
 import { UserType } from '../config/data/collections';
 
 // --- MOCKS ---
-jest.mock('../config/data/firebase', () => ({
+vi.mock('../config/data/firebase', () => ({
 	auth: {},
 	getRealTimeDocument: jest.fn(),
 	logoutUser: jest.fn(),
 }));
 
-jest.mock('firebase/auth', () => ({
+vi.mock('firebase/auth', () => ({
 	onAuthStateChanged: jest.fn(),
 }));
 
-jest.mock('../components/loader/Loader', () => () => <div data-testid='auth-loader'>Auth Loading...</div>);
+vi.mock('../components/loader/Loader', () => ({ default: () => <div data-testid='auth-loader'>Auth Loading...</div> }));
 
 // Constants needed for user role test
-jest.mock('../config/data/collections', () => ({
+vi.mock('../config/data/collections', () => ({
 	UserType: { applicant: 'applicant', member: 'member', both: 'both' },
 	collections: { applicants: 'applicants', members: 'members' },
 }));

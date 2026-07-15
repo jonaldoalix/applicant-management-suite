@@ -1,12 +1,14 @@
 // Do not import muiStyles here. We will require it inside beforeEach.
 import { colors as importedColors } from './theme';
 
+vi.mock('@mui/material/styles', () => ({
+	createTheme: jest.fn((config) => config),
+}));
+
 // Mock the createTheme function from MUI.
 // We want to test the *config* object passed to it, not what MUI does with it.
 // So, we mock it to just return the config object it receives.
-jest.mock('@mui/material/styles', () => ({
-	createTheme: jest.fn((config) => config), // Identity function
-}));
+
 
 // We need a variable to hold the default export
 let theme;
@@ -19,14 +21,14 @@ describe('src/config/ui/theme.js', () => {
 	// Store original process.env values
 	const OLD_ENV = process.env;
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		// Reset modules to clear cache and re-evaluate the theme file for each test.
 		// This is crucial for testing environment variables.
-		jest.resetModules();
+		vi.resetModules();
 
 		// *** THIS IS THE FIX ***
 		// Require the mock *after* resetting modules to get the new instance.
-		muiStyles = require('@mui/material/styles');
+		muiStyles = await import('@mui/material/styles');
 
 		// We don't need to clear the mock since it's brand new every time,
 		// but it's good practice in case this logic changes.
@@ -41,9 +43,9 @@ describe('src/config/ui/theme.js', () => {
 		process.env = OLD_ENV;
 	});
 
-	it('should export correct colors with default environment variables', () => {
+	it('should export correct colors with default environment variables', async () => {
 		// Dynamically import the module to capture its exports
-		const themeModule = require('./theme');
+		const themeModule = await import('./theme');
 		colors = themeModule.colors;
 
 		// Test default (fallback) values
@@ -55,13 +57,13 @@ describe('src/config/ui/theme.js', () => {
 		expect(colors.green).toBe('#2E7D32');
 	});
 
-	it('should use environment variables for colors when provided', () => {
+	it('should use environment variables for colors when provided', async () => {
 		// Set custom env variables
 		process.env.REACT_APP_PRELOAD_BG_DARK = '#222';
 		process.env.REACT_APP_PRELOAD_BG_LIGHT = '#AAA';
 
 		// Re-import the module *after* setting env vars
-		const themeModule = require('./theme');
+		const themeModule = await import('./theme');
 		colors = themeModule.colors;
 
 		// Test that the env variables are used
@@ -69,10 +71,10 @@ describe('src/config/ui/theme.js', () => {
 		expect(colors.white).toBe('#AAA');
 	});
 
-	it('should return a light theme configuration', () => {
+	it('should return a light theme configuration', async () => {
 		// Import default export
-		theme = require('./theme').default;
-		colors = require('./theme').colors;
+		theme = (await import('./theme')).default;
+		colors = (await import('./theme')).colors;
 
 		const primaryColor = 'red';
 		const lightTheme = theme(false, primaryColor); // darkMode = false
@@ -100,9 +102,9 @@ describe('src/config/ui/theme.js', () => {
 		expect(lightTheme.components.MuiCssBaseline.styleOverrides.body.backgroundColor).toBe(colors.white);
 	});
 
-	it('should return a dark theme configuration', () => {
-		theme = require('./theme').default;
-		colors = require('./theme').colors;
+	it('should return a dark theme configuration', async () => {
+		theme = (await import('./theme')).default;
+		colors = (await import('./theme')).colors;
 
 		const primaryColor = 'blue';
 		const darkTheme = theme(true, primaryColor); // darkMode = true
@@ -128,9 +130,9 @@ describe('src/config/ui/theme.js', () => {
 		expect(darkTheme.components.MuiListItemText.styleOverrides.primary.color).toBe(colors.darkTextSecondary);
 	});
 
-	it('should use blue as the default primary color if an invalid color is passed', () => {
-		theme = require('./theme').default;
-		colors = require('./theme').colors;
+	it('should use blue as the default primary color if an invalid color is passed', async () => {
+		theme = (await import('./theme')).default;
+		colors = (await import('./theme')).colors;
 
 		const lightTheme = theme(false, 'nonExistentColor');
 		const darkTheme = theme(true, undefined);
@@ -142,10 +144,10 @@ describe('src/config/ui/theme.js', () => {
 		expect(muiStyles.createTheme).toHaveBeenCalledTimes(2);
 	});
 
-	it('should contain all custom colors in the palette', () => {
-		theme = require('./theme').default;
+	it('should contain all custom colors in the palette', async () => {
+		theme = (await import('./theme')).default;
 		// Use the imported colors const for comparison
-		colors = require('./theme').colors;
+		colors = (await import('./theme')).colors;
 		const lightTheme = theme(false, 'red');
 
 		// Create an expected object that matches the *actual* (lowercase) keys

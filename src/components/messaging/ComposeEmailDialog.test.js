@@ -9,12 +9,12 @@ import { sendZohoEmail } from '../../config/data/firebase';
 import { useComposeEmailOptions } from '../../hooks/useComposeEmailOptions';
 
 // Mock dependencies
-jest.mock('../../context/AuthContext');
-jest.mock('../../context/ConfigContext');
-jest.mock('../../context/AlertContext');
-jest.mock('../../context/MailboxContext');
-jest.mock('../../config/data/firebase');
-jest.mock('../../hooks/useComposeEmailOptions');
+vi.mock('../../context/AuthContext');
+vi.mock('../../context/ConfigContext');
+vi.mock('../../context/AlertContext');
+vi.mock('../../context/MailboxContext');
+vi.mock('../../config/data/firebase');
+vi.mock('../../hooks/useComposeEmailOptions');
 
 describe('ComposeEmailDialog', () => {
 	const mockOnSuccess = jest.fn();

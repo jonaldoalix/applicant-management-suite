@@ -4,7 +4,7 @@ import { paths } from './paths';
 // Mock the paths module
 // The logic `prefix.split('/')[1]` suggests paths are like 'admin/members'
 // and it's checking against the second part.
-jest.mock('./paths', () => ({
+vi.mock('./paths', () => ({
 	paths: {
 		members: 'admin/members',
 		applicants: 'admin/applicants',

@@ -5,7 +5,7 @@ import { useTheme } from '../../context/ThemeContext';
 
 global.structuredClone = (val) => JSON.parse(JSON.stringify(val));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 

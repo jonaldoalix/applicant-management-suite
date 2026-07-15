@@ -5,7 +5,7 @@ import Widget from './Widget';
 import { useTheme } from '../../context/ThemeContext';
 
 // Mock Dependencies
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 

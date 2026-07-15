@@ -3,12 +3,12 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import SearchResultsDropdown from './SearchResultsDropdown';
 
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: () => mockNavigate,
 }));
 
 // FIXED: Mock config without using JSX syntax in the factory
-jest.mock('../../config/admin', () => ({
+vi.mock('../../config/admin', () => ({
 	searchConfig: {
 		members: {
 			title: 'Members',

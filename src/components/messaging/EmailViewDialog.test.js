@@ -8,10 +8,10 @@ import { useAlert } from '../../context/AlertContext';
 import { useProcessedEmailContent } from '../../hooks/useProcessedEmailContent';
 
 // Mock dependencies
-jest.mock('../../hooks/useEmailActions');
-jest.mock('../../config/data/firebase');
-jest.mock('../../context/AlertContext');
-jest.mock('../../hooks/useProcessedEmailContent');
+vi.mock('../../hooks/useEmailActions');
+vi.mock('../../config/data/firebase');
+vi.mock('../../context/AlertContext');
+vi.mock('../../hooks/useProcessedEmailContent');
 
 describe('EmailViewDialog', () => {
 	const mockHandleReply = jest.fn();

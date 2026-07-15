@@ -8,13 +8,13 @@ import { generatePath } from './routeUtils';
 import { paths } from './paths';
 
 // Mock dependencies
-jest.mock('../../context/AuthContext');
-jest.mock('react-router-dom', async () => ({
+vi.mock('../../context/AuthContext');
+vi.mock('react-router-dom', async () => ({
 	...(await vi.importActual('react-router-dom')),
 	useLocation: jest.fn(),
 	Navigate: jest.fn(),
 }));
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader' />);
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader' /> }));
 
 const mockUseAuth = useAuth;
 const mockUseLocation = useLocation;

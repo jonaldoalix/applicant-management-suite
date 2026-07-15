@@ -12,40 +12,40 @@ import { generatePath } from '../../config/navigation/routeUtils';
 // --- Mocks ---
 
 // Mock Firebase/Config functions
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	updateApplicantData: jest.fn(),
 }));
 
-jest.mock('../../config/Constants', () => ({
+vi.mock('../../config/Constants', () => ({
 	validateLink: jest.fn(),
 }));
 
-jest.mock('../../config/navigation/routeUtils', () => ({
+vi.mock('../../config/navigation/routeUtils', () => ({
 	generatePath: jest.fn(),
 }));
 
-jest.mock('../../config/navigation/paths', () => ({
+vi.mock('../../config/navigation/paths', () => ({
 	paths: { root: '/home' },
 }));
 
 // Mock Router
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: jest.fn(),
 	useParams: jest.fn(),
 }));
 
 // Mock Contexts
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
 // Mock Child Components
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader'>Loader Component</div>);
-jest.mock('../../components/footer/CopyrightFooter', () => () => <div data-testid='footer'>Copyright Footer</div>);
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader'>Loader Component</div> }));
+vi.mock('../../components/footer/CopyrightFooter', () => ({ default: () => <div data-testid='footer'>Copyright Footer</div> }));
 
 describe('Unsubscribe Component', () => {
 	const mockNavigate = jest.fn();

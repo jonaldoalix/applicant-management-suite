@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { act } from 'react';
 
 // 1. MOCK ADMIN CONFIG WITH EXPOSED SPIES
-jest.mock('../../config/admin/dashboard', () => {
+vi.mock('../../config/admin/dashboard', () => {
 	// Create distinct spies for each widget to prevent callback overwrites
 	const statusFetcher = jest.fn();
 	const eligibleFetcher = jest.fn();
@@ -60,32 +60,32 @@ jest.mock('../../config/admin/dashboard', () => {
 });
 
 // 2. MOCK CONTEXTS
-jest.mock('../../context/ConfigContext', () => ({
+vi.mock('../../context/ConfigContext', () => ({
 	useConfig: jest.fn(),
 }));
 
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
 
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
 // 3. MOCK CHILD COMPONENTS
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader'>Loading...</div>);
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader'>Loading...</div> }));
 
-jest.mock('../../components/widget/Widget', () => (props) => (
+vi.mock('../../components/widget/Widget', () => ({ default: (props) => (
 	<div data-testid='widget'>
 		<span>{props.title}</span>
 		<span data-testid={`amount-${props.title}`}>{props.info?.amount ?? '0'}</span>
 		<span data-testid={`percent-${props.title}`}>{props.info?.percent ?? '0'}%</span>
 	</div>
-));
+) }));
 
 // 4. IMPORTS
 import MemberDash from './MemberDash';

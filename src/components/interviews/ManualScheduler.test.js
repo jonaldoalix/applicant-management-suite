@@ -7,16 +7,16 @@ import { httpsCallable } from 'firebase/functions';
 import { useAlert } from '../../context/AlertContext';
 
 // Mock dependencies
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	functions: {},
 	getAllApplicantsSimple: jest.fn(),
 	getApplicationsForApplicant: jest.fn(),
 	scheduleSingleInterview: jest.fn(),
 }));
-jest.mock('firebase/functions', () => ({
+vi.mock('firebase/functions', () => ({
 	httpsCallable: jest.fn(),
 }));
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
 

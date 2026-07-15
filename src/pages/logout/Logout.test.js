@@ -8,19 +8,19 @@ import { paths } from '../../config/navigation/paths';
 
 // --- Mocks ---
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: jest.fn(),
 }));
 
-jest.mock('../../context/AuthContext', () => ({
+vi.mock('../../context/AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
-jest.mock('../../config/navigation/routeUtils', () => ({
+vi.mock('../../config/navigation/routeUtils', () => ({
 	generatePath: jest.fn(),
 }));
 
-jest.mock('../../config/navigation/paths', () => ({
+vi.mock('../../config/navigation/paths', () => ({
 	paths: { login: '/login-path' },
 }));
 

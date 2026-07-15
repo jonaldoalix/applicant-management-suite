@@ -3,7 +3,7 @@ import { render, screen, fireEvent, act } from '@testing-library/react';
 import { DialogProvider, useDialog } from './DialogContext';
 
 // Mock config to control dialog definitions
-jest.mock('../config/ui/dialogConfig', () => ({
+vi.mock('../config/ui/dialogConfig', () => ({
 	dialogConfig: {
 		simpleDialog: {
 			title: 'Simple',

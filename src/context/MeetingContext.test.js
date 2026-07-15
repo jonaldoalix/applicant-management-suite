@@ -5,7 +5,7 @@ import { MeetingProvider, useMeeting } from './MeetingContext';
 import DailyIframe from '@daily-co/daily-js';
 
 // 1. Define the mock behavior completely inside the factory
-jest.mock('@daily-co/daily-js', () => ({
+vi.mock('@daily-co/daily-js', () => ({
 	__esModule: true,
 	default: {
 		// Initialize as a Jest function so we can track calls

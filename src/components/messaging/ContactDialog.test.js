@@ -5,10 +5,10 @@ import { useTheme } from '../../context/ThemeContext';
 import { TemplatedOptions, CustomMessageTrigger } from './MessageOptions';
 
 // Mock dependencies
-jest.mock('../../context/ThemeContext');
+vi.mock('../../context/ThemeContext');
 // FIX: Auto-mock the module. This turns TemplatedOptions and CustomMessageTrigger
 // into jest.fn() spies.
-jest.mock('./MessageOptions');
+vi.mock('./MessageOptions');
 
 describe('ContactDialog', () => {
 	const mockOnClose = jest.fn();

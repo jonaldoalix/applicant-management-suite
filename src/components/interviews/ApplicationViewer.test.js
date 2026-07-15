@@ -4,12 +4,12 @@ import ApplicationViewer from './ApplicationViewer';
 import { useTheme } from '@mui/material/styles';
 
 // Mock Dependencies
-jest.mock('@mui/material/styles', async () => ({
+vi.mock('@mui/material/styles', async () => ({
 	...(await vi.importActual('@mui/material/styles')),
 	useTheme: jest.fn(),
 }));
 
-jest.mock('../table/Table', () => (props) => <div data-testid='mock-collapsable-table'>{props.data.length} Applications</div>);
+vi.mock('../table/Table', () => ({ default: (props) => <div data-testid='mock-collapsable-table'>{props.data.length} Applications</div> }));
 
 describe('ApplicationViewer Component', () => {
 	const mockOnClose = jest.fn();

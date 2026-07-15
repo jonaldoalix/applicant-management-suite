@@ -2,7 +2,7 @@ import { dialogConfig } from './dialogConfig';
 import { ApplicationStatus, InterviewStatus, UserType } from '../data/collections';
 
 // Mock collections
-jest.mock('../data/collections', () => ({
+vi.mock('../data/collections', () => ({
 	ApplicationStatus: {
 		started: 'Started',
 		submitted: 'Submitted',

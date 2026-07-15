@@ -7,24 +7,25 @@ import { updateDoc, doc } from 'firebase/firestore';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { InterviewStatus } from '../../config/data/collections';
+import { useAlert } from '../../context/AlertContext';
 
 // Mock dependencies
-jest.mock('firebase/firestore', () => ({
+vi.mock('firebase/firestore', () => ({
 	doc: jest.fn(),
 	updateDoc: jest.fn(),
 }));
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	db: {},
 	generateICSDownloadURL: jest.fn(),
 	getRealTimeMeetings: jest.fn(),
 }));
-jest.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
-jest.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
-jest.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
+vi.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
+vi.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
 
 // Mock react-router-dom
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', async () => ({
+vi.mock('react-router-dom', async () => ({
 	...(await vi.importActual('react-router-dom')),
 	useNavigate: () => mockNavigate,
 }));
@@ -45,7 +46,6 @@ describe('RSVPStatusCard', () => {
 		jest.clearAllMocks();
 		useAuth.mockReturnValue({ user: { uid: 'applicant123' } });
 		useTheme.mockReturnValue({ boxShadow: 'none' });
-		const { useAlert } = require('../../context/AlertContext');
 		useAlert.mockReturnValue({ showAlert: jest.fn(), handleError: jest.fn() });
 		updateDoc.mockResolvedValue(undefined);
 		doc.mockReturnValue('mock-doc-ref');

@@ -5,13 +5,13 @@ import { useParticipantProperty, useLocalSessionId, useDaily } from '@daily-co/d
 import { useAlert } from '../../context/AlertContext';
 
 // Mock dependencies
-jest.mock('@daily-co/daily-react', () => ({
+vi.mock('@daily-co/daily-react', () => ({
 	useParticipantProperty: jest.fn(),
 	useLocalSessionId: jest.fn(),
 	useDaily: jest.fn(),
 }));
 
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
 

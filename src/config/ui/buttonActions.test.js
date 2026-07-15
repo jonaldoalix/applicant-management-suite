@@ -4,18 +4,18 @@ import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../data/firebase';
 
 // Mock dependencies
-jest.mock('../navigation/paths', () => ({
+vi.mock('../navigation/paths', () => ({
 	paths: {
 		contactCenter: 'mock/contact',
 		exportApp: 'mock/export/:id',
 	},
 }));
 
-jest.mock('../data/firebase', () => ({
+vi.mock('../data/firebase', () => ({
 	auth: { app: 'mock-auth' }, // Mock auth object
 }));
 
-jest.mock('firebase/auth', () => ({
+vi.mock('firebase/auth', () => ({
 	sendPasswordResetEmail: jest.fn(),
 }));
 

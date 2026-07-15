@@ -19,15 +19,15 @@ import Apply from './Apply';
 // --- Mocks ---
 
 // Mock child components
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader' />);
-jest.mock('../../components/breadcrumbs/Breadcrumbs', () => () => <div data-testid='crumbs' />);
-jest.mock('../../components/interviews/RSVPStatusCard', () => () => <div data-testid='rsvp-card' />);
-jest.mock('../../components/timer/WindowInfo', () => () => <div data-testid='window-info' />);
-jest.mock('../../components/footer/CopyrightFooter', () => () => <div data-testid='footer' />);
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader' /> }));
+vi.mock('../../components/breadcrumbs/Breadcrumbs', () => ({ default: () => <div data-testid='crumbs' /> }));
+vi.mock('../../components/interviews/RSVPStatusCard', () => ({ default: () => <div data-testid='rsvp-card' /> }));
+vi.mock('../../components/timer/WindowInfo', () => ({ default: () => <div data-testid='window-info' /> }));
+vi.mock('../../components/footer/CopyrightFooter', () => ({ default: () => <div data-testid='footer' /> }));
 
 // Mock react-router-dom
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', async () => {
+vi.mock('react-router-dom', async () => {
 	// Lazily require React *inside* the mock factory
 	const React = require('react');
 	return {
@@ -42,31 +42,31 @@ jest.mock('react-router-dom', async () => {
 });
 
 // Mock contexts
-jest.mock('../../context/AuthContext');
-jest.mock('../../context/ConfigContext'); // This path is now correct
-jest.mock('../../context/ThemeContext');
-jest.mock('../../context/AlertContext');
-jest.mock('../../context/HelmetContext');
+vi.mock('../../context/AuthContext');
+vi.mock('../../context/ConfigContext'); // This path is now correct
+vi.mock('../../context/ThemeContext');
+vi.mock('../../context/AlertContext');
+vi.mock('../../context/HelmetContext');
 
 // Mock firebase
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	getRealTimeApplicationsByIDs: jest.fn(() => () => {}), // Returns an empty unsubscribe function
 	deleteApplication: jest.fn(() => Promise.resolve()),
 	removeApplicationFromApplicant: jest.fn(() => Promise.resolve()),
 }));
 
 // Mock config files
-jest.mock('../../config/content/content', () => ({
+vi.mock('../../config/content/content', () => ({
 	getApplyContent: jest.fn(),
 }));
-jest.mock('../../config/ui/applicationConfig', () => ({
+vi.mock('../../config/ui/applicationConfig', () => ({
 	applicationConfigurations: {
 		scholarship: { type: 'Scholarship' },
 		grant: { type: 'Grant' },
 	},
 }));
 
-jest.mock('../../config/navigation/paths', () => ({
+vi.mock('../../config/navigation/paths', () => ({
 	__esModule: true,
 	paths: {
 		applyScholarship: '/apply/scholarship',

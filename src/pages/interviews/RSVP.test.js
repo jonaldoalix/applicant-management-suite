@@ -8,26 +8,26 @@ import { InterviewStatus } from '../../config/data/collections';
 
 // --- Mocks ---
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useSearchParams: jest.fn(),
 	useNavigate: jest.fn(),
 }));
 
-jest.mock('firebase/firestore', () => ({
+vi.mock('firebase/firestore', () => ({
 	doc: jest.fn(),
 	updateDoc: jest.fn(),
 	serverTimestamp: jest.fn(),
 }));
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	db: {},
 }));
 
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	InterviewStatus: {
 		confirmed: 'confirmed',
 		invited: 'invited',

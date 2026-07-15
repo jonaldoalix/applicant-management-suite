@@ -6,22 +6,22 @@ import { useAuth } from '../../context/AuthContext';
 import { isAdminPath } from '../../config/navigation/routeUtils';
 
 // --- Mocks ---
-jest.mock('../../context/AuthContext', () => ({
+vi.mock('../../context/AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
-jest.mock('../../config/navigation/routeUtils', () => ({
+vi.mock('../../config/navigation/routeUtils', () => ({
 	isAdminPath: jest.fn(),
 	generatePath: (path) => path,
 }));
 
-jest.mock('lottie-react', () => {
-	return function MockLottie() {
+vi.mock('lottie-react', () => ({
+	default: function MockLottie() {
 		return <div data-testid='lottie-404'>404 Animation</div>;
-	};
-});
+	},
+}));
 
-jest.mock('../../config/Constants', () => ({
+vi.mock('../../config/Constants', () => ({
 	Assets: { notFoundLottie: 'mock-data' },
 }));
 

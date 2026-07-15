@@ -4,17 +4,17 @@ import { useAuth } from '../context/AuthContext';
 import { getCollectionData } from '../config/data/firebase';
 
 // --- MOCKS ---
-jest.mock('../context/AuthContext', () => ({ useAuth: jest.fn() }));
-jest.mock('../context/ConfigContext', () => ({ useConfig: () => ({ APPLICATION_DEADLINE: '2025-01-01' }) }));
-jest.mock('react-router-dom', () => ({ useParams: () => ({ year: null }) }));
+vi.mock('../context/AuthContext', () => ({ useAuth: jest.fn() }));
+vi.mock('../context/ConfigContext', () => ({ useConfig: () => ({ APPLICATION_DEADLINE: '2025-01-01' })  }));
+vi.mock('react-router-dom', () => ({ useParams: () => ({ year: null })  }));
 
-jest.mock('../config/data/firebase', () => ({
+vi.mock('../config/data/firebase', () => ({
 	getCollectionData: jest.fn(),
 }));
 
 // FIXED: Define the mock config properly
 const mockFetcher = jest.fn();
-jest.mock('../config/admin', () => ({
+vi.mock('../config/admin', () => ({
 	adminLists: {
 		testList: {
 			fetcher: (handler) => {

@@ -6,15 +6,14 @@ import { useTheme } from '../../context/ThemeContext';
 import { useSidebarMenu } from '../../config/navigation/sidebarConfig';
 
 // --- MOCKS ---
-jest.mock('../../context/SidebarContext', () => ({ useSidebar: jest.fn() }));
-jest.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
-jest.mock('../../config/navigation/sidebarConfig', () => ({ useSidebarMenu: jest.fn() }));
-jest.mock('react-router-dom', () => ({
-	Link: ({ children, to }) => <a href={to}>{children}</a>,
+vi.mock('../../context/SidebarContext', () => ({ useSidebar: jest.fn() }));
+vi.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../config/navigation/sidebarConfig', () => ({ useSidebarMenu: jest.fn() }));
+vi.mock('react-router-dom', () => ({ Link: ({ children, to }) => <a href={to}>{children}</a>,
 	useLocation: () => ({ pathname: '/' }),
 	generatePath: () => '/',
 }));
-jest.mock('../../config/navigation/routeUtils', () => ({ generatePath: () => '/' }));
+vi.mock('../../config/navigation/routeUtils', () => ({ generatePath: () => '/'  }));
 
 describe('Sidebar', () => {
 	const mockSetCollapsed = jest.fn();

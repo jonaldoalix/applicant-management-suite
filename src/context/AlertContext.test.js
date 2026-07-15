@@ -6,11 +6,11 @@ import { AlertProvider, useAlert } from './AlertContext';
 import { logEvent } from '../config/data/firebase';
 
 // Mock dependencies
-jest.mock('../config/data/firebase', () => ({
+vi.mock('../config/data/firebase', () => ({
 	logEvent: jest.fn(),
 }));
 
-jest.mock('../config/Constants', () => ({
+vi.mock('../config/Constants', () => ({
 	AlertMessages: {
 		saved: { success: { message: 'Saved successfully', type: 'success' } },
 	},

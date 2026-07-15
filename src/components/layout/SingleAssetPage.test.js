@@ -6,15 +6,15 @@ import { useTheme } from '../../context/ThemeContext';
 
 // --- Mocks ---
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: () => mockNavigate,
 }));
 
-jest.mock('../../context/SidebarContext', () => ({
+vi.mock('../../context/SidebarContext', () => ({
 	useSidebar: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
