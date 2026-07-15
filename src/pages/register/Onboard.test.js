@@ -46,8 +46,8 @@ jest.mock('../../config/data/firebase', () => ({
 // NOTE: We are NOT mocking '../../config/navigation/paths' or '../../config/navigation/routeUtils'.
 // Using the real versions ensures paths.redirect is defined and generatePath works correctly.
 
-jest.mock('../../config/data/collections', () => ({
-	...jest.requireActual('../../config/data/collections'),
+jest.mock('../../config/data/collections', async () => ({
+	...(await vi.importActual('../../config/data/collections')),
 	UploadType: { memberAvatar: 'avatars' },
 	collections: { members: 'members' },
 }));

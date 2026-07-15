@@ -33,15 +33,6 @@ jest.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
 jest.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
 jest.mock('./ParticipantRow', () => (props) => <div data-testid='participant-row'>{props.id}</div>);
 
-// --- THIS IS THE FIX ---
-// Mock the dayjs module to ensure the duration plugin is loaded
-jest.mock('dayjs', () => {
-	const actualDayjs = jest.requireActual('dayjs');
-	const durationPlugin = jest.requireActual('dayjs/plugin/duration');
-	actualDayjs.extend(durationPlugin); // Extend the real dayjs with the real plugin
-	return actualDayjs; // Return the real, extended dayjs
-});
-// --------------------
 
 describe('AdminDrawer Component', () => {
 	const mockOnClose = jest.fn();

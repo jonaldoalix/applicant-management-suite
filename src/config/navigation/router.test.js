@@ -9,8 +9,8 @@ import { paths } from './paths';
 
 // Mock dependencies
 jest.mock('../../context/AuthContext');
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router-dom', async () => ({
+	...(await vi.importActual('react-router-dom')),
 	useLocation: jest.fn(),
 	Navigate: jest.fn(),
 }));

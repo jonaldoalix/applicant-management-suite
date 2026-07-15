@@ -34,7 +34,7 @@ const mockNavigate = jest.fn();
 
 jest.mock('react-router-dom', () => ({
 	__esModule: true,
-	...jest.requireActual('react-router-dom'),
+	...(await vi.importActual('react-router-dom')),
 	useNavigate: () => mockNavigate,
 }));
 

@@ -59,8 +59,8 @@ jest.mock('../../config/content/push', () => ({
 }));
 
 // Mock firestore and define mocks INLINE to avoid hoisting ReferenceError
-jest.mock('firebase/firestore', () => ({
-	...jest.requireActual('firebase/firestore'),
+jest.mock('firebase/firestore', async () => ({
+	...(await vi.importActual('firebase/firestore')),
 	setDoc: jest.fn(() => Promise.resolve()),
 	collection: jest.fn(() => ({ id: 'mockCollection' })),
 	doc: jest.fn(() => ({ id: 'mockDoc' })),

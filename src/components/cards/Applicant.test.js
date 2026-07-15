@@ -8,8 +8,8 @@ import { getApplicantActions } from '../../config/ui/buttonActions';
 import { useAssetActionHandler } from '../../hooks/useAssetActionHandler';
 
 // --- Mocks ---
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router-dom', async () => ({
+	...(await vi.importActual('react-router-dom')),
 	useNavigate: jest.fn(),
 }));
 

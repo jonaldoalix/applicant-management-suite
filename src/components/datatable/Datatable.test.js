@@ -13,8 +13,8 @@ jest.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
 
 // Simple mock to capture props and provide a trigger
 let lastGridProps = {};
-jest.mock('@mui/x-data-grid', () => ({
-	...jest.requireActual('@mui/x-data-grid'),
+jest.mock('@mui/x-data-grid', async () => ({
+	...(await vi.importActual('@mui/x-data-grid')),
 	DataGrid: (props) => {
 		lastGridProps = props;
 		// Render toolbar manually if provided to test it

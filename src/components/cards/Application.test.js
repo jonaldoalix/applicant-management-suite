@@ -15,8 +15,8 @@ import { getBlob } from 'firebase/storage';
 import { convertPDFBlobToImages } from '../../config/Constants';
 
 // --- Mocks ---
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
+jest.mock('react-router-dom', async () => ({
+	...(await vi.importActual('react-router-dom')),
 	useNavigate: jest.fn(),
 	useParams: jest.fn(),
 }));
@@ -96,8 +96,8 @@ jest.mock('firebase/storage', () => ({
 	getBlob: jest.fn(),
 }));
 
-jest.mock('../../config/Constants', () => ({
-	...jest.requireActual('../../config/Constants'),
+jest.mock('../../config/Constants', async () => ({
+	...(await vi.importActual('../../config/Constants')),
 	convertPDFBlobToImages: jest.fn(),
 	attachmentFields: [
 		{ key: 'transcript', label: 'Transcript', requiredBy: ['Scholarship Check In'] },

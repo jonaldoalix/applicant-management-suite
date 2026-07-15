@@ -4,8 +4,8 @@ import ApplicationViewer from './ApplicationViewer';
 import { useTheme } from '@mui/material/styles';
 
 // Mock Dependencies
-jest.mock('@mui/material/styles', () => ({
-	...jest.requireActual('@mui/material/styles'),
+jest.mock('@mui/material/styles', async () => ({
+	...(await vi.importActual('@mui/material/styles')),
 	useTheme: jest.fn(),
 }));
 

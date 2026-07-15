@@ -25,51 +25,49 @@ if (typeof global.fetch === 'undefined') {
 global.alert = jest.fn();
 
 // 2. DEFINE SPIES
-const mockGetDoc = jest.fn();
-const mockGetDocs = jest.fn();
-const mockSetDoc = jest.fn();
-const mockUpdateDoc = jest.fn();
-const mockAddDoc = jest.fn();
-const mockDeleteDoc = jest.fn();
-const mockQuery = jest.fn();
-const mockCollection = jest.fn();
-const mockWhere = jest.fn();
-const mockOrderBy = jest.fn();
-const mockLimit = jest.fn();
-const mockOnSnapshot = jest.fn();
-const mockDoc = jest.fn();
-const mockGetCountFromServer = jest.fn();
-const mockHttpsCallable = jest.fn();
-const mockSignIn = jest.fn();
-const mockSignOut = jest.fn();
-const mockCreateUser = jest.fn();
-const mockUploadBytes = jest.fn();
-const mockGetDownloadURL = jest.fn();
-const mockDeleteObject = jest.fn();
-const mockWriteBatch = jest.fn();
-const mockBatchDelete = jest.fn();
-const mockBatchUpdate = jest.fn();
-const mockBatchCommit = jest.fn();
-
+const firebaseMocks = vi.hoisted(() => ({
+	mockGetDoc: vi.fn(),
+	mockGetDocs: vi.fn(),
+	mockSetDoc: vi.fn(),
+	mockUpdateDoc: vi.fn(),
+	mockAddDoc: vi.fn(),
+	mockDeleteDoc: vi.fn(),
+	mockQuery: vi.fn(),
+	mockCollection: vi.fn(),
+	mockWhere: vi.fn(),
+	mockOrderBy: vi.fn(),
+	mockLimit: vi.fn(),
+	mockOnSnapshot: vi.fn(),
+	mockDoc: vi.fn(),
+	mockGetCountFromServer: vi.fn(),
+	mockHttpsCallable: vi.fn(),
+	mockSignIn: vi.fn(),
+	mockSignOut: vi.fn(),
+	mockCreateUser: vi.fn(),
+	mockUploadBytes: vi.fn(),
+	mockGetDownloadURL: vi.fn(),
+	mockDeleteObject: vi.fn(),
+	mockWriteBatch: vi.fn(),
+	mockBatchDelete: vi.fn(),
+	mockBatchUpdate: vi.fn(),
+	mockBatchCommit: vi.fn(),
+}));
+const { mockGetDoc, mockGetDocs, mockSetDoc, mockUpdateDoc, mockAddDoc, mockDeleteDoc, mockQuery, mockCollection, mockWhere, mockOrderBy, mockLimit, mockOnSnapshot, mockDoc, mockGetCountFromServer, mockHttpsCallable, mockSignIn, mockSignOut, mockCreateUser, mockUploadBytes, mockGetDownloadURL, mockDeleteObject, mockWriteBatch, mockBatchDelete, mockBatchUpdate, mockBatchCommit } = firebaseMocks;
 let FirebaseConfig;
 
-describe('src/config/data/firebase.js', () => {
-	beforeEach(() => {
-		jest.resetModules();
-		jest.clearAllMocks();
 
-		// --- MOCKS ---
-		jest.doMock('firebase/app', () => ({ initializeApp: jest.fn() }));
-		jest.doMock('firebase/analytics', () => ({ getAnalytics: jest.fn() }));
+// --- MOCKS ---
+		vi.mock('firebase/app', () => ({ initializeApp: vi.fn() }));
+		vi.mock('firebase/analytics', () => ({ getAnalytics: vi.fn() }));
 
-		jest.doMock('firebase/auth', () => ({
+		vi.mock('firebase/auth', () => ({
 			getAuth: jest.fn(() => ({ currentUser: { uid: 'test-uid' } })),
 			signInWithEmailAndPassword: mockSignIn,
 			createUserWithEmailAndPassword: mockCreateUser,
 			signOut: mockSignOut,
 		}));
 
-		jest.doMock('firebase/firestore', () => ({
+		vi.mock('firebase/firestore', () => ({
 			__esModule: true,
 			getFirestore: jest.fn(() => ({})),
 			initializeFirestore: jest.fn(() => ({})),
@@ -92,40 +90,39 @@ describe('src/config/data/firebase.js', () => {
 				update: mockBatchUpdate,
 				commit: mockBatchCommit,
 			})),
-			collectionGroup: jest.fn(),
-			arrayUnion: jest.fn(),
-			arrayRemove: jest.fn(),
-			and: jest.fn(),
-			or: jest.fn(),
-			serverTimestamp: jest.fn(),
-			persistentLocalCache: jest.fn(),
-			persistentMultipleTabManager: jest.fn(),
+			collectionGroup: vi.fn(),
+			arrayUnion: vi.fn(),
+			arrayRemove: vi.fn(),
+			and: vi.fn(),
+			or: vi.fn(),
+			serverTimestamp: vi.fn(),
+			persistentLocalCache: vi.fn(),
+			persistentMultipleTabManager: vi.fn(),
 		}));
 
-		jest.doMock('firebase/storage', () => ({
-			getStorage: jest.fn(),
+		vi.mock('firebase/storage', () => ({
+			getStorage: vi.fn(),
 			ref: jest.fn((_, path) => ({ fullPath: path || 'mock/path' })),
 			uploadBytes: mockUploadBytes,
 			getDownloadURL: mockGetDownloadURL,
 			deleteObject: mockDeleteObject,
 		}));
 
-		jest.doMock('firebase/functions', () => ({
-			getFunctions: jest.fn(),
+		vi.mock('firebase/functions', () => ({
+			getFunctions: vi.fn(),
 			httpsCallable: jest.fn(() => mockHttpsCallable),
 		}));
 
-		jest.doMock('axios', () => ({
-			get: jest.fn(() => Promise.resolve({ data: { ip: '1.2.3.4' } })),
+		vi.mock('axios', () => {
+	const get = vi.fn(() => Promise.resolve({ data: { ip: '1.2.3.4' } }));
+	return { default: { get }, get };
+});
+
+		vi.mock('ua-parser-js', () => ({
+			UAParser: vi.fn(function UAParser() { return { getResult: () => ({ browser: { name: 'TestBrowser' } }) }; }),
 		}));
 
-		jest.doMock('ua-parser-js', () => ({
-			UAParser: jest.fn().mockImplementation(() => ({
-				getResult: () => ({ browser: { name: 'TestBrowser' } }),
-			})),
-		}));
-
-		jest.doMock('./collections', () => ({
+		vi.mock('./collections', () => ({
 			collections: {
 				users: 'users',
 				members: 'members',
@@ -159,12 +156,17 @@ describe('src/config/data/firebase.js', () => {
 			applicationSpecificCollections: ['applications'],
 		}));
 
-		// Re-require the module to apply mocks
-		FirebaseConfig = require('./firebase');
+describe('src/config/data/firebase.js', () => {
+	beforeEach(async () => {
+		vi.resetModules();
+		vi.clearAllMocks();
+
+
+		FirebaseConfig = await import('./firebase');
 
 		// --- DEFAULT SPY BEHAVIOR ---
 		mockGetDoc.mockResolvedValue({ exists: () => true, data: () => ({ id: '1', firstName: 'John' }) });
-		mockGetDocs.mockResolvedValue({
+		mockGetDocs.mockReset().mockResolvedValue({
 			empty: false,
 			size: 1,
 			docs: [{ id: '1', data: () => ({ id: '1', name: 'Test Doc' }), ref: { path: 'ref/path' } }],
@@ -186,7 +188,7 @@ describe('src/config/data/firebase.js', () => {
 				data: () => ({ id: 'snap-1' }),
 				docs: [{ id: 'snap-1', data: () => ({ id: 'snap-1' }) }],
 			});
-			return jest.fn(); // Unsubscribe function
+			return vi.fn(); // Unsubscribe function
 		});
 	});
 
