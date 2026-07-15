@@ -26,6 +26,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { useDialog } from '../../context/DialogContext';
 import { useAlert } from '../../context/AlertContext';
 import { useConfig } from '../../context/ConfigContext';
+import { createEmptyRowSelectionModel, getSelectedRowIds } from '../../utils/gridRowSelectionModel';
 
 // =============================================================================
 //  CUSTOM TOOLBAR
@@ -170,10 +171,10 @@ const Datatable = ({ titleIn, rows, columns, actions, toolbarActions = [], permi
 	// --- State & Context ---
 	const title = titleIn || 'No Title';
 	const data = rows || [];
-	const [selectedData, setSelectedData] = useState({ type: 'include', ids: new Set() });
+	const [selectedData, setSelectedData] = useState(() => createEmptyRowSelectionModel());
 	const actionColumn = actions || []; // Row-level actions (Edit/Delete buttons)
 	const { darkMode, boxShadow } = useTheme();
-	const selectedIds = useMemo(() => Array.from(selectedData.ids), [selectedData]);
+	const selectedIds = useMemo(() => getSelectedRowIds(selectedData), [selectedData]);
 
 	return (
 		<Box className='datatable' width='100%' display='flex' flexDirection='column' alignItems='stretch' sx={{ height: `calc(100vh - 100px)` }}>
@@ -195,7 +196,7 @@ const Datatable = ({ titleIn, rows, columns, actions, toolbarActions = [], permi
 					toolbar: {
 						toolbarActions: toolbarActions,
 						selectionModel: selectedIds,
-						allRows: rows,
+						allRows: data,
 						// Pass Inbox Props down to toolbar
 						permittedFolders,
 						selectedFolderId,

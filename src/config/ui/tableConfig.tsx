@@ -639,10 +639,10 @@ export const SenderSubjectCell = React.memo(({ row }) => {
 	const displayName = parseDisplayName(row.sender);
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden' }}>
-			<Typography variant='body2' fontWeight={isUnread ? 'bold' : 'normal'} noWrap sx={{ width: '100%' }}>
+			<Typography variant='body2' noWrap sx={{ width: '100%', fontWeight: isUnread ? 700 : 400 }}>
 				{displayName}
 			</Typography>
-			<Typography variant='body2' color='text.secondary' noWrap fontWeight={isUnread ? 'bold' : 'normal'} sx={{ width: '100%' }}>
+			<Typography variant='body2' color='text.secondary' noWrap sx={{ width: '100%', fontWeight: isUnread ? 700 : 400 }}>
 				{row.subject}
 			</Typography>
 		</Box>
@@ -656,10 +656,10 @@ export const RecipientSubjectCell = React.memo(({ row }) => {
 	const displayName = parseDisplayName(row.to);
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden' }}>
-			<Typography variant='body2' fontWeight={isUnread ? 'bold' : 'normal'} noWrap sx={{ width: '100%' }}>
+			<Typography variant='body2' noWrap sx={{ width: '100%', fontWeight: isUnread ? 700 : 400 }}>
 				{displayName}
 			</Typography>
-			<Typography variant='body2' color='text.secondary' noWrap fontWeight={isUnread ? 'bold' : 'normal'} sx={{ width: '100%' }}>
+			<Typography variant='body2' color='text.secondary' noWrap sx={{ width: '100%', fontWeight: isUnread ? 700 : 400 }}>
 				{row.subject}
 			</Typography>
 		</Box>
