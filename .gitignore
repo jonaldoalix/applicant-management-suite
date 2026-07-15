@@ -17,4 +17,4 @@
 serviceAccountKey.json
 cleanedData.json
 nonSGData.json
-functions/obfuscatedData.json
+functions/obfuscatedData.json.cursor/

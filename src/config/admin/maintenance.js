@@ -5,7 +5,7 @@
  * Maps UI definitions to backend Firebase functions.
  */
 
-import { purgeUserRecords, sendToTestDB, wipeCollections, backfillLastUpdated, backfillSentEmailTags, backfillSearchableTerms, backfillEmailContent } from '../data/firebase';
+import { purgeUserRecords, sendToTestDB, wipeCollections, backfillLastUpdated, backfillSentEmailTags, backfillSearchableTerms, backfillEmailContent, backfillApplicantCreationDates } from '../data/firebase';
 
 export const adminActions = {
 	purgeUserData: purgeUserRecords,
@@ -15,6 +15,7 @@ export const adminActions = {
 	backfillSentEmailTags: backfillSentEmailTags,
 	backfillSearchableTerms: backfillSearchableTerms,
 	backfillEmailContent: backfillEmailContent,
+	backfillApplicantCreationDates: backfillApplicantCreationDates,
 };
 
 export const adminFunctions = [
@@ -90,6 +91,13 @@ export const adminFunctions = [
 		label: 'Backfill Email Content',
 		description: 'Fetches full HTML content for stored emails that may have only cached headers. Useful after importing external email logs.',
 		action: adminActions.backfillEmailContent,
+		parameters: [],
+	},
+	{
+		id: 'backfill-applicant-creation-dates',
+		label: 'Backfill Applicant Creation Dates',
+		description: 'Iterates through Firebase Auth users and updates corresponding Firestore applicant records with the account creation date. Required for the "New Applicants" dashboard table to function for users registered prior to 2024.',
+		action: adminActions.backfillApplicantCreationDates,
 		parameters: [],
 	},
 ];

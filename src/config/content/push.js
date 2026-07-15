@@ -15,7 +15,7 @@
  */
 
 import { db, getConfigFromDb } from '../data/firebase';
-import { doc, setDoc, collection } from 'firebase/firestore';
+import { doc, setDoc, collection, writeBatch, serverTimestamp } from 'firebase/firestore';
 import { brand, emailHeader, emailFooter, unsubscribeLink, staticEmailFooter, LettersOfRecommendation } from '../Constants';
 import { collections } from '../data/collections';
 import { emailTemplates } from './emailTemplates';
@@ -75,12 +75,12 @@ const processTemplate = (templateString, data) => {
  * @param {object} data - Dynamic data for the specific recipient.
  * @returns {Promise<object>} { subject, text, html }
  */
-const generateMessage = async (templateKey, data) => {
+const generateMessage = async (templateKey, data, config) => {
 	const template = emailTemplates[templateKey];
 	if (!template) throw new Error(`Template not found for key: ${templateKey}`);
 
 	// Combine global brand details with specific user data
-	const context = { brand, ...data };
+	const context = { brand, config, ...data };
 
 	const subject = processTemplate(template.subject, context);
 	let htmlBody = processTemplate(template.html, context);
@@ -95,10 +95,17 @@ const generateMessage = async (templateKey, data) => {
 		.trim();
 
 	// Wrap content with standard Branding Header & Footer (w/ Unsubscribe Link)
-	const unsub = await unsubscribeLink(data.id);
+	const unsub = await unsubscribeLink(data.id, config);
 	const finalHtml = emailHeader + `<main style="font-family: Arial, Helvetica, sans-serif; color: #333; padding: 5px; margin: 5px;">${htmlBody}</main>` + emailFooter(unsub);
 
 	return { subject, text: plainText, html: finalHtml };
+};
+
+const formatEmail = (name, email) => {
+	const cleanName = name?.trim() || '';
+	const cleanEmail = email?.trim() || '';
+	if (!cleanEmail) return null;
+	return cleanName && cleanName !== 'undefined undefined' ? `${cleanName} <${cleanEmail}>` : cleanEmail;
 };
 
 // --- Dispatch Functions ---
@@ -120,7 +127,7 @@ export const send = async (templateKey, to, from, cc, smsTo, data) => {
 		cc = cc.filter((email) => email?.email);
 		smsTo = smsTo.filter((cell) => cell?.cell);
 
-		const ccEmails = cc.map((ccRecipient) => `${ccRecipient.name} <${ccRecipient.email}>`);
+		const ccEmails = cc.map((ccRecipient) => formatEmail(ccRecipient.name, ccRecipient.email)).filter(Boolean);
 		let ccRecipients = [...ccEmails];
 
 		// Fetch System CCs (e.g. archive email)
@@ -129,24 +136,30 @@ export const send = async (templateKey, to, from, cc, smsTo, data) => {
 			ccRecipients = [...ccRecipients, ...config.SYSTEM_CC_EMAILS];
 		}
 
+		const batch = writeBatch(db);
+		let emailCount = 0;
+		let smsCount = 0;
+
 		// 1. Process Emails
 		if (to.length > 0 && from) {
 			for (const recipient of to) {
 				// Merge general data with recipient-specific data (allows {{name}} to work)
 				const messageData = { ...data, ...recipient };
-				const generatedMessage = await generateMessage(templateKey, messageData);
+				const generatedMessage = await generateMessage(templateKey, messageData, config);
 
 				const email = {
-					to: `${recipient.name} <${recipient.email}>`,
-					from: `${from.name} <${from.email}>`,
+					to: formatEmail(recipient.name, recipient.email),
+					from: formatEmail(from.name, from.email),
 					replyTo: config.SYSTEM_REPLY_TO,
 					cc: ccRecipients,
 					message: generatedMessage,
+					createdAt: serverTimestamp(),
 				};
 
 				// Writing to this collection triggers the Cloud Function to send
 				const emailRef = doc(collection(db, collections.emails));
-				await setDoc(emailRef, email);
+				batch.set(emailRef, email);
+				emailCount++;
 			}
 		}
 
@@ -154,15 +167,22 @@ export const send = async (templateKey, to, from, cc, smsTo, data) => {
 		if (smsTo.length > 0) {
 			for (const recipient of smsTo) {
 				const messageData = { ...data, ...recipient };
-				const generatedMessage = await generateMessage(templateKey, messageData);
+				const generatedMessage = await generateMessage(templateKey, messageData, config);
 				const sms = {
 					body: generatedMessage.text,
 					to: `+1${recipient.cell}`,
+					createdAt: serverTimestamp(),
 				};
 				const smsRef = doc(collection(db, collections.sms));
-				await setDoc(smsRef, sms);
+				batch.set(smsRef, sms);
+				smsCount++;
 			}
 		}
+
+		if (emailCount > 0 || smsCount > 0) {
+			await batch.commit();
+		}
+		
 		return { success: true };
 	} catch (error) {
 		console.error(error.message);
@@ -227,14 +247,15 @@ export const pushNotice = async (templateKey, user, data) => {
 	try {
 		const config = await getConfigFromDb();
 		const messageData = { ...data, ...user };
-		const generatedMessage = await generateMessage(templateKey, messageData);
+		const generatedMessage = await generateMessage(templateKey, messageData, config);
 
 		const email = {
-			to: `${user.firstName} ${user.lastName} <${user.email}>`,
+			to: formatEmail(`${user.firstName} ${user.lastName}`, user.email),
 			from: config.SYSTEM_EMAIL,
 			replyTo: config.SYSTEM_REPLY_TO,
 			cc: config.SYSTEM_CC_EMAILS,
 			message: generatedMessage,
+			createdAt: serverTimestamp(),
 		};
 
 		const emailRef = doc(collection(db, collections.emails));
