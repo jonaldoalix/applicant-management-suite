@@ -9,21 +9,21 @@ import { generatePath } from '../../config/navigation/routeUtils';
 import { paths } from '../../config/navigation/paths';
 
 // Mock Dependencies
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', async () => ({
+vi.mock('react-router-dom', async () => ({
 	...(await vi.importActual('react-router-dom')),
 	useNavigate: () => mockNavigate,
 }));
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	getApplication: jest.fn(),
 }));
 
-jest.mock('../../config/data/Validation', () => ({
+vi.mock('../../config/data/Validation', () => ({
 	blankApp: {
 		type: 'Loading...',
 		window: '2000-01-01T00:00:00Z',
@@ -32,11 +32,11 @@ jest.mock('../../config/data/Validation', () => ({
 	},
 }));
 
-jest.mock('../../config/navigation/routeUtils', () => ({
+vi.mock('../../config/navigation/routeUtils', () => ({
 	generatePath: jest.fn(),
 }));
 
-jest.mock('../../config/navigation/paths', () => ({
+vi.mock('../../config/navigation/paths', () => ({
 	paths: { viewApp: '/app/view/:id' },
 }));
 

@@ -15,20 +15,20 @@ import { getBlob } from 'firebase/storage';
 import { convertPDFBlobToImages } from '../../config/Constants';
 
 // --- Mocks ---
-jest.mock('react-router-dom', async () => ({
+vi.mock('react-router-dom', async () => ({
 	...(await vi.importActual('react-router-dom')),
 	useNavigate: jest.fn(),
 	useParams: jest.fn(),
 }));
 
-jest.mock('../../context/AuthContext');
-jest.mock('../../context/DialogContext');
-jest.mock('../../context/AlertContext');
-jest.mock('../../context/ConfigContext');
-jest.mock('../../context/ThemeContext');
+vi.mock('../../context/AuthContext');
+vi.mock('../../context/DialogContext');
+vi.mock('../../context/AlertContext');
+vi.mock('../../context/ConfigContext');
+vi.mock('../../context/ThemeContext');
 
 // Comprehensive Collections Mock
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	collections: {
 		applicants: 'applicants',
 		families: 'families',
@@ -73,7 +73,7 @@ jest.mock('../../config/data/collections', () => ({
 	UploadType: {},
 }));
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	getCollectionData: jest.fn(),
 	getApplication: jest.fn(),
 	getAwardsData: jest.fn(),
@@ -82,21 +82,21 @@ jest.mock('../../config/data/firebase', () => ({
 	storage: {},
 }));
 
-jest.mock('../../config/content/push', () => ({
+vi.mock('../../config/content/push', () => ({
 	pushNotice: jest.fn(),
 	ContactTemplate: { appApproved: 'appApproved' },
 }));
 
-jest.mock('firebase/firestore', () => ({
+vi.mock('firebase/firestore', () => ({
 	serverTimestamp: () => 'mock-timestamp',
 }));
 
-jest.mock('firebase/storage', () => ({
+vi.mock('firebase/storage', () => ({
 	ref: jest.fn(),
 	getBlob: jest.fn(),
 }));
 
-jest.mock('../../config/Constants', async () => ({
+vi.mock('../../config/Constants', async () => ({
 	...(await vi.importActual('../../config/Constants')),
 	convertPDFBlobToImages: jest.fn(),
 	attachmentFields: [
@@ -107,20 +107,20 @@ jest.mock('../../config/Constants', async () => ({
 }));
 
 // Mock Child Components
-jest.mock('../layout/SingleAssetPage', () => ({
+vi.mock('../layout/SingleAssetPage', () => ({
 	__esModule: true,
 	default: ({ children }) => <div data-testid='single-asset-page'>{children}</div>,
 	AssetCard: ({ children }) => <div data-testid='asset-card'>{children}</div>,
 }));
 
-jest.mock('../assets/Header', () => ({ title, children }) => (
+vi.mock('../assets/Header', () => ({ default: ({ title, children }) => (
 	<div data-testid='header'>
 		<h1>{title}</h1>
 		{children}
 	</div>
-));
+) }));
 
-jest.mock('../assets/InfoTable', () => ({ data }) => (
+vi.mock('../assets/InfoTable', () => ({ default: ({ data }) => (
 	<div data-testid='info-table'>
 		{data &&
 			data.map((row, i) => (
@@ -129,16 +129,16 @@ jest.mock('../assets/InfoTable', () => ({ data }) => (
 				</div>
 			))}
 	</div>
-));
+) }));
 
-jest.mock('../assets/Section', () => ({ title, children }) => (
+vi.mock('../assets/Section', () => ({ default: ({ title, children }) => (
 	<div data-testid={`section-${title}`}>
 		<h2>{title}</h2>
 		{children}
 	</div>
-));
+) }));
 
-jest.mock('../dynamicButtons/DynamicButtons', () => ({ actions, onAction, asset }) => (
+vi.mock('../dynamicButtons/DynamicButtons', () => ({ default: ({ actions, onAction, asset }) => (
 	<div data-testid='dynamic-actions'>
 		{actions.map((action, index) => (
 			<button key={index} onClick={() => onAction(action, asset)}>
@@ -146,12 +146,12 @@ jest.mock('../dynamicButtons/DynamicButtons', () => ({ actions, onAction, asset 
 			</button>
 		))}
 	</div>
-));
+) }));
 
-jest.mock('../loader/Loader', () => () => <div role='progressbar'>Loading...</div>);
-jest.mock('../layout/NotFound', () => () => <div>Not Found Page</div>);
-jest.mock('../notes/NotesSection', () => () => <div>NotesSection</div>);
-jest.mock('../pdf/PDFPreview', () => ({ displayName }) => <div>PDF: {displayName}</div>);
+vi.mock('../loader/Loader', () => ({ default: () => <div role='progressbar'>Loading...</div> }));
+vi.mock('../layout/NotFound', () => ({ default: () => <div>Not Found Page</div> }));
+vi.mock('../notes/NotesSection', () => ({ default: () => <div>NotesSection</div> }));
+vi.mock('../pdf/PDFPreview', () => ({ default: ({ displayName }) => <div>PDF: {displayName}</div> }));
 
 describe('Application Card Component', () => {
 	const mockNavigate = jest.fn();

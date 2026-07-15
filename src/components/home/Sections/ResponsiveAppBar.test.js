@@ -8,15 +8,15 @@ import { useNavigate } from 'react-router-dom';
 import { homePageContent } from '../../../config/content/content';
 
 // Mock Dependencies
-jest.mock('../../../context/AuthContext', () => ({ useAuth: jest.fn() }));
-jest.mock('../../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../../context/AuthContext', () => ({ useAuth: jest.fn() }));
+vi.mock('../../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', async () => ({
+vi.mock('react-router-dom', async () => ({
 	...(await vi.importActual('react-router-dom')),
 	useNavigate: () => mockNavigate,
 }));
 
-jest.mock('../../../config/content/content', () => ({
+vi.mock('../../../config/content/content', () => ({
 	homePageContent: {
 		appBar: {
 			organizationName: { long: 'Long Name', short: 'Short' },
@@ -31,8 +31,8 @@ jest.mock('../../../config/content/content', () => ({
 }));
 
 // Mock config files needed for hrefs
-jest.mock('../../../config/navigation/routeUtils', () => ({ generatePath: (path) => path }));
-jest.mock('../../../config/navigation/paths', () => ({ paths: { home: '/', redirect: '/dash', login: '/login' } }));
+vi.mock('../../../config/navigation/routeUtils', () => ({ generatePath: (path) => path  }));
+vi.mock('../../../config/navigation/paths', () => ({ paths: { home: '/', redirect: '/dash', login: '/login' } }));
 
 describe('ResponsiveAppBar Component', () => {
 	const mockAppBarRef = { current: null };

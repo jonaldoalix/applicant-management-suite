@@ -6,20 +6,20 @@ import { useTheme } from '../../context/ThemeContext';
 
 // Capture the callback passed to Timer
 let timerCallback;
-jest.mock('./Timer', () => ({ onModeChange }) => {
+vi.mock('./Timer', () => ({ default: ({ onModeChange }) => {
 	timerCallback = onModeChange;
 	return <div>TimerStub</div>;
-});
+}}));
 
-jest.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
-jest.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
+vi.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
 
 describe('WindowInfo', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		require('../../context/ThemeContext').useTheme.mockReturnValue({ darkMode: false });
+		useTheme.mockReturnValue({ darkMode: false });
 		// Default config
-		require('../../context/ConfigContext').useConfig.mockReturnValue({
+		useConfig.mockReturnValue({
 			APPLICATION_DEADLINE: '2025-12-31T23:59:59Z',
 			NEXT_APPLICATION_OPEN_DATE: '2026-02-01T09:00:00Z',
 		});
@@ -43,7 +43,7 @@ describe('WindowInfo', () => {
 
 	test('handles null nextOpen date gracefully', async () => {
 		// Provide config with NULL next date
-		require('../../context/ConfigContext').useConfig.mockReturnValue({
+		useConfig.mockReturnValue({
 			APPLICATION_DEADLINE: '2025-12-31T23:59:59Z',
 			NEXT_APPLICATION_OPEN_DATE: null,
 		});

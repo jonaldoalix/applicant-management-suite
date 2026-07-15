@@ -8,25 +8,25 @@ import { functions, autoScheduleInterviews } from '../../config/data/firebase';
 import { v4 as uuid } from 'uuid';
 
 // Mock Dependencies
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
-jest.mock('../../context/ConfigContext', () => ({
+vi.mock('../../context/ConfigContext', () => ({
 	useConfig: jest.fn(),
 }));
-jest.mock('firebase/functions', () => ({
+vi.mock('firebase/functions', () => ({
 	httpsCallable: jest.fn(),
 }));
 // Mock the *named export* 'functions' and cloud functions from your firebase.js
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	functions: { app: 'mock-functions' },
 	autoScheduleInterviews: jest.fn(),
 }));
 
 // --- THIS IS THE FIX ---
-// The variable MUST be prefixed with 'mock' to be accessible inside jest.mock()
+// The variable MUST be prefixed with 'mock' to be accessible inside vi.mock()
 let mockIdCounter = 0;
-jest.mock('uuid', () => ({ v4: () => `id-${mockIdCounter++}` }));
+vi.mock('uuid', () => ({ v4: () => `id-${mockIdCounter++}`  }));
 // --------------------
 
 describe('AutoScheduler Component', () => {

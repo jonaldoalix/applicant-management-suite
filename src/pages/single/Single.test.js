@@ -10,23 +10,23 @@ import { viewAsset } from '../../config/admin';
 
 // --- Mocks ---
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	getCollectionData: jest.fn(),
 }));
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useParams: jest.fn(),
 }));
 
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
-jest.mock('../../components/layout/NotFound', () => () => <div data-testid='not-found'>NotFound Component</div>);
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader'>Loader Component</div>);
+vi.mock('../../components/layout/NotFound', () => ({ default: () => <div data-testid='not-found'>NotFound Component</div> }));
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader'>Loader Component</div> }));
 
 // Define the structure, but leave the function implementation empty for now
-jest.mock('../../config/admin', () => ({
+vi.mock('../../config/admin', () => ({
 	viewAsset: {
 		validType: {
 			title: 'Test Item',

@@ -5,16 +5,16 @@ import { ConfigProvider, useConfig } from './ConfigContext';
 import { getRealTimeConfigFromDb } from '../config/data/firebase';
 
 // Mock the firebase function
-jest.mock('../config/data/firebase', () => ({
+vi.mock('../config/data/firebase', () => ({
 	getRealTimeConfigFromDb: jest.fn(),
 }));
 
 // Mock the Loader component
-jest.mock('../components/loader/Loader', () => {
-	return function MockLoader() {
+vi.mock('../components/loader/Loader', () => ({
+	default: function MockLoader() {
 		return <div data-testid='loader'>Loading...</div>;
-	};
-});
+	},
+}));
 
 // Test component to consume the context
 const TestComponent = () => {

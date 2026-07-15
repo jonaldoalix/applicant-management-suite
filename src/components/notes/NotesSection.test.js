@@ -7,11 +7,11 @@ import { useTheme } from '../../context/ThemeContext';
 import * as firebaseConfig from '../../config/data/firebase'; // Import namespace for spying
 
 // --- Mocks ---
-jest.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
-jest.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
-jest.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
+vi.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
+vi.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	__esModule: true,
 	getRealTimeNotes: jest.fn(),
 	addNote: jest.fn(),

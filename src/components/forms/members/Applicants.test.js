@@ -5,34 +5,33 @@ import { useAlert } from '../../../context/AlertContext';
 import { saveApplicantData, saveFile, getDownloadLinkForFile } from '../../../config/data/firebase';
 
 // --- Mocks ---
-jest.mock('../../../context/AlertContext', () => ({
+vi.mock('../../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
 
-jest.mock('../../../config/data/firebase', () => ({
+vi.mock('../../../config/data/firebase', () => ({
 	saveApplicantData: jest.fn(),
 	saveFile: jest.fn(),
 	getDownloadLinkForFile: jest.fn(),
 }));
 
-jest.mock('../../loader/Loader', () => () => <div data-testid='loader'>Loading...</div>);
+vi.mock('../../loader/Loader', () => ({ default: () => <div data-testid='loader'>Loading...</div> }));
 
 // Mock Child Components
-jest.mock('../GenericAdminForm', () => ({ onSubmit, onFileUpload, initialData }) => (
+vi.mock('../GenericAdminForm', () => ({ default: ({ onSubmit, onFileUpload, initialData }) => (
 	<div data-testid='generic-admin-form'>
 		<button onClick={() => onSubmit({ firstName: 'Updated Name', gradYear: '2025' })}>Submit</button>
 		<button onClick={() => onFileUpload('upload', 'picture', { name: 'test.jpg' })}>Upload</button>
 	</div>
-));
+) }));
 
-jest.mock('../../widget/Application', () => ({ id }) => <div data-testid={`app-widget-${id}`}>App {id}</div>);
+vi.mock('../../widget/Application', () => ({ default: ({ id }) => <div data-testid={`app-widget-${id}`}>App {id}</div> }));
 
 describe('ApplicantForm Component', () => {
 	const mockAlert = { showAlert: jest.fn(), handleError: jest.fn() };
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		const { useAlert } = require('../../../context/AlertContext');
 		useAlert.mockReturnValue(mockAlert);
 	});
 
@@ -67,8 +66,6 @@ describe('ApplicantForm Component', () => {
 
 	test('validates graduation year format', async () => {
 		// Override mock to submit invalid year
-		const InvalidFormMock = require('../GenericAdminForm'); // Re-mock if needed or assume current structure allows
-
 		render(<ApplicantForm applicant={{ id: '123' }} />);
 
 		// We can't easily change the internal logic of the mocked GenericAdminForm's onSubmit button here

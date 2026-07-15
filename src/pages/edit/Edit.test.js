@@ -10,16 +10,16 @@ import Edit from './Edit';
 
 // --- Setup Mocks ---
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	getCollectionData: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext');
-jest.mock('../../context/HelmetContext');
-jest.mock('../../context/AuthContext');
+vi.mock('../../context/ThemeContext');
+vi.mock('../../context/HelmetContext');
+vi.mock('../../context/AuthContext');
 
 // Mock React Router to allow controlling return values
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useParams: jest.fn(),
 	useNavigate: jest.fn(),
 }));
@@ -28,7 +28,7 @@ const mockUseParams = useParams;
 const mockUseNavigate = useNavigate;
 
 // Move config mock inside factory to prevent hoisting errors
-jest.mock('../../config/admin', () => {
+vi.mock('../../config/admin', () => {
 	const React = require('react');
 	const MockForm = ({ permissions, data }) => (
 		<div data-testid='mock-form'>

@@ -6,19 +6,19 @@ import { getBlob } from 'firebase/storage';
 import { createBlobUrl } from '../../config/Constants';
 
 // Mock Dependencies
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	getCollectionData: jest.fn(),
 	storage: { app: 'mock-storage' },
 }));
-jest.mock('firebase/storage', () => ({
+vi.mock('firebase/storage', () => ({
 	ref: jest.fn(),
 	getBlob: jest.fn(),
 }));
-jest.mock('../../config/Constants', () => ({
+vi.mock('../../config/Constants', () => ({
 	convertPDFBlobToImages: jest.fn(),
 	createBlobUrl: jest.fn(),
 }));
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	collections: {
 		attachments: 'attachments',
 	},

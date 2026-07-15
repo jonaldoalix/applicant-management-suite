@@ -11,33 +11,33 @@ import { collections } from '../../config/data/collections';
 
 // --- 1. MOCK DEPENDENCIES ---
 
-jest.mock('../../context/ConfigContext', () => ({
+vi.mock('../../context/ConfigContext', () => ({
 	useConfig: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
-jest.mock('../../context/DialogContext', () => ({
+vi.mock('../../context/DialogContext', () => ({
 	useDialog: jest.fn(),
 }));
 
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	saveCollectionData: jest.fn(),
 	getCollection: jest.fn(),
 }));
 
 // **FIX**: Added ApplicationType and other exports that Constants.js depends on
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	collections: {
 		siteConfig: 'site_config',
 		applicants: 'applicants',
@@ -56,42 +56,42 @@ jest.mock('../../config/data/collections', () => ({
 	},
 }));
 
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader'>Loading...</div>);
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader'>Loading...</div> }));
 
 // --- 2. MOCK ADMIN FUNCTIONS ---
-jest.mock('../../config/admin/maintenance', () => {
-	const mockNoParamsAction = jest.fn();
-	const mockWithParamsAction = jest.fn();
+const { mockNoParamsAction, mockWithParamsAction } = vi.hoisted(() => ({
+	mockNoParamsAction: jest.fn(),
+	mockWithParamsAction: jest.fn(),
+}));
 
-	return {
-		adminFunctions: [
-			{
-				id: 'test-no-params',
-				label: 'Test Action (No Params)',
-				description: 'Simple action description',
-				action: mockNoParamsAction,
-				parameters: [],
-			},
-			{
-				id: 'test-with-params',
-				label: 'Test Action (With Params)',
-				description: 'Complex action description',
-				action: mockWithParamsAction,
-				parameters: [
-					{ name: 'userId', label: 'Select User', type: 'select', required: true },
-					{ name: 'force', label: 'Force', type: 'switch', defaultValue: false },
-				],
-			},
-		],
-		_testMocks: {
-			mockNoParamsAction,
-			mockWithParamsAction,
+vi.mock('../../config/admin/maintenance', () => ({
+	adminFunctions: [
+		{
+			id: 'test-no-params',
+			label: 'Test Action (No Params)',
+			description: 'Simple action description',
+			action: mockNoParamsAction,
+			parameters: [],
 		},
-	};
-});
+		{
+			id: 'test-with-params',
+			label: 'Test Action (With Params)',
+			description: 'Complex action description',
+			action: mockWithParamsAction,
+			parameters: [
+				{ name: 'userId', label: 'Select User', type: 'select', required: true },
+				{ name: 'force', label: 'Force', type: 'switch', defaultValue: false },
+			],
+		},
+	],
+	_testMocks: {
+		mockNoParamsAction,
+		mockWithParamsAction,
+	},
+}));
 
 // --- 3. MOCK DATE PICKERS ---
-jest.mock('@mui/x-date-pickers', () => {
+vi.mock('@mui/x-date-pickers', () => {
 	const React = require('react');
 	const dayjs = require('dayjs');
 
@@ -112,7 +112,7 @@ jest.mock('@mui/x-date-pickers', () => {
 	};
 });
 
-jest.mock('@mui/x-date-pickers/AdapterDayjs', () => ({
+vi.mock('@mui/x-date-pickers/AdapterDayjs', () => ({
 	AdapterDayjs: {},
 }));
 
@@ -161,8 +161,7 @@ describe('SiteSettings Component', () => {
 		getCollection.mockResolvedValue(mockApplicants);
 		saveCollectionData.mockResolvedValue(true);
 
-		const { mockNoParamsAction, mockWithParamsAction } = require('../../config/admin/maintenance')._testMocks;
-		mockNoParamsAction.mockClear();
+				mockNoParamsAction.mockClear();
 		mockWithParamsAction.mockClear();
 	});
 
@@ -263,7 +262,6 @@ describe('SiteSettings Component', () => {
 		const dialogCall = mockShowDialog.mock.calls[0][0];
 		await dialogCall.callback(true);
 
-		const { mockNoParamsAction } = require('../../config/admin/maintenance')._testMocks;
 		expect(mockNoParamsAction).toHaveBeenCalled();
 		expect(mockShowAlert).toHaveBeenCalledWith(expect.objectContaining({ message: expect.stringContaining('executed successfully') }));
 	});
@@ -291,7 +289,6 @@ describe('SiteSettings Component', () => {
 		const mockResult = { userId: 'app1', force: true };
 		await dialogCall.callback(mockResult);
 
-		const { mockWithParamsAction } = require('../../config/admin/maintenance')._testMocks;
 		expect(mockWithParamsAction).toHaveBeenCalledWith(mockResult);
 		expect(mockShowAlert).toHaveBeenCalledWith(expect.objectContaining({ message: expect.stringContaining('executed successfully') }));
 	});
@@ -300,7 +297,6 @@ describe('SiteSettings Component', () => {
 		render(<SiteSettings />);
 		await waitFor(() => expect(screen.queryByTestId('loader')).not.toBeInTheDocument());
 
-		const { mockNoParamsAction } = require('../../config/admin/maintenance')._testMocks;
 		const testError = new Error('Execution Boom');
 		mockNoParamsAction.mockRejectedValue(testError);
 

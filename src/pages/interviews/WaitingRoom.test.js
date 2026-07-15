@@ -12,43 +12,43 @@ import { getDoc, updateDoc } from 'firebase/firestore';
 
 // --- Mocks ---
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useParams: jest.fn(),
 	useNavigate: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
-jest.mock('../../context/MeetingContext', () => ({
+vi.mock('../../context/MeetingContext', () => ({
 	useMeeting: jest.fn(),
 }));
 
-jest.mock('../../context/AuthContext', () => ({
+vi.mock('../../context/AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
-jest.mock('../../context/ConfigContext', () => ({
+vi.mock('../../context/ConfigContext', () => ({
 	useConfig: jest.fn(),
 }));
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	db: {},
 	getRealTimeDocument: jest.fn(),
 }));
 
-jest.mock('firebase/firestore', () => ({
+vi.mock('firebase/firestore', () => ({
 	doc: jest.fn(),
 	getDoc: jest.fn(),
 	updateDoc: jest.fn(),
 }));
 
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	collections: {
 		interviews: 'interviews',
 		applicants: 'applicants',
@@ -58,7 +58,7 @@ jest.mock('../../config/data/collections', () => ({
 	},
 }));
 
-jest.mock('../../config/Constants', () => ({
+vi.mock('../../config/Constants', () => ({
 	Assets: {
 		header: 'mock-header.png',
 		logo: 'mock-logo.png',
@@ -69,7 +69,7 @@ jest.mock('../../config/Constants', () => ({
 }));
 
 // Mock child component Breadcrumbs/SettingsButton
-jest.mock('../../components/breadcrumbs/Breadcrumbs', () => ({
+vi.mock('../../components/breadcrumbs/Breadcrumbs', () => ({
 	SettingsButton: () => <button data-testid='settings-btn'>Settings</button>,
 }));
 

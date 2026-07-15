@@ -13,52 +13,52 @@ import { generatePath } from '../../config/navigation/routeUtils';
 
 // --- Mocks ---
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: jest.fn(),
 	useLocation: jest.fn(),
 }));
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	auth: {},
 	loginUser: jest.fn(),
 	getUserProfiles: jest.fn(),
 	logoutUser: jest.fn(),
 }));
 
-jest.mock('firebase/auth', () => ({
+vi.mock('firebase/auth', () => ({
 	sendPasswordResetEmail: jest.fn(),
 }));
 
-jest.mock('../../context/AuthContext', () => ({
+vi.mock('../../context/AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
 
-jest.mock('../../context/ConfigContext', () => ({
+vi.mock('../../context/ConfigContext', () => ({
 	useConfig: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
-jest.mock('../../config/navigation/routeUtils', () => ({
+vi.mock('../../config/navigation/routeUtils', () => ({
 	generatePath: jest.fn((path) => path || '/default-path'),
 }));
 
-jest.mock('../../config/navigation/paths', () => ({
+vi.mock('../../config/navigation/paths', () => ({
 	paths: { redirect: '/redirect', home: '/home' },
 }));
 
 // Mock the content config to ensure stable DOM elements
-jest.mock('../../config/content/content', () => ({
+vi.mock('../../config/content/content', () => ({
 	loginContent: {
 		title: 'Test Login',
 		icon: 'T',
@@ -74,8 +74,8 @@ jest.mock('../../config/content/content', () => ({
 	},
 }));
 
-jest.mock('../../components/footer/CopyrightFooter', () => () => <div data-testid='copyright'>Copyright</div>);
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader'>Loading...</div>);
+vi.mock('../../components/footer/CopyrightFooter', () => ({ default: () => <div data-testid='copyright'>Copyright</div> }));
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader'>Loading...</div> }));
 
 describe('Login Component', () => {
 	const mockNavigate = jest.fn();

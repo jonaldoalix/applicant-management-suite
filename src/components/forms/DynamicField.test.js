@@ -9,7 +9,7 @@ import * as Validators from '../../config/data/Validation';
 
 // --- MOCKS ---
 
-jest.mock('../../context/ConfigContext', () => ({
+vi.mock('../../context/ConfigContext', () => ({
 	useConfig: () => ({ DEFAULT_AVATAR: 'default.jpg' }),
 }));
 
@@ -21,53 +21,62 @@ global.FileReader = jest.fn(() => ({
 }));
 
 const mockShowDialog = jest.fn();
-jest.mock('../../context/DialogContext', () => ({
+vi.mock('../../context/DialogContext', () => ({
 	useDialog: () => ({ showDialog: mockShowDialog }),
 }));
 
 const mockShowAlert = jest.fn();
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: () => ({ showAlert: mockShowAlert, handleError: jest.fn() }),
 }));
 
 const mockSaveCollectionData = jest.fn();
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	saveCollectionData: (...args) => mockSaveCollectionData(...args),
 }));
 
 const mockSendRequest = jest.fn();
-jest.mock('../../config/content/push', () => ({
+vi.mock('../../config/content/push', () => ({
 	sendRequest: (...args) => mockSendRequest(...args),
 }));
 
-jest.mock('../../config/Constants', () => ({
+vi.mock('../../config/Constants', () => ({
 	generate6DigitNumber: () => '123456',
 	generateSecurePin: () => Promise.resolve('pin'),
 	generateUploadLink: () => Promise.resolve('http://upload.link'),
 }));
 
 // Mock Validators to control validation logic in tests
-jest.mock('../../config/data/Validation', () => ({
-	__esModule: true,
-	default: {}, // Fallback
-	isEmail: jest.fn((val) => val && val.includes('@')),
-	isNotEmpty: jest.fn((val) => !!val),
-}));
+vi.mock('../../config/data/Validation', async (importOriginal) => {
+	const actual = await importOriginal();
+	return {
+		...actual,
+		isEmail: jest.fn((val) => val && val.includes('@')),
+		isNotEmpty: jest.fn((val) => !!val),
+		lettersOnly: jest.fn(() => true),
+		lettersAndSpacesOnly: jest.fn(() => true),
+		numbersOnly: jest.fn(() => true),
+		emailsOnly: jest.fn(() => true),
+		decimalsOnly: jest.fn(() => true),
+		locationOnly: jest.fn(() => true),
+		notUndefined: jest.fn(() => true),
+	};
+});
 
 // Helper to mock Google Maps autocomplete
-jest.mock('../autocomplete/GoogleAutoComplete', () => {
-	return function DummyMap(props) {
+vi.mock('../autocomplete/GoogleAutoComplete', () => ({
+	default: function DummyMap(props) {
 		return (
 			<div data-testid='google-map' onClick={() => props.changeLocation({ description: 'New York, NY' })}>
 				{props.label}
 			</div>
 		);
-	};
-});
+	},
+}));
 
 // Helper to mock DatePicker
 // This bypasses MUI internal complexity (read-only inputs, portals) and tests logic directly.
-jest.mock('@mui/x-date-pickers/DatePicker', () => {
+vi.mock('@mui/x-date-pickers/DatePicker', () => {
 	const mockDayjs = require('dayjs');
 	return {
 		DatePicker: (props) => (

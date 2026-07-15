@@ -7,24 +7,24 @@ import { useTitle } from '../../context/HelmetContext';
 import { useNavigate } from 'react-router-dom';
 
 // 1. MOCK DEPENDENCIES
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
-jest.mock('../../context/AuthContext', () => ({
+vi.mock('../../context/AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
 // 2. MOCK ADMIN CONFIG
-jest.mock('../../config/admin', () => {
+vi.mock('../../config/admin', () => {
 	const React = require('react');
 
 	// We use React.createElement to avoid JSX syntax issues in the hoisted mock

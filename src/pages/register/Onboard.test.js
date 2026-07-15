@@ -8,52 +8,57 @@ import { registerUser, loginUser, saveCollectionData, saveFile, getDownloadLinkF
 import { collections } from '../../config/data/collections';
 
 // 1. MOCK DEPENDENCIES
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: jest.fn(),
 }));
 
-jest.mock('../../context/AuthContext', () => ({
+vi.mock('../../context/AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: () => ({ boxShadow: 'mock-shadow' }),
 }));
 
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
 
 // Mock uuid to prevent random ID generation issues
-jest.mock('uuid', () => ({
+vi.mock('uuid', () => ({
 	v4: () => 'mock-uuid',
 }));
 
 // Mock Firebase functions
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	registerUser: jest.fn(),
 	loginUser: jest.fn(),
 	saveCollectionData: jest.fn(),
 	saveFile: jest.fn(),
 	getDownloadLinkForFile: jest.fn(),
 	getAuthUserByEmail: jest.fn(),
+	purgeUserRecords: jest.fn(),
+	sendToTestDB: jest.fn(),
+	wipeCollections: jest.fn(),
+	wipeTestCollections: jest.fn(),
+	backfillLastUpdated: jest.fn(),
 }));
 
 // NOTE: We are NOT mocking '../../config/navigation/paths' or '../../config/navigation/routeUtils'.
 // Using the real versions ensures paths.redirect is defined and generatePath works correctly.
 
-jest.mock('../../config/data/collections', async () => ({
+vi.mock('../../config/data/collections', async () => ({
 	...(await vi.importActual('../../config/data/collections')),
 	UploadType: { memberAvatar: 'avatars' },
 	collections: { members: 'members' },
 }));
 
 // Mock VisuallyHiddenInput
-jest.mock('../../components/visuallyHiddenInput/VisuallyHiddenInput', () => ({
+vi.mock('../../components/visuallyHiddenInput/VisuallyHiddenInput', () => ({
 	__esModule: true,
 	VisuallyHiddenInput: (props) => {
 		const React = require('react');
@@ -66,11 +71,11 @@ jest.mock('../../components/visuallyHiddenInput/VisuallyHiddenInput', () => ({
 	},
 }));
 
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader'>Loading...</div>);
-jest.mock('../../components/footer/CopyrightFooter', () => () => <div>Copyright</div>);
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader'>Loading...</div> }));
+vi.mock('../../components/footer/CopyrightFooter', () => ({ default: () => <div>Copyright</div> }));
 
 // Mock Admin Config
-jest.mock('../../config/admin/forms', () => ({
+vi.mock('../../config/admin/forms', () => ({
 	memberRegistrationContent: {
 		title: 'Mock Onboard',
 		icon: 'Icon',

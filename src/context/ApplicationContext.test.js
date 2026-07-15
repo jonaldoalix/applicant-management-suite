@@ -5,7 +5,7 @@ import * as Validators from '../config/data/Validation';
 
 // --- MOCKS ---
 
-jest.mock('../config/data/Validation', () => ({
+vi.mock('../config/data/Validation', () => ({
 	lettersOnly: jest.fn(),
 	notUndefined: jest.fn(),
 	lettersAndSpacesOnly: jest.fn(),
@@ -17,7 +17,7 @@ jest.mock('../config/data/Validation', () => ({
 	blankApp: { id: null, profileData: {} },
 }));
 
-jest.mock('../config/ui/formConfig', () => ({
+vi.mock('../config/ui/formConfig', () => ({
 	appFormConfig: {
 		profile: {
 			fields: [
@@ -51,7 +51,7 @@ jest.mock('../config/ui/formConfig', () => ({
 	},
 }));
 
-jest.mock('uuid', () => ({ v4: () => 'test-uuid' }));
+vi.mock('uuid', () => ({ v4: () => 'test-uuid'  }));
 
 describe('ApplicationContext', () => {
 	// --- 1. Context Provider & Hook Safety ---

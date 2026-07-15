@@ -3,12 +3,12 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import GoogleAutoComplete from './GoogleAutoComplete';
 
 const mockGetPlacePredictions = jest.fn();
-const mockAutocompleteService = jest.fn(() => ({
-	getPlacePredictions: mockGetPlacePredictions,
-}));
+const mockAutocompleteService = jest.fn(function MockAutocompleteService() {
+	this.getPlacePredictions = mockGetPlacePredictions;
+});
 
 // Mock the global window.google object
-global.window.google = {
+globalThis.google = {
 	maps: {
 		places: {
 			AutocompleteService: mockAutocompleteService,
@@ -16,6 +16,8 @@ global.window.google = {
 		},
 	},
 };
+global.window.google = globalThis.google;
+
 
 const originalQuerySelector = document.querySelector.bind(document);
 
@@ -32,9 +34,9 @@ describe('GoogleAutoComplete', () => {
 		mockGetPlacePredictions.mockReset();
 		mockChangeLocation.mockReset(); // Ensure mock is clean
 
-		global.window.google.maps.places.AutocompleteService = jest.fn(() => ({
-			getPlacePredictions: mockGetPlacePredictions,
-		}));
+		global.window.google.maps.places.AutocompleteService = mockAutocompleteService;
+		globalThis.google.maps.places.AutocompleteService = mockAutocompleteService;
+		mockAutocompleteService.mockClear();
 
 		// Mock document.querySelector to handle the script check
 		document.querySelector = jest.fn((selector) => {

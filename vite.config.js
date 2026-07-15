@@ -93,7 +93,12 @@ export default defineConfig(({ mode }) => ({
     setupFiles: ['./src/setupTests.js'],
     css: true,
     include: ['src/**/*.{test,spec}.{js,jsx,ts,tsx}'],
-    server: { deps: { inline: [/src\/config\/admin\//] } },
+    server: {
+      deps: {
+        inline: [/src\/config\/admin\//, 'react-router', 'react-router-dom'],
+      },
+    },
+    pool: 'forks',
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],

@@ -6,15 +6,15 @@ import { useAlert } from '../../context/AlertContext';
 import dayjs from 'dayjs';
 
 // Mock dependencies
-jest.mock('firebase/functions', () => ({
+vi.mock('firebase/functions', () => ({
 	httpsCallable: jest.fn(),
 }));
 
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
 import * as firebase from '../../config/data/firebase';
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	rescheduleInterview: jest.fn(),
 }));
 

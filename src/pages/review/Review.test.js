@@ -12,20 +12,20 @@ import { useParams } from 'react-router-dom';
 import { getApplication, getCollectionData, saveFile, getDownloadLinkForFile, deleteFile, invalidateRequest, saveCollectionData, updateApplicationStatus } from '../../config/data/firebase';
 import { sendRequest } from '../../config/content/push';
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useParams: jest.fn(),
 	useNavigate: jest.fn(),
 	Link: ({ children }) => <div>{children}</div>,
 }));
 
-jest.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
-jest.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
-jest.mock('../../context/DialogContext', () => ({ useDialog: jest.fn() }));
-jest.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
-jest.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
-jest.mock('../../context/HelmetContext', () => ({ useTitle: jest.fn() }));
+vi.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
+vi.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
+vi.mock('../../context/DialogContext', () => ({ useDialog: jest.fn() }));
+vi.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
+vi.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../context/HelmetContext', () => ({ useTitle: jest.fn() }));
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	getApplication: jest.fn(),
 	getCollectionData: jest.fn(),
 	saveFile: jest.fn(),
@@ -36,13 +36,13 @@ jest.mock('../../config/data/firebase', () => ({
 	updateApplicationStatus: jest.fn(),
 }));
 
-jest.mock('../../config/content/push', () => ({
+vi.mock('../../config/content/push', () => ({
 	sendRequest: jest.fn(),
 }));
 
-jest.mock('uuid', () => ({ v4: () => 'mock-uuid' }));
+vi.mock('uuid', () => ({ v4: () => 'mock-uuid'  }));
 
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	UploadType: { applicationAttachment: 'app-attachments' },
 	ApplicationStatus: { started: 'Started', completed: 'Completed', submitted: 'Submitted', incomplete: 'Incomplete' },
 	ApplicationType: { scholarship: 'Scholarship', newApplication: 'New Application', returningGrant: 'Returning Grant' },
@@ -60,7 +60,7 @@ jest.mock('../../config/data/collections', () => ({
 	},
 }));
 
-jest.mock('../../config/Constants', () => ({
+vi.mock('../../config/Constants', () => ({
 	attachmentFields: [
 		{ key: 'testDoc', label: 'Test Document', requiredBy: ['Test App'] },
 		{ key: 'recLetter', label: 'Recommendation Letter', requiredBy: ['Test App'] },
@@ -73,12 +73,12 @@ jest.mock('../../config/Constants', () => ({
 	generateUploadLink: jest.fn(() => 'http://upload.link'),
 }));
 
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader'>Loading...</div>);
-jest.mock('../../components/layout/NotFound', () => () => <div data-testid='not-found'>Not Found</div>);
-jest.mock('../../components/footer/CopyrightFooter', () => () => <div>Copyright</div>);
-jest.mock('../../components/breadcrumbs/Breadcrumbs', () => () => <div>Breadcrumbs</div>);
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader'>Loading...</div> }));
+vi.mock('../../components/layout/NotFound', () => ({ default: () => <div data-testid='not-found'>Not Found</div> }));
+vi.mock('../../components/footer/CopyrightFooter', () => ({ default: () => <div>Copyright</div> }));
+vi.mock('../../components/breadcrumbs/Breadcrumbs', () => ({ default: () => <div>Breadcrumbs</div> }));
 
-jest.mock('../../components/table/Table', () => ({
+vi.mock('../../components/table/Table', () => ({
 	FamilyDetails: () => <div data-testid='section-family'>Family Details</div>,
 	EducationDetails: () => <div data-testid='section-education'>Education Details</div>,
 	ExperienceDetails: () => <div data-testid='section-experience'>Experience Details</div>,
@@ -88,7 +88,7 @@ jest.mock('../../components/table/Table', () => ({
 	ProjectionsDetails: () => <div data-testid='section-projections'>Projections Details</div>,
 }));
 
-jest.mock('../../components/visuallyHiddenInput/VisuallyHiddenInput', () => ({
+vi.mock('../../components/visuallyHiddenInput/VisuallyHiddenInput', () => ({
 	__esModule: true,
 	VisuallyHiddenInput: (props) => {
 		const React = require('react');

@@ -5,27 +5,27 @@ import { useAuth } from './AuthContext';
 import { updateUserPreferences } from '../config/data/firebase';
 
 // Mock Auth and Firebase
-jest.mock('./AuthContext', () => ({
+vi.mock('./AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
-jest.mock('../config/data/firebase', () => ({
+vi.mock('../config/data/firebase', () => ({
 	updateUserPreferences: jest.fn(),
 }));
 
-jest.mock('../config/data/collections', () => ({
+vi.mock('../config/data/collections', () => ({
 	collections: { members: 'members', applicants: 'applicants' },
 }));
 
 // Mock MUI Theme Provider to avoid huge style calculation overhead in tests
-jest.mock('@mui/material/styles', () => ({
+vi.mock('@mui/material/styles', () => ({
 	ThemeProvider: ({ children }) => <div>{children}</div>,
 	createTheme: () => ({ palette: { boxShadow: 'mock-shadow' } }),
 }));
 
-jest.mock('../config/ui/theme', () => () => ({
+vi.mock('../config/ui/theme', () => ({ default: () => ({
 	palette: { boxShadow: 'mock-shadow' },
-}));
+}) }));
 
 const TestConsumer = () => {
 	const { darkMode, dispatch } = useTheme();

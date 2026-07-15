@@ -6,10 +6,11 @@ import { saveFile, getRequestData, saveCollectionData, getDownloadLinkForFile, g
 import { validateRequest, validatePin } from '../../config/Constants';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
+import { useAlert } from '../../context/AlertContext';
 
 // --- Mocks ---
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	saveFile: jest.fn(),
 	getRequestData: jest.fn(),
 	saveCollectionData: jest.fn(),
@@ -17,7 +18,7 @@ jest.mock('../../config/data/firebase', () => ({
 	getApplication: jest.fn(),
 }));
 
-jest.mock('../../config/Constants', () => ({
+vi.mock('../../config/Constants', () => ({
 	validateRequest: jest.fn(),
 	validatePin: jest.fn(),
 	LettersOfRecommendation: {
@@ -25,29 +26,29 @@ jest.mock('../../config/Constants', () => ({
 	},
 }));
 
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	UploadType: { applicationAttachment: 'applicationAttachment' },
 	collections: { requests: 'requests', attachments: 'attachments' },
 }));
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useParams: jest.fn(),
 	useNavigate: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
 
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader'>Loader</div>);
-jest.mock('../../components/footer/CopyrightFooter', () => () => <div data-testid='footer'>Footer</div>);
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader'>Loader</div> }));
+vi.mock('../../components/footer/CopyrightFooter', () => ({ default: () => <div data-testid='footer'>Footer</div> }));
 
 // FIX: Mock must return an object with the Named Export 'VisuallyHiddenInput'
-jest.mock('../../components/visuallyHiddenInput/VisuallyHiddenInput', () => ({
+vi.mock('../../components/visuallyHiddenInput/VisuallyHiddenInput', () => ({
 	VisuallyHiddenInput: ({ onChange }) => <input data-testid='file-input' type='file' onChange={onChange} />,
 }));
 
@@ -71,7 +72,6 @@ describe('UploadCenter Component', () => {
 		useParams.mockReturnValue({ token: mockToken });
 		useNavigate.mockReturnValue(mockNavigate);
 		useTheme.mockReturnValue({ boxShadow: 'none' });
-		const { useAlert } = require('../../context/AlertContext');
 		useAlert.mockReturnValue({ showAlert: mockShowAlert });
 		window.close = jest.fn();
 		validatePin.mockResolvedValue(true);

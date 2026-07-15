@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import InfoTable from './InfoTable';
 import { useTheme } from '../../context/ThemeContext';
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 

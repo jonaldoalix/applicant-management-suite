@@ -3,7 +3,7 @@ import { useProcessedEmailContent } from './useProcessedEmailContent';
 import { fetchAttachmentContent } from '../config/data/firebase';
 
 // Mock the specific export explicitly
-jest.mock('../config/data/firebase', () => ({
+vi.mock('../config/data/firebase', () => ({
 	fetchAttachmentContent: jest.fn(),
 }));
 

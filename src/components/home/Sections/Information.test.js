@@ -6,10 +6,10 @@ import { useConfig } from '../../../context/ConfigContext';
 import { homePageContent } from '../../../config/content/content';
 
 // Mock Dependencies
-jest.mock('../../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
+vi.mock('../../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
 
 // Mock content - needs to be a detailed skeleton
-jest.mock('../../../config/content/content', () => ({
+vi.mock('../../../config/content/content', () => ({
 	homePageContent: {
 		information: {
 			mainTitle: 'Main Title',

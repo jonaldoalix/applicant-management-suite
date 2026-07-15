@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import InterviewLayout from './InterviewLayout';
 
 // --- Mocks ---
-jest.mock('../../context/MeetingContext', () => ({
+vi.mock('../../context/MeetingContext', () => ({
 	MeetingProvider: ({ children }) => <div data-testid='meeting-provider'>{children}</div>,
 }));
 
