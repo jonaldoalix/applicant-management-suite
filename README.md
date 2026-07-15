@@ -155,6 +155,18 @@ See [`docs/dockge.md`](docs/dockge.md) and `compose.yaml` for a temporary contai
 
 ---
 
+## Remotes
+
+| Remote | Visibility | Purpose |
+|--------|------------|---------|
+| `origin` (`jonaldoalix/applicant-management-suite`) | Public | Portfolio + client-facing template |
+| `business` (`Full-Stack-Boston/applicant-management-suite`) | Public | Org mirror clients clone / fork |
+| Private `ams-demo` (personal + `Full-Stack-Boston`) | Private | Fully working backup with `.env` for Dockge demos and home-lab DR |
+
+## Dockge demo
+
+See [`docs/dockge.md`](docs/dockge.md). For a **zero-config** working demo, Dockge should clone **private `ams-demo`**, not this public template. Then NPM Proxy Host → host port **3001**.
+
 ## Related
 
 - **Production client example:** [revparkermemorialfund.org](https://revparkermemorialfund.org) — same product family, organization-specific content and schema naming

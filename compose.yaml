@@ -1,7 +1,9 @@
-# Dockge / docker compose stack for temporary local spin-up of AMS (Vite).
-# Uses port 3001 so it can run beside PF on 3000.
+# Dockge / Compose — AMS Vite preview (HTTP).
+# Intended path for a WORKING demo: clone private ams-demo (includes .env), then:
+#   docker compose up --build
+# Point Nginx Proxy Manager at host:3001.
 #
-# Import this folder in Dockge on fsb-01, or: docker compose up --build
+# Public clones need a root .env (see README / .env.example). Compose will not start cleanly without it.
 
 services:
   ams-web:
@@ -17,9 +19,8 @@ services:
     environment:
       HOST: "0.0.0.0"
       PORT: "3001"
+      # Force HTTP so host .env HTTPS=true never breaks the container listener for NPM.
       HTTPS: "false"
-      SSL_CRT_FILE: "./localhost+2.pem"
-      SSL_KEY_FILE: "./localhost+2-key.pem"
       CHOKIDAR_USEPOLLING: "true"
     volumes:
       - ./:/app

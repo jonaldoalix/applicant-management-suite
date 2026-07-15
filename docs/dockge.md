@@ -1,20 +1,20 @@
-# Dockge / Compose (AMS)
+# Dockge → Nginx Proxy Manager (AMS)
 
-Temporary local stack for the Vite app on fsb-01. Production remains Firebase Hosting.
+Goal: start the stack with **no extra Dockge configuration**, then point an NPM Proxy Host at it for a public demo.
 
-## Prerequisites
+## Recommended (working demo)
 
-- Repo: `/home/jonaldo/stack/data/repos/ams`
-- Root `.env` with `REACT_APP_*` values
-- Docker + Dockge (or `docker compose`)
+1. On the Dockge host, clone the **private** backup (includes `.env`):
+   - `git@github.com:jonaldoalix/ams-demo.git` or
+   - `git@github.com:Full-Stack-Boston/ams-demo.git`
+2. In Dockge, create a stack pointing at that folder (compose file: `compose.yaml`).
+3. Deploy / start. App listens on **http://\<host\>:3001**.
+4. In NPM: Proxy Host → `http://\<dockge-host-or-ip\>:3001` (or the Docker network alias if colocated).
 
-## Run
+Stop: `docker compose down` (or Dockge stop).
 
-```bash
-cd /home/jonaldo/stack/data/repos/ams
-docker compose up --build
-```
+## Public template (`applicant-management-suite`)
 
-App: **http://\<host\>:3001** (port 3001 avoids clashing with PF on 3000).
+Public clones do **not** include secrets. Copy `.env.example` → `.env`, fill Firebase/client keys, then `docker compose up --build`.
 
-Stop: `docker compose down`.
+Production hosting remains Firebase Hosting; Dockge is for temporary live demos only.
