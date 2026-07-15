@@ -13,7 +13,17 @@ vi.mock('../../context/AuthContext');
 vi.mock('../../context/ConfigContext');
 vi.mock('../../context/AlertContext');
 vi.mock('../../context/MailboxContext');
-vi.mock('../../config/data/firebase');
+vi.mock('../../config/data/firebase', () => ({
+	sendZohoEmail: jest.fn(),
+	backfillLastUpdated: jest.fn(),
+	backfillSentEmailTags: jest.fn(),
+	backfillSearchableTerms: jest.fn(),
+	backfillEmailContent: jest.fn(),
+	backfillApplicantCreationDates: jest.fn(),
+	purgeUserRecords: jest.fn(),
+	sendToTestDB: jest.fn(),
+	wipeCollections: jest.fn(),
+}));
 vi.mock('../../hooks/useComposeEmailOptions');
 
 describe('ComposeEmailDialog', () => {

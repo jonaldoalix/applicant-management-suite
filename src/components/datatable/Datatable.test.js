@@ -1,5 +1,5 @@
 import React, { act } from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Datatable from './Datatable';
 import { useTheme } from '../../context/ThemeContext';
 import { useDialog } from '../../context/DialogContext';
@@ -11,17 +11,15 @@ vi.mock('../../context/DialogContext', () => ({ useDialog: jest.fn() }));
 vi.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
 vi.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
 
-// Simple mock to capture props and provide a trigger
-let lastGridProps = {};
-vi.mock('@mui/x-data-grid', async () => ({
-	...(await vi.importActual('@mui/x-data-grid')),
+const { calls } = vi.hoisted(() => ({ calls: [] }));
+
+vi.mock('@mui/x-data-grid', () => ({
 	DataGrid: (props) => {
-		lastGridProps = props;
-		// Render toolbar manually if provided to test it
-		const Toolbar = props.slots?.toolbar;
+		if (props) calls.push(props);
+		const Toolbar = props?.slots?.toolbar;
 		return (
 			<div role='grid' data-testid='mock-grid'>
-				{Toolbar && <Toolbar {...props.slotProps?.toolbar} />}
+				{Toolbar && <Toolbar {...(props.slotProps?.toolbar || {})} />}
 			</div>
 		);
 	},
@@ -41,14 +39,16 @@ const mockColumns = [{ field: 'name', headerName: 'Name', width: 150 }];
 const mockToggleAction = {
 	id: 'toggleRead',
 	label: 'Mark Read',
-	labelAlt: 'Mark Unread', // Added this for clarity, though the component defaults
+	labelAlt: 'Mark Unread',
 	onClick: jest.fn(),
 };
+
+const latestGridProps = () => [...calls].reverse().find(Boolean);
 
 describe('Datatable', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
-		lastGridProps = {};
+		calls.length = 0;
 		mockUseTheme.mockReturnValue({ darkMode: false, boxShadow: 'none' });
 		mockUseDialog.mockReturnValue({ showDialog: jest.fn() });
 		mockUseAlert.mockReturnValue({ showAlert: jest.fn(), handleError: jest.fn() });
@@ -58,27 +58,21 @@ describe('Datatable', () => {
 	test('renders DataGrid with correct props', () => {
 		render(<Datatable titleIn='Test' rows={mockRows} columns={mockColumns} loading={true} />);
 		expect(screen.getByText('Test')).toBeInTheDocument();
-		expect(screen.getByRole('grid')).toBeInTheDocument();
-		expect(lastGridProps.rows).toEqual(mockRows);
-		expect(lastGridProps.loading).toBe(true);
+		expect(screen.getByTestId('mock-grid')).toBeInTheDocument();
+		expect(latestGridProps()).toEqual(
+			expect.objectContaining({
+				rows: mockRows,
+				loading: true,
+			})
+		);
 	});
 
 	test('toolbar actions trigger correctly', async () => {
 		render(<Datatable titleIn='Test' rows={mockRows} columns={mockColumns} toolbarActions={[mockToggleAction]} />);
-
-		// Simulate selection via the captured prop
 		await act(async () => {
-			lastGridProps.onRowSelectionModelChange(['1']);
+			latestGridProps().onRowSelectionModelChange({ type: 'include', ids: new Set(['1']) });
 		});
-
-		// --- THIS IS THE FIX ---
-		// The component logic correctly changes the label to "Mark Unread"
-		// because the selected row has isRead: true.
-		const btn = screen.getByText('Mark Unread');
-
-		expect(btn).toBeInTheDocument();
-
-		// We can also check that the "Mark Read" label is gone
+		expect(screen.getByText('Mark Unread')).toBeInTheDocument();
 		expect(screen.queryByText('Mark Read')).not.toBeInTheDocument();
 	});
 });

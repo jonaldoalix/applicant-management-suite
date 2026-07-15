@@ -90,7 +90,7 @@ describe('NotesSection Component', () => {
 
 	test('toggles note visibility switch', () => {
 		render(<NotesSection targetId='1' targetCollection='apps' />);
-		const switchControl = screen.getByRole('checkbox');
+		const switchControl = screen.getByRole('switch');
 
 		expect(screen.getByText('Committee Wide')).toBeInTheDocument();
 		fireEvent.click(switchControl);

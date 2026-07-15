@@ -46,6 +46,10 @@ vi.mock('../../config/data/firebase', () => ({
 	wipeCollections: jest.fn(),
 	wipeTestCollections: jest.fn(),
 	backfillLastUpdated: jest.fn(),
+	backfillSentEmailTags: jest.fn(),
+	backfillSearchableTerms: jest.fn(),
+	backfillEmailContent: jest.fn(),
+	backfillApplicantCreationDates: jest.fn(),
 }));
 
 // NOTE: We are NOT mocking '../../config/navigation/paths' or '../../config/navigation/routeUtils'.

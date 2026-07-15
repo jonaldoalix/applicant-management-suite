@@ -51,6 +51,11 @@ vi.mock('firebase/storage', () => ({ getStorage: jest.fn(), ref: jest.fn(), uplo
 vi.mock('firebase/functions', () => ({ __esModule: true, getFunctions: jest.fn(() => ({})), httpsCallable: jest.fn(() => jest.fn())  }));
 
 // 2. FIX: Mock factory + Explicit import allows forcing return values in setup
+const { mockBatchSet, mockBatchCommit } = vi.hoisted(() => ({
+	mockBatchSet: jest.fn(),
+	mockBatchCommit: jest.fn(() => Promise.resolve()),
+}));
+
 vi.mock('firebase/firestore', () => ({ __esModule: true,
 	getFirestore: jest.fn(() => ({})),
 	doc: jest.fn(),
@@ -61,7 +66,7 @@ vi.mock('firebase/firestore', () => ({ __esModule: true,
 	getDocs: jest.fn(),
 	query: jest.fn(),
 	where: jest.fn(),
-	writeBatch: jest.fn(() => ({ set: jest.fn(), commit: jest.fn(() => Promise.resolve()) })),
+	writeBatch: jest.fn(() => ({ set: mockBatchSet, commit: mockBatchCommit })),
 	serverTimestamp: jest.fn(() => 'SERVER_TIMESTAMP'),
 }));
 
@@ -76,6 +81,14 @@ vi.mock('../../config/data/firebase', () => ({
 	getRealTimeCollection: jest.fn(),
 	getRealTimeApplicantsByApplicationID: jest.fn(),
 	db: {},
+	backfillLastUpdated: jest.fn(),
+	backfillSentEmailTags: jest.fn(),
+	backfillSearchableTerms: jest.fn(),
+	backfillEmailContent: jest.fn(),
+	backfillApplicantCreationDates: jest.fn(),
+	purgeUserRecords: jest.fn(),
+	sendToTestDB: jest.fn(),
+	wipeCollections: jest.fn(),
 }));
 
 vi.mock('../../context/ConfigContext');
@@ -374,9 +387,9 @@ describe('src/pages/contactCenter/ContactCenter.jsx', () => {
 		// Ensure no error occurred
 		expect(mockHandleError).not.toHaveBeenCalled();
 
-		// Verify Email call
-		expect(setDoc).toHaveBeenCalledWith(
-			'mock_doc_ref',
+		// Verify Email + SMS queued via writeBatch
+		expect(mockBatchSet).toHaveBeenCalledWith(
+			expect.anything(),
 			expect.objectContaining({
 				to: 'New App <new@app.com>',
 				message: expect.objectContaining({
@@ -385,14 +398,14 @@ describe('src/pages/contactCenter/ContactCenter.jsx', () => {
 			})
 		);
 
-		// Verify SMS call
-		expect(setDoc).toHaveBeenCalledWith(
-			'mock_doc_ref',
+		expect(mockBatchSet).toHaveBeenCalledWith(
+			expect.anything(),
 			expect.objectContaining({
 				to: '+13333333333',
 				body: 'Custom SMS',
 			})
 		);
+		expect(mockBatchCommit).toHaveBeenCalled();
 
 		expect(mockShowAlert).toHaveBeenCalledWith({ message: 'Custom message queued for sending!', type: 'success' });
 	}, 15000);
