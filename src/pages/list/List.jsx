@@ -123,7 +123,7 @@ const List = ({ type }) => {
 					return {
 						...col,
 						headerName: 'Recipient / Subject',
-						valueGetter: (params) => `${params.row.to || ''} ${params.row.subject || ''}`,
+						valueGetter: (_value, row) => `${row.to || ''} ${row.subject || ''}`,
 						renderCell: (params) => <RecipientSubjectCell {...params} />,
 					};
 				} else if (col.field === 'tags') {

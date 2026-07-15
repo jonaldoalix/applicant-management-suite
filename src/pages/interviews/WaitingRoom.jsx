@@ -26,7 +26,7 @@ import { collections, InterviewStatus } from '../../config/data/collections';
 
 // UI Components
 import { Box, Typography, Card, CardContent, CircularProgress, Grid, Button, ButtonGroup, Alert, AlertTitle, Divider, keyframes, Select, MenuItem, FormControl, InputLabel, IconButton, Menu } from '@mui/material';
-import { HelpOutline, Videocam, VideocamOff, Mic, MicOff, CheckCircleOutline, LightModeOutlined as LightModeIcon, DarkModeOutlined as DarkModeIcon, PaletteOutlined as ColorIcon } from '@mui/icons-material';
+import { HelpOutlined, Videocam, VideocamOff, Mic, MicOff, CheckCircleOutlined, LightModeOutlined as LightModeIcon, DarkModeOutlined as DarkModeIcon, PaletteOutlined as ColorIcon } from '@mui/icons-material';
 
 // Contexts & Assets
 import { SettingsButton } from '../../components/breadcrumbs/Breadcrumbs';
@@ -243,7 +243,7 @@ const DevicePreview = ({ setDeviceStatus }) => {
 			<Alert icon={false} variant='standard' severity={error ? 'error' : 'success'} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', p: 3, mb: 2 }}>
 				{error ?? (
 					<>
-						<CheckCircleOutline sx={{ color: 'text.active' }} />
+						<CheckCircleOutlined sx={{ color: 'text.active' }} />
 						<Typography variant='h6' sx={{ fontWeight: 'bold' }}>
 							Devices Connected!
 						</Typography>
@@ -580,7 +580,7 @@ export default function WaitingRoom() {
 								</Alert>
 							) : (
 								<Alert icon={false} variant='standard' severity={deviceStatus === 'granted' ? 'success' : 'info'} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', p: 3 }}>
-									{deviceStatus === 'granted' ? <CheckCircleOutline color='text.active' sx={{ fontSize: 40, mb: 2 }} /> : <CircularProgress size={40} thickness={4} sx={{ mb: 2, color: 'text.active' }} />}
+									{deviceStatus === 'granted' ? <CheckCircleOutlined color='text.active' sx={{ fontSize: 40, mb: 2 }} /> : <CircularProgress size={40} thickness={4} sx={{ mb: 2, color: 'text.active' }} />}
 									<Typography variant='h6' sx={{ fontWeight: 'bold' }}>
 										{getStatusMessage()}
 									</Typography>
@@ -593,7 +593,7 @@ export default function WaitingRoom() {
 			</Grid>
 
 			<Box textAlign='center' mt={4}>
-				<Button startIcon={<HelpOutline />} href={`mailto:${brand.helpEmail}`}>
+				<Button startIcon={<HelpOutlined />} href={`mailto:${brand.helpEmail}`}>
 					Having Trouble? Contact Support
 				</Button>
 			</Box>

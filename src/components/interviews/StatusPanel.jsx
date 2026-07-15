@@ -131,7 +131,7 @@ export default function InterviewStatusPanel() {
 	}
 
 	return (
-		<Box
+        <Box
 			sx={{
 				px: 3,
 				py: 2,
@@ -144,16 +144,13 @@ export default function InterviewStatusPanel() {
 				boxShadow: boxShadow,
 				borderRadius: '12px',
 			}}>
-			<Typography fontWeight='bold' fontSize='15px' color='text.secondary' mb={2} alignSelf='start'>
+            <Typography fontWeight='bold' fontSize='15px' color='text.secondary' mb={2} alignSelf='start'>
 				LIVE INTERVIEW STATUS
 			</Typography>
-
-			<InterviewSummary summary={summaryData} />
-
-			<Divider sx={{ mb: 2, width: '100%' }} />
-
-			{/* In Progress Card */}
-			{inProgressInterview ? (
+            <InterviewSummary summary={summaryData} />
+            <Divider sx={{ mb: 2, width: '100%' }} />
+            {/* In Progress Card */}
+            {inProgressInterview ? (
 				<Card sx={{ mb: 2, border: '1px solid', borderColor: 'success.main', width: '100%', boxShadow: boxShadow, borderRadius: '12px', bgcolor: 'background.paper', color: 'text.primary' }}>
 					<CardContent>
 						<Typography variant='overline' color='success.main' fontWeight='bold'>
@@ -169,8 +166,8 @@ export default function InterviewStatusPanel() {
 				</Card>
 			) : (
 				/* Just Finished Card */
-				<Card sx={{ mb: 2, width: '100%', boxShadow: boxShadow, borderRadius: '12px', bgcolor: 'background.paper', color: 'text.primary' }}>
-					<CardContent>
+				(<Card sx={{ mb: 2, width: '100%', boxShadow: boxShadow, borderRadius: '12px', bgcolor: 'background.paper', color: 'text.primary' }}>
+                    <CardContent>
 						<Typography variant='overline' color='text.secondary'>
 							Just Finished
 						</Typography>
@@ -187,11 +184,10 @@ export default function InterviewStatusPanel() {
 							</Typography>
 						)}
 					</CardContent>
-				</Card>
+                </Card>)
 			)}
-
-			{/* Up Next Card */}
-			<Card sx={{ mb: 2, width: '100%', boxShadow: boxShadow, borderRadius: '12px', bgcolor: 'background.paper', color: 'text.primary' }}>
+            {/* Up Next Card */}
+            <Card sx={{ mb: 2, width: '100%', boxShadow: boxShadow, borderRadius: '12px', bgcolor: 'background.paper', color: 'text.primary' }}>
 				<CardContent>
 					<Typography variant='overline' color='text.secondary'>
 						Up Next
@@ -210,9 +206,8 @@ export default function InterviewStatusPanel() {
 					)}
 				</CardContent>
 			</Card>
-
-			{/* Deliberation Button */}
-			<Button
+            {/* Deliberation Button */}
+            <Button
 				fullWidth
 				variant='contained'
 				onClick={handleJoinDeliberation}
@@ -222,6 +217,6 @@ export default function InterviewStatusPanel() {
 				}}>
 				{inProgressInterview ? 'Wait in Deliberation Room' : 'Join Deliberation Room'}
 			</Button>
-		</Box>
-	);
+        </Box>
+    );
 }

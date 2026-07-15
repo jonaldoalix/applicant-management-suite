@@ -4,7 +4,7 @@
  */
 
 import './app.scss';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { useLocation, Route, Routes } from 'react-router-dom';
 import { Box } from '@mui/material';
 
@@ -12,6 +12,14 @@ import { useConfig } from './context/ConfigContext';
 import { Pages } from './config/Constants';
 import { siteManifest } from './config/navigation/siteManifest';
 import { logEvent } from './config/data/firebase';
+
+type ManifestPage = {
+	path: string;
+	urlKey?: string;
+	index?: boolean;
+	element?: ReactNode;
+	children?: ManifestPage[];
+};
 
 // Component: Logs route changes to Firebase Analytics
 const RouteChangeLogger = () => {
@@ -32,7 +40,7 @@ function App() {
 	const config = useConfig();
 
 	// Recursively renders routes from the site manifest
-	const renderRoutes = (manifest) => {
+	const renderRoutes = (manifest: ManifestPage[]): ReactNode => {
 		return manifest
 			.filter((page) => {
 				// Filter out Member Onboarding if disabled in config

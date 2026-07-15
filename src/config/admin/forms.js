@@ -1,5 +1,5 @@
 import React from 'react';
-import { PersonOutline } from '@mui/icons-material';
+import { PersonOutlined } from '@mui/icons-material';
 import { Typography } from '@mui/material';
 
 import { UserType, collections } from '../data/collections';
@@ -24,7 +24,7 @@ export const memberRegistrationContent = {
 			Create Admin Account
 		</Typography>
 	),
-	icon: <PersonOutline />,
+	icon: <PersonOutlined />,
 	fields: [
 		{ component: 'TextField', name: 'firstName', label: 'First Name', required: true, autoComplete: 'given-name', autoFocus: true },
 		{ component: 'TextField', name: 'lastName', label: 'Last Name', required: true, autoComplete: 'family-name' },

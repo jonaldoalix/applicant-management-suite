@@ -20,7 +20,7 @@ import { format } from 'date-fns';
 
 // UI Components & Icons
 import { Avatar, Box, Typography } from '@mui/material';
-import { FileUploadOutlined as UploadIcon, MailOutline, Rsvp, Visibility, PublishedWithChangesOutlined, MeetingRoomOutlined, ChairOutlined, EventOutlined, DeleteOutline, AddBoxOutlined, NoMeetingRoomOutlined, InfoOutlined, EditOutlined, DoneAllOutlined, ContactPageOutlined, Check, HourglassBottom, Close, CloseOutlined, SendOutlined, Add, Send, Delete, PersonOutline, Reply, ReplyAll, Forward, MarkEmailReadOutlined, MarkEmailUnreadOutlined, AttachFile as AttachFileIcon, PeopleOutlined } from '@mui/icons-material';
+import { FileUploadOutlined as UploadIcon, MailOutlined, Rsvp, Visibility, PublishedWithChangesOutlined, MeetingRoomOutlined, ChairOutlined, EventOutlined, DeleteOutlined, AddBoxOutlined, NoMeetingRoomOutlined, InfoOutlined, EditOutlined, DoneAllOutlined, ContactPageOutlined, Check, HourglassBottom, Close, CloseOutlined, SendOutlined, Add, Send, Delete, PersonOutlined, Reply, ReplyAll, Forward, MarkEmailReadOutlined, MarkEmailUnreadOutlined, AttachFile as AttachFileIcon, PeopleOutlined } from '@mui/icons-material';
 
 // Contexts & Hooks
 import { useConfig } from '../../context/ConfigContext';
@@ -350,7 +350,7 @@ const ROW_ACTIONS = {
 	},
 	deleteInterview: {
 		label: 'Delete',
-		icon: DeleteOutline,
+		icon: DeleteOutlined,
 		color: 'error.dark',
 		hide: ({ member }) => !member?.permissions?.interviews?.canSchedule,
 		onClick: ({ row, showDialog, showAlert, handleError }) => {
@@ -411,7 +411,7 @@ const ROW_ACTIONS = {
 	},
 	sendInvite: {
 		label: 'Invite',
-		icon: MailOutline,
+		icon: MailOutlined,
 		color: 'success.dark',
 		hide: ({ row }) => row.status !== 'Scheduled',
 		onClick: ({ row, showDialog, showAlert }) => {
@@ -767,7 +767,7 @@ export const getApplicationToolbarActions = ({ navigate }) => [
 export const getRequestToolbarActions = ({ navigate }) => [
 	{
 		label: 'Contact Senders',
-		icon: PersonOutline,
+		icon: PersonOutlined,
 		requiresSelection: true,
 		onClick: async (selectionModel, allRows, { showDialog, handleError, showAlert }) => {
 			try {
@@ -1108,7 +1108,7 @@ export const memberCols = [
 		field: 'name',
 		headerName: 'Name',
 		flex: 0.75,
-		valueGetter: (params) => `${params.row.firstName} ${params.row.lastName}`,
+		valueGetter: (_value, row) => `${row.firstName} ${row.lastName}`,
 		renderCell: (params) => (
 			<Typography>
 				{params.row.firstName} {params.row.lastName}
@@ -1119,7 +1119,7 @@ export const memberCols = [
 		field: 'membership',
 		headerName: 'Membership',
 		flex: 0.85,
-		valueGetter: (params) => `${params.row.position} (${params.row.since})`,
+		valueGetter: (_value, row) => `${row.position} (${row.since})`,
 		renderCell: (params) => (
 			<Box>
 				<Typography>{params.row.position}</Typography>
@@ -1157,7 +1157,7 @@ export const applicantCols = [
 		field: 'name',
 		headerName: 'Name',
 		flex: 1,
-		valueGetter: (params) => `${params.row.firstName} ${params.row.lastName}`,
+		valueGetter: (_value, row) => `${row.firstName} ${row.lastName}`,
 		renderCell: (params) => (
 			<Typography>
 				{params.row.firstName} {params.row.lastName}
@@ -1168,7 +1168,7 @@ export const applicantCols = [
 		field: 'education',
 		headerName: 'Enrollment',
 		flex: 1.75,
-		valueGetter: (params) => `${params.row.school} (${params.row.gradYear}) ${params.row.major}`,
+		valueGetter: (_value, row) => `${row.school} (${row.gradYear}) ${row.major}`,
 		renderCell: (params) => (
 			<Box>
 				<Typography>{params.row.school}</Typography>
@@ -1180,7 +1180,7 @@ export const applicantCols = [
 		field: 'organization',
 		headerName: 'Organization',
 		flex: 1.25,
-		valueGetter: (params) => params.row.organization || 'N/A',
+		valueGetter: (_value, row) => row.organization || 'N/A',
 		renderCell: (params) => {
 			const extract = extractPipeData(params.row.organization);
 			return (
@@ -1191,12 +1191,12 @@ export const applicantCols = [
 			);
 		},
 	},
-	{ field: 'applications', headerName: 'Apps', flex: 0.2, valueGetter: (params) => params.row.applications?.length || 0, renderCell: (params) => <Typography>{params.row.applications?.length || 0}</Typography> },
+	{ field: 'applications', headerName: 'Apps', flex: 0.2, valueGetter: (_value, row) => row.applications?.length || 0, renderCell: (params) => <Typography>{params.row.applications?.length || 0}</Typography> },
 	{
 		field: 'contact',
 		headerName: 'Contact',
 		flex: 1.75,
-		valueGetter: (params) => `${params.row.email} ${params.row.cell}`,
+		valueGetter: (_value, row) => `${row.email} ${row.cell}`,
 		renderCell: (params) => (
 			<Box>
 				<Typography>{params.row.email}</Typography>
@@ -1208,15 +1208,15 @@ export const applicantCols = [
 
 export const appCols = [
 	{ field: 'picture', headerName: '', flex: 0.2, renderCell: (params) => <DynamicApplicantProfilePicture user={params.row.completedBy} />, sortable: false, filterable: false },
-	{ field: 'applicantName', headerName: 'Applicant Name', flex: 1.25, valueGetter: (params) => params.row.applicantName || '', renderCell: (params) => <Typography>{params.row.applicantName}</Typography> },
+	{ field: 'applicantName', headerName: 'Applicant Name', flex: 1.25, valueGetter: (_value, row) => row.applicantName || '', renderCell: (params) => <Typography>{params.row.applicantName}</Typography> },
 	{ field: 'type', headerName: 'App Type', flex: 1.25, renderCell: (params) => <Typography>{params.row.type}</Typography> },
 	{ field: 'status', headerName: 'App Status', flex: 0.75, renderCell: (params) => <Typography>{params.row.status}</Typography> },
-	{ field: 'lastUpdated', headerName: 'Last Touched', flex: 0.75, valueGetter: (params) => new Date(params.row.lastUpdated), renderCell: (params) => <Typography>{new Date(params.row.lastUpdated).toLocaleDateString()}</Typography> },
+	{ field: 'lastUpdated', headerName: 'Last Touched', flex: 0.75, valueGetter: (_value, row) => new Date(row.lastUpdated), renderCell: (params) => <Typography>{new Date(params.row.lastUpdated).toLocaleDateString()}</Typography> },
 	{
 		field: 'window',
 		headerName: 'Academic Year',
 		width: 150,
-		valueGetter: (params) => new Date(params.row.window).getFullYear(),
+		valueGetter: (_value, row) => new Date(row.window).getFullYear(),
 		renderCell: (params) => (
 			<Typography>
 				{new Date(params.row.window).getFullYear()} - {new Date(params.row.window).getFullYear() + 1}
@@ -1247,9 +1247,9 @@ export const reqCols = [
 	{ field: 'name', headerName: 'Recommender', flex: 1.5, renderCell: (params) => <Typography>{params.row.name}</Typography> },
 	{ field: 'email', headerName: 'Email', flex: 2, renderCell: (params) => <Typography>{params.row.email}</Typography> },
 	{ field: 'relation', headerName: 'Relation', flex: 2, renderCell: (params) => <Typography>{params.row.relation}</Typography> },
-	{ field: 'attachmentType', headerName: 'LOR', flex: 0.8, valueGetter: (params) => getAttachmentLabel(params.row.attachmentType), renderCell: (params) => <Typography>{getAttachmentLabel(params.row.attachmentType)}</Typography> },
+	{ field: 'attachmentType', headerName: 'LOR', flex: 0.8, valueGetter: (_value, row) => getAttachmentLabel(row.attachmentType), renderCell: (params) => <Typography>{getAttachmentLabel(params.row.attachmentType)}</Typography> },
 	{ field: 'attempts', headerName: 'Tries', flex: 0.5, type: 'number', renderCell: (params) => <Typography>{params.row.attempts}</Typography> },
-	{ field: 'expiryDate', headerName: 'Expires', flex: 1, valueGetter: (params) => new Date(params.row.expiryDate), renderCell: (params) => <Typography>{new Date(params.row.expiryDate).toLocaleDateString()}</Typography> },
+	{ field: 'expiryDate', headerName: 'Expires', flex: 1, valueGetter: (_value, row) => new Date(row.expiryDate), renderCell: (params) => <Typography>{new Date(params.row.expiryDate).toLocaleDateString()}</Typography> },
 ];
 
 export const interviewCols = [
@@ -1258,7 +1258,7 @@ export const interviewCols = [
 		field: 'startTime',
 		headerName: 'Date & Time',
 		flex: 1,
-		valueGetter: (params) => (params.value?.toDate ? dayjs(params.value.toDate()).format('MM/DD/YYYY h:mm A') : 'Invalid Date'),
+		valueGetter: (value) => (value?.toDate ? dayjs(value.toDate()).format('MM/DD/YYYY h:mm A') : 'Invalid Date'),
 		renderCell: (params) => <Typography>{params.row.startTime?.toDate ? dayjs(params.row.startTime.toDate()).format('MM/DD/YYYY h:mm A') : 'Invalid Date'}</Typography>,
 	},
 	{ field: 'status', headerName: 'Status', flex: 0.5, renderCell: (params) => <Typography>{params.row.status}</Typography> },
@@ -1276,7 +1276,7 @@ export const schedulerCols = [
 		field: 'startTime',
 		headerName: 'Date & Time',
 		flex: 1,
-		valueGetter: (params) => (params.value?.toDate ? dayjs(params.value.toDate()).format('MM/DD/YYYY h:mm A') : 'Invalid Date'),
+		valueGetter: (value) => (value?.toDate ? dayjs(value.toDate()).format('MM/DD/YYYY h:mm A') : 'Invalid Date'),
 		renderCell: (params) => <Typography>{params.row.startTime?.toDate ? dayjs(params.row.startTime.toDate()).format('MM/DD/YYYY h:mm A') : 'Invalid Date'}</Typography>,
 	},
 	{ field: 'status', headerName: 'Status', flex: 0.5, renderCell: (params) => <Typography>{params.row.status}</Typography> },
@@ -1289,13 +1289,13 @@ export const schedulerCols = [
 ];
 
 export const inboxCols = [
-	{ field: 'senderSubject', headerName: 'Sender / Subject', flex: 2, sortable: false, valueGetter: (params) => `${params.row.sender} ${params.row.subject}`, renderCell: (params) => <SenderSubjectCell {...params} /> },
+	{ field: 'senderSubject', headerName: 'Sender / Subject', flex: 2, sortable: false, valueGetter: (_value, row) => `${row.sender} ${row.subject}`, renderCell: (params) => <SenderSubjectCell {...params} /> },
 	{
 		field: 'timestamp',
 		headerName: 'Received',
 		flex: 0.75,
-		valueGetter: (params) => {
-			const ts = Number(params.value);
+		valueGetter: (value) => {
+			const ts = Number(value);
 			return ts > 0 ? new Date(ts) : null;
 		},
 		renderCell: (params) => <StackedDateCell value={params.value} row={params.row} />,
@@ -1334,16 +1334,16 @@ export const inboxCols = [
 ];
 
 export const legacyFinancesCols = [
-	{ field: 'year', headerName: 'Year', width: 80, type: 'number', headerAlign: 'center', align: 'center', valueFormatter: ({ value }) => (value ? String(value) : 'N/A') },
-	{ field: 'total_allotted_disbursement', headerName: 'Total Allotted', width: 130, headerAlign: 'center', align: 'center', valueFormatter: ({ value }) => (value ? value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : 'N/A') },
-	{ field: 'prior_year_clawback', headerName: 'Clawback', width: 130, headerAlign: 'center', align: 'center', valueFormatter: ({ value }) => (value ? value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : 'N/A') },
+	{ field: 'year', headerName: 'Year', width: 80, type: 'number', headerAlign: 'center', align: 'center', valueFormatter: (value) => (value ? String(value) : 'N/A') },
+	{ field: 'total_allotted_disbursement', headerName: 'Total Allotted', width: 130, headerAlign: 'center', align: 'center', valueFormatter: (value) => (value ? value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : 'N/A') },
+	{ field: 'prior_year_clawback', headerName: 'Clawback', width: 130, headerAlign: 'center', align: 'center', valueFormatter: (value) => (value ? value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : 'N/A') },
 	{
 		field: 'renewable_scholarships',
 		headerName: 'Scholarships',
 		width: 170,
 		headerAlign: 'center',
 		align: 'center',
-		valueGetter: (params) => params.value?.length || 0,
+		valueGetter: (value) => value?.length || 0,
 		renderCell: (params) => (
 			<Box display='flex' alignItems='center' gap={1}>
 				<PeopleOutlined fontSize='small' />
@@ -1357,7 +1357,7 @@ export const legacyFinancesCols = [
 		width: 170,
 		headerAlign: 'center',
 		align: 'center',
-		valueGetter: (params) => params.value?.length || 0,
+		valueGetter: (value) => value?.length || 0,
 		renderCell: (params) => (
 			<Box display='flex' alignItems='center' gap={1}>
 				<PeopleOutlined fontSize='small' />
@@ -1371,8 +1371,8 @@ export const legacyFinancesCols = [
 		width: 170,
 		headerAlign: 'center',
 		align: 'center',
-		valueGetter: (params) => params.row.financial_summary?.scholarships_grants?.amount_available,
-		valueFormatter: ({ value }) => (value ? value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : 'N/A'),
+		valueGetter: (_value, row) => row.financial_summary?.scholarships_grants?.amount_available,
+		valueFormatter: (value) => (value ? value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : 'N/A'),
 	},
 	{
 		field: 'nsi_available',
@@ -1380,8 +1380,8 @@ export const legacyFinancesCols = [
 		width: 190,
 		headerAlign: 'center',
 		align: 'center',
-		valueGetter: (params) => params.row.financial_summary?.non_scholarship_items?.amount_available,
-		valueFormatter: ({ value }) => (value ? value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : 'N/A'),
+		valueGetter: (_value, row) => row.financial_summary?.non_scholarship_items?.amount_available,
+		valueFormatter: (value) => (value ? value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : 'N/A'),
 	},
 	{
 		field: 'returns',
@@ -1390,8 +1390,8 @@ export const legacyFinancesCols = [
 		headerAlign: 'center',
 		align: 'center',
 		type: 'number',
-		valueGetter: (params) => (params.row.financial_summary?.scholarships_grants?.amount_returned ?? 0) + (params.row.financial_summary?.non_scholarship_items?.amount_returned ?? 0),
-		valueFormatter: ({ value }) => (value ? value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : 'N/A'),
+		valueGetter: (_value, row) => (row.financial_summary?.scholarships_grants?.amount_returned ?? 0) + (row.financial_summary?.non_scholarship_items?.amount_returned ?? 0),
+		valueFormatter: (value) => (value ? value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : 'N/A'),
 	},
 ];
 

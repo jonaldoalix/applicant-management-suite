@@ -12,7 +12,7 @@ import {
 	AccordionDetails,
 	CircularProgress,
 } from '@mui/material';
-import { ExpandMore as ExpandMoreIcon, ErrorOutline, CheckCircleOutline, HourglassEmpty } from '@mui/icons-material';
+import { ExpandMore as ExpandMoreIcon, ErrorOutlined, CheckCircleOutlined, HourglassEmpty } from '@mui/icons-material';
 import { getEmailLogs } from '../../config/data/firebase';
 
 const EmailLogsDialog = ({ onClose }) => {
@@ -30,8 +30,8 @@ const EmailLogsDialog = ({ onClose }) => {
 
 	const getStatusIcon = (delivery) => {
 		if (!delivery) return <HourglassEmpty color="warning" />;
-		if (delivery.state === 'SUCCESS') return <CheckCircleOutline color="success" />;
-		if (delivery.state === 'ERROR') return <ErrorOutline color="error" />;
+		if (delivery.state === 'SUCCESS') return <CheckCircleOutlined color="success" />;
+		if (delivery.state === 'ERROR') return <ErrorOutlined color="error" />;
 		return <HourglassEmpty color="info" />;
 	};
 

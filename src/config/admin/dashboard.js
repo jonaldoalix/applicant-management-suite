@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import { PersonAddAlt as NewIcon, Restore as ReturningIcon, WorkspacePremium as ScholarshipIcon, ReportProblem as IncompleteIcon, CheckCircleOutline as CompletedIcon, ThumbUpAltOutlined as EligibleIcon, MailOutline as InvitedIcon, MilitaryTech as AwardedIcon, CancelPresentation as RejectedIcon, DeleteOutline as DeletedIcon } from '@mui/icons-material';
+import { PersonAddAlt as NewIcon, Restore as ReturningIcon, WorkspacePremium as ScholarshipIcon, ReportProblem as IncompleteIcon, CheckCircleOutlined as CompletedIcon, ThumbUpAltOutlined as EligibleIcon, MailOutlined as InvitedIcon, MilitaryTech as AwardedIcon, CancelPresentation as RejectedIcon, DeleteOutlined as DeletedIcon } from '@mui/icons-material';
 
 import { ApplicationType, ApplicationStatus } from '../data/collections';
 import { getRealTimeCurrentEligibleApplicationsCountByType, getRealTimeEligibleApplicationsCountByTypeAndWindow, getRealTimeApplicationCountByStatus, getRealTimeRejectedApplications, getRealTimeMostRecentApplicationIDs, getRealTimeNewApplicantsThisYear } from '../data/firebase';
