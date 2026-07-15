@@ -13,11 +13,12 @@
 import React, { useEffect, useCallback, useReducer, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import { doc, setDoc, collection } from 'firebase/firestore';
+import { doc, setDoc, collection, writeBatch, serverTimestamp } from 'firebase/firestore';
 
 // UI Components
 import { Box, Button, Typography, TextField, Autocomplete, Chip, Select, MenuItem, FormControl, InputLabel, FormControlLabel, Switch, Grid, Menu } from '@mui/material';
 import { FiberNewOutlined as NewIcon, KeyboardReturnOutlined as ReturningIcon, SchoolOutlined as SchoolIcon, GroupAddOutlined as GroupAddIcon, CloseOutlined, AlternateEmail as AliasIcon, ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material';
+import EmailLogsDialog from '../../components/dialogs/EmailLogsDialog';
 
 // Contexts
 import { useTheme } from '../../context/ThemeContext';
@@ -347,7 +348,21 @@ const ContactCenter = () => {
 		}
 
 		try {
-			const ccRecipients = cc.map((c) => `${c.name} <${c.email}>`);
+			const formatEmail = (name, email) => {
+				const cleanName = name?.trim() || '';
+				const cleanEmail = email?.trim() || '';
+				if (!cleanEmail) return null;
+				return cleanName && cleanName !== 'undefined undefined' ? `${cleanName} <${cleanEmail}>` : cleanEmail;
+			};
+
+			const ccRecipients = cc.map((c) => {
+				if (typeof c === 'string') return c;
+				return formatEmail(c.name, c.email);
+			}).filter(Boolean);
+
+			const batch = writeBatch(db);
+			let emailCount = 0;
+			let smsCount = 0;
 
 			// 1. Send Emails
 			if (recipients.length > 0) {
@@ -357,8 +372,8 @@ const ContactCenter = () => {
 
 				for (const recipient of recipients) {
 					const email = {
-						to: `${recipient.name} <${recipient.email}>`,
-						from: `${sender.name} <${sender.email}>`,
+						to: formatEmail(recipient.name, recipient.email),
+						from: formatEmail(sender.name, sender.email),
 						replyTo: config.SYSTEM_REPLY_TO,
 						cc: ccRecipients,
 						message: {
@@ -366,8 +381,10 @@ const ContactCenter = () => {
 							text,
 							html: emailHeader + emailBody + staticEmailFooter,
 						},
+						createdAt: serverTimestamp(),
 					};
-					await setDoc(doc(collection(db, collections.emails)), email);
+					batch.set(doc(collection(db, collections.emails), uuid()), email);
+					emailCount++;
 				}
 			}
 
@@ -377,10 +394,17 @@ const ContactCenter = () => {
 					const sms = {
 						to: `+1${recipient.cell}`,
 						body: smsBody || subject,
+						createdAt: serverTimestamp(),
 					};
-					await setDoc(doc(collection(db, collections.sms)), sms);
+					batch.set(doc(collection(db, collections.sms), uuid()), sms);
+					smsCount++;
 				}
 			}
+			
+			if (emailCount > 0 || smsCount > 0) {
+				await batch.commit();
+			}
+			
 			showAlert({ message: 'Custom message queued for sending!', type: 'success' });
 			dispatch({ type: 'RESET_FORM' });
 		} catch (error) {
@@ -472,10 +496,17 @@ const ContactCenter = () => {
 	return (
 		<Box sx={{ p: 2, pb: 6 }} display='flex' flexDirection='column' gap={3}>
 			{/* Page Header */}
-			<Box borderRadius='12px' boxShadow={boxShadow} bgcolor={darkMode ? 'background.main' : 'white'} display='flex' alignItems='center' justifyContent='left' padding={1} paddingX={2}>
+			<Box borderRadius='12px' boxShadow={boxShadow} bgcolor={darkMode ? 'background.main' : 'white'} display='flex' alignItems='center' justifyContent='space-between' padding={1} paddingX={2}>
 				<Typography fontSize='24px' color={darkMode ? 'primary.main' : 'highlight.main'}>
 					Contact Center
 				</Typography>
+				{member?.permissions?.email && (
+					<Box display='flex' gap={1}>
+						<Button variant='outlined' color='info' onClick={() => showDialog({ id: 'emailLogs', data: { component: EmailLogsDialog, maxWidth: 'md' } })}>
+							View Sent Logs
+						</Button>
+					</Box>
+				)}
 			</Box>
 
 			<Grid container spacing={3}>

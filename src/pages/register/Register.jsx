@@ -38,6 +38,8 @@ import { ContactTemplate, pushNotice } from '../../config/content/push';
 import { UploadType } from '../../config/data/collections';
 import { applicantRegistrationContent as registerConfig } from '../../config/content/content';
 
+import { serverTimestamp } from 'firebase/firestore';
+
 export default function Register() {
 	// --- Hooks & State ---
 	const navigate = useNavigate();
@@ -145,6 +147,7 @@ export default function Register() {
 				email: formData.email,
 				picture,
 				notifications: { email: true, sms: false }, // Default notification settings
+				accountCreated: serverTimestamp(),
 			};
 
 			// 4. Save to Firestore

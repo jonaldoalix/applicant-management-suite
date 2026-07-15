@@ -2,13 +2,14 @@ import { Box, Typography } from '@mui/material';
 import { PersonAddAlt as NewIcon, Restore as ReturningIcon, WorkspacePremium as ScholarshipIcon, ReportProblem as IncompleteIcon, CheckCircleOutline as CompletedIcon, ThumbUpAltOutlined as EligibleIcon, MailOutline as InvitedIcon, MilitaryTech as AwardedIcon, CancelPresentation as RejectedIcon, DeleteOutline as DeletedIcon } from '@mui/icons-material';
 
 import { ApplicationType, ApplicationStatus } from '../data/collections';
-import { getRealTimeCurrentEligibleApplicationsCountByType, getRealTimeEligibleApplicationsCountByTypeAndWindow, getRealTimeApplicationCountByStatus, getRealTimeRejectedApplications, getRealTimeMostRecentApplicationIDs } from '../data/firebase';
+import { getRealTimeCurrentEligibleApplicationsCountByType, getRealTimeEligibleApplicationsCountByTypeAndWindow, getRealTimeApplicationCountByStatus, getRealTimeRejectedApplications, getRealTimeMostRecentApplicationIDs, getRealTimeNewApplicantsThisYear } from '../data/firebase';
 
 // Components
 import Featured from '../../components/featured/Featured';
 import Chart from '../../components/chart/Chart';
 import InterviewStatusPanel from '../../components/interviews/StatusPanel';
 import CollapsableTable from '../../components/table/Table';
+import SimpleApplicantsTable from '../../components/table/SimpleApplicantsTable';
 
 const year = new Date().getFullYear();
 
@@ -160,6 +161,32 @@ export const memberDashContent = {
 						flexShrink: 1,
 						flexBasis: { xs: '100%', md: '320px' },
 					},
+				},
+			],
+		},
+		{
+			id: 'newApplicantsComponent',
+			type: 'customRow',
+			containerSx: {
+				flexDirection: 'column',
+				gap: '14px',
+				bgcolor: 'background.paper',
+				borderRadius: '12px',
+				mt: 2,
+			},
+			components: [
+				{
+					id: 'newApplicantsTable',
+					component: ({ data }) => (
+						<Box display='flex' flexDirection='column' width='100%' mx={1} my={1}>
+							<Typography fontWeight='bold' fontSize='15px' color='text.secondary' my={2} pl={3}>
+								NEW APPLICANTS THIS YEAR
+							</Typography>
+							<SimpleApplicantsTable data={data} />
+						</Box>
+					),
+					fetcher: (callback) => getRealTimeNewApplicantsThisYear(callback, 20),
+					initialState: [],
 				},
 			],
 		},
