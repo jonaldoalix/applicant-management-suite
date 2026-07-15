@@ -1639,3 +1639,31 @@ export const getRealTimeNewApplicantsThisYear = (callback, limitCount = 10) => {
 		return () => {};
 	}
 };
+
+export const getAverageApplicationsPerYearByType = async (type, currentYear, yearsBack = 3) => {
+	try {
+		const coll = collection(db, collections.applications);
+		const q = query(
+			coll,
+			and(
+				where('type', '==', type),
+				where('status', 'in', [ApplicationStatus.completed, ApplicationStatus.eligible, ApplicationStatus.invited, ApplicationStatus.deferred, ApplicationStatus.awarded, ApplicationStatus.denied])
+			)
+		);
+		const snapshot = await getDocs(q);
+		let totalApplicationsInWindow = 0;
+		const startYear = currentYear - yearsBack;
+
+		snapshot.forEach((doc) => {
+			const data = doc.data();
+			if (data.window) {
+				const appYear = new Date(data.window).getFullYear();
+				if (appYear >= startYear && appYear < currentYear) totalApplicationsInWindow++;
+			}
+		});
+		return Math.round(totalApplicationsInWindow / yearsBack);
+	} catch (error) {
+		logEvent('Error in getAverageApplicationsPerYearByType', error);
+		return 0;
+	}
+};

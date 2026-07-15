@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Lint, typecheck, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      REACT_APP_googleApiKey: AIzaSyCiPlaceholderGoogleMapsKey00000000
+      REACT_APP_apiKey: AIzaSyCiPlaceholderFirebaseApiKey000000
+      REACT_APP_authDomain: ci-placeholder.firebaseapp.com
+      REACT_APP_projectId: ci-placeholder
+      REACT_APP_storageBucket: ci-placeholder.appspot.com
+      REACT_APP_messagingSenderId: "123456789012"
+      REACT_APP_appId: "1:123456789012:web:ciplaceholder000000"
+      REACT_APP_measurementId: G-CIPLACEHOLDER0
+      REACT_APP_configKey: ci-placeholder-config-key
+      REACT_APP_environment: ci
+      REACT_APP_ORGANIZATION_NAME: Applicant Management Suite
+      REACT_APP_ORGANIZATION_SHORT_NAME: AMS
+      REACT_APP_URL: https://example.com
+      REACT_APP_META_DESCRIPTION: CI build
+      REACT_APP_FAVICON: favicon-32x32.png
+      REACT_APP_APPLE_TOUCH_ICON: android-chrome-192x192.png
+      REACT_APP_MS_TILE_ICON: android-chrome-192x192.png
+      REACT_APP_THEME_COLOR: "#0288D1"
+      REACT_APP_PRELOAD_BG_DARK: "#161C24"
+      REACT_APP_PRELOAD_BG_LIGHT: "#F4F6F8"
+      HTTPS: "false"
+      GENERATE_SOURCEMAP: "false"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: ESLint (production sources)
+        run: npm run lint:prod
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Tests with coverage
+        run: npm run test:coverage
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+      - name: Production build
+        run: npm run build
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hosting-build
+          path: build
+          retention-days: 7
+
+  osv:
+    name: Dependency scan (OSV)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Scan lockfiles with OSV-Scanner
+        uses: google/osv-scanner-action/osv-scanner-action@v2.3.8
+        with:
+          scan-args: |-
+            --lockfile=package-lock.json
+            --lockfile=functions/package-lock.json

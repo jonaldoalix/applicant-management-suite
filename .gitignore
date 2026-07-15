@@ -17,4 +17,9 @@
 serviceAccountKey.json
 cleanedData.json
 nonSGData.json
-functions/obfuscatedData.json.cursor/
+functions/obfuscatedData.json
+.cursor/
+
+# Local handoff working docs (do not publish — Phase 16 trail)
+docs/pf-to-ams-transfer-playbook.md
+docs/pf-ams-diff-matrix.md

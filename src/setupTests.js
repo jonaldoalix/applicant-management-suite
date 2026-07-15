@@ -1,103 +1,80 @@
-// src/setupTests.js
 import '@testing-library/jest-dom';
+import React from 'react';
+import { vi } from 'vitest';
+import { MessageChannel, MessagePort } from 'node:worker_threads';
+import { TextEncoder, TextDecoder } from 'node:util';
+import { ReadableStream } from 'node:stream/web';
+import { fetch, Headers, Request, Response } from 'undici';
+import { terminate } from 'firebase/firestore';
+import { db } from './config/data/firebase';
 
-// 1. Setup Environment Polyfills FIRST
-const { MessageChannel, MessagePort } = require('node:worker_threads');
+globalThis.jest = vi;
 globalThis.MessageChannel = MessageChannel;
 globalThis.MessagePort = MessagePort;
-
-const { TextEncoder, TextDecoder } = require('node:util');
 globalThis.TextEncoder = TextEncoder;
 globalThis.TextDecoder = TextDecoder;
-
-const { ReadableStream } = require('node:stream/web');
 globalThis.ReadableStream = ReadableStream;
+globalThis.fetch = fetch;
+globalThis.Headers = Headers;
+globalThis.Request = Request;
+globalThis.Response = Response;
 
-// 2. Now it is safe to require libraries that depend on them
-const undici = require('undici');
-globalThis.fetch = undici.fetch;
-globalThis.Headers = undici.Headers;
-globalThis.Request = undici.Request;
-globalThis.Response = undici.Response;
+globalThis.matchMedia = globalThis.matchMedia || (() => ({
+  matches: false,
+  addListener() {},
+  removeListener() {},
+}));
 
-// ... rest of your file (mocks, etc.)
-globalThis.matchMedia =
-	globalThis.matchMedia ||
-	function () {
-		return {
-			matches: false,
-			addListener: function () {},
-			removeListener: function () {},
-		};
-	};
-
-jest.mock('axios', () => {
-	// ... your axios mock
-	const mockAxios = {
-		create: jest.fn(() => mockAxios),
-		get: jest.fn(() => Promise.resolve({ data: {} })),
-		post: jest.fn(() => Promise.resolve({ data: {} })),
-		put: jest.fn(() => Promise.resolve({ data: {} })),
-		delete: jest.fn(() => Promise.resolve({ data: {} })),
-		interceptors: {
-			request: { use: jest.fn(), eject: jest.fn() },
-			response: { use: jest.fn(), eject: jest.fn() },
-		},
-		defaults: { headers: { common: {} } },
-	};
-	return mockAxios;
+vi.mock('axios', () => {
+  const mockAxios = {
+    create: vi.fn(() => mockAxios),
+    get: vi.fn(() => Promise.resolve({ data: {} })),
+    post: vi.fn(() => Promise.resolve({ data: {} })),
+    put: vi.fn(() => Promise.resolve({ data: {} })),
+    delete: vi.fn(() => Promise.resolve({ data: {} })),
+    interceptors: {
+      request: { use: vi.fn(), eject: vi.fn() },
+      response: { use: vi.fn(), eject: vi.fn() },
+    },
+    defaults: { headers: { common: {} } },
+  };
+  return { default: mockAxios };
 });
 
-jest.mock('lottie-react', () => ({
-	__esModule: true,
-	default: () => <div data-testid='lottie-mock' />,
+vi.mock('lottie-react', () => ({
+  default: () => React.createElement('div', { 'data-testid': 'lottie-mock' }),
 }));
 
-// Mock PDF.js with explicit return statements to prevent 'undefined' errors
-jest.mock('pdfjs-dist/webpack.mjs', () => {
-	return {
-		__esModule: true,
-		GlobalWorkerOptions: {
-			workerSrc: '',
-		},
-		getDocument: jest.fn(function () {
-			// Explicitly return the object expected by your code
-			return {
-				promise: Promise.resolve({
-					numPages: 1,
-					getPage: jest.fn(function () {
-						return Promise.resolve({
-							getViewport: jest.fn(() => ({ width: 100, height: 100 })),
-							render: jest.fn(() => ({ promise: Promise.resolve() })),
-						});
-					}),
-				}),
-			};
-		}),
-	};
-});
-
-jest.mock('@daily-co/daily-js', () => ({
-	__esModule: true,
-	default: {
-		createCallObject: jest.fn(() => ({
-			join: jest.fn(() => Promise.resolve()),
-			leave: jest.fn(),
-			on: jest.fn(),
-			off: jest.fn(),
-			participants: jest.fn(() => ({})),
-		})),
-	},
+vi.mock('pdfjs-dist/webpack.mjs', () => ({
+  GlobalWorkerOptions: { workerSrc: '' },
+  getDocument: vi.fn(() => ({
+    promise: Promise.resolve({
+      numPages: 1,
+      getPage: vi.fn(() => Promise.resolve({
+        getViewport: vi.fn(() => ({ width: 100, height: 100 })),
+        render: vi.fn(() => ({ promise: Promise.resolve() })),
+      })),
+    }),
+  })),
 }));
 
-jest.mock('firebase/analytics', () => ({
-	getAnalytics: jest.fn(() => ({})),
-	isSupported: jest.fn(() => Promise.resolve(false)),
+vi.mock('@daily-co/daily-js', () => ({
+  default: {
+    createCallObject: vi.fn(() => ({
+      join: vi.fn(() => Promise.resolve()),
+      leave: vi.fn(),
+      on: vi.fn(),
+      off: vi.fn(),
+      participants: vi.fn(() => ({})),
+    })),
+  },
 }));
 
-const { db } = require('./config/data/firebase');
-const { terminate } = require('firebase/firestore');
+vi.mock('firebase/analytics', () => ({
+  getAnalytics: vi.fn(() => ({})),
+  isSupported: vi.fn(() => Promise.resolve(false)),
+}));
 
 afterAll(async () => {
-	await terminate(db);
+  await terminate(db);
 });
