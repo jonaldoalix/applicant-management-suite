@@ -7,7 +7,7 @@ import { logEvent } from './config/data/firebase';
 // --- MOCKS ---
 
 // 1. Mock Firebase
-jest.mock('./config/data/firebase', () => {
+vi.mock('./config/data/firebase', () => {
 	const mockLogEventFn = jest.fn();
 	// Ensure it always returns a Promise to prevent .catch errors
 	mockLogEventFn.mockReturnValue(Promise.resolve());
@@ -20,7 +20,7 @@ jest.mock('./config/data/firebase', () => {
 });
 
 // 2. Mock Providers
-jest.mock('./context/Providers', () => ({
+vi.mock('./context/Providers', () => ({
 	Providers: ({ children }) => <div>{children}</div>,
 }));
 
@@ -30,12 +30,12 @@ let mockConfigValues = {
 	MEMBER_ONBOARDING_PAGE_ENABLED: true,
 };
 
-jest.mock('./context/ConfigContext', () => ({
+vi.mock('./context/ConfigContext', () => ({
 	useConfig: () => mockConfigValues,
 }));
 
 // 4. Mock Site Manifest
-jest.mock('./config/navigation/siteManifest', () => {
+vi.mock('./config/navigation/siteManifest', () => {
 	const React = require('react');
 	// We need Outlet so the Child route actually renders inside the Parent
 	const { Outlet } = require('react-router-dom');
@@ -68,14 +68,14 @@ jest.mock('./config/navigation/siteManifest', () => {
 });
 
 // 5. Mock Constants
-jest.mock('./config/Constants', () => ({
+vi.mock('./config/Constants', () => ({
 	Pages: {
 		registerMember: 'REGISTER_MEMBER',
 	},
 }));
 
 // 6. Mock Content
-jest.mock('./config/content/content.js', () => ({
+vi.mock('./config/content/content.js', () => ({
 	homePageContent: { intro: { backgroundImages: { light: '', dark: '' } } },
 	applicantRegistrationContent: { icon: null, fields: [], buttons: [], links: [] },
 	loginContent: { icon: null, fields: [], buttons: [], links: [] },

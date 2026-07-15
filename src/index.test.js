@@ -4,18 +4,19 @@ import App from './App';
 import { Providers } from './context/Providers';
 
 // Mock ReactDOM.createRoot
-jest.mock('react-dom/client', () => ({
-	createRoot: jest.fn(),
-}));
+vi.mock('react-dom/client', () => {
+	const createRoot = jest.fn();
+	return { createRoot, default: { createRoot } };
+});
 
 // Mock the components
-jest.mock('./App', () => () => <div data-testid='app-mock' />);
-jest.mock('./context/Providers', () => ({
+vi.mock('./App', () => ({ default: () => <div data-testid='app-mock' /> }));
+vi.mock('./context/Providers', () => ({
 	Providers: ({ children }) => <div data-testid='providers-mock'>{children}</div>,
 }));
 
 describe('src/index.js', () => {
-	it('renders the App within the Providers component', () => {
+	it('renders the App within the Providers component', async () => {
 		const mockRender = jest.fn();
 		const mockRoot = { render: mockRender };
 		ReactDOM.createRoot.mockReturnValue(mockRoot);
@@ -27,7 +28,7 @@ describe('src/index.js', () => {
 
 		// Require the index.js file to execute it
 		// We use require here to control *when* it runs
-		require('./index.js');
+		await import('./index.tsx');
 
 		// Check that createRoot was called with the correct element
 		expect(ReactDOM.createRoot).toHaveBeenCalledWith(rootElement);
