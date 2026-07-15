@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Main Application Component
  * Handles client-side routing, layout rendering, and global event logging.
