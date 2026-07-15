@@ -14,7 +14,7 @@
 import React, { useEffect, useCallback, useReducer, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import { doc, setDoc, collection, writeBatch, serverTimestamp } from 'firebase/firestore';
+import { doc, collection, writeBatch, serverTimestamp } from 'firebase/firestore';
 
 // UI Components
 import { Box, Button, Typography, TextField, Autocomplete, Chip, Select, MenuItem, FormControl, InputLabel, FormControlLabel, Switch, Grid, Menu } from '@mui/material';
