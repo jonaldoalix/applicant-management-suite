@@ -9,22 +9,22 @@ import { useEmailActions } from '../../hooks/useEmailActions';
 import { updateEmailReadStatus, deleteZohoEmail } from '../../config/data/firebase';
 
 // --- Mocks ---
-jest.mock('react-router-dom', async () => ({
+vi.mock('react-router-dom', async () => ({
 	...(await vi.importActual('react-router-dom')),
 	useNavigate: jest.fn(),
 }));
 
-jest.mock('../../context/MailboxContext', () => ({ useMailbox: jest.fn() }));
-jest.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
-jest.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
-jest.mock('../../context/DialogContext', () => ({ useDialog: jest.fn() }));
-jest.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn(() => ({})) }));
+vi.mock('../../context/MailboxContext', () => ({ useMailbox: jest.fn() }));
+vi.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
+vi.mock('../../context/DialogContext', () => ({ useDialog: jest.fn() }));
+vi.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn(() => ({}))  }));
 
-jest.mock('../../hooks/useEmailActions', () => ({
+vi.mock('../../hooks/useEmailActions', () => ({
 	useEmailActions: jest.fn(),
 }));
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	__esModule: true,
 	updateEmailReadStatus: jest.fn(),
 	deleteZohoEmail: jest.fn(),
@@ -32,20 +32,20 @@ jest.mock('../../config/data/firebase', () => ({
 }));
 
 // Mock children
-jest.mock('../layout/SingleAssetPage', () => ({
+vi.mock('../layout/SingleAssetPage', () => ({
 	__esModule: true,
 	default: ({ children }) => <div>{children}</div>,
 	AssetCard: ({ children }) => <div>{children}</div>,
 }));
-jest.mock('../assets/Header', () => ({ title }) => <h1>{title}</h1>);
-jest.mock('../assets/InfoTable', () => () => <div>InfoTable</div>);
-jest.mock('../messaging/EmailBody', () => () => <div data-testid='email-body'>Email Body</div>);
-jest.mock('../messaging/EmailActions', () => (props) => (
+vi.mock('../assets/Header', () => ({ default: ({ title }) => <h1>{title}</h1> }));
+vi.mock('../assets/InfoTable', () => ({ default: () => <div>InfoTable</div> }));
+vi.mock('../messaging/EmailBody', () => ({ default: () => <div data-testid='email-body'>Email Body</div> }));
+vi.mock('../messaging/EmailActions', () => ({ default: (props) => (
 	<div data-testid='email-actions'>
 		<button onClick={props.onDelete}>Delete</button>
 		<button onClick={props.onToggleRead}>Toggle Read</button>
 	</div>
-));
+) }));
 
 describe('EmailCard', () => {
 	const mockEmail = {

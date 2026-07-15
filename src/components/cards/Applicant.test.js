@@ -8,67 +8,67 @@ import { getApplicantActions } from '../../config/ui/buttonActions';
 import { useAssetActionHandler } from '../../hooks/useAssetActionHandler';
 
 // --- Mocks ---
-jest.mock('react-router-dom', async () => ({
+vi.mock('react-router-dom', async () => ({
 	...(await vi.importActual('react-router-dom')),
 	useNavigate: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
 
-jest.mock('../../context/ConfigContext', () => ({
+vi.mock('../../context/ConfigContext', () => ({
 	useConfig: jest.fn(),
 }));
 
-jest.mock('../../config/navigation/routeUtils', () => ({
+vi.mock('../../config/navigation/routeUtils', () => ({
 	__esModule: true,
 	generatePath: jest.fn((path) => path),
 }));
 
-jest.mock('../../config/navigation/paths', () => ({
+vi.mock('../../config/navigation/paths', () => ({
 	__esModule: true,
 	paths: { editApplicant: '/edit-applicant' },
 }));
 
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	__esModule: true,
 	collections: { applicants: 'applicants' },
 }));
 
-jest.mock('../../config/ui/buttonActions', () => ({
+vi.mock('../../config/ui/buttonActions', () => ({
 	__esModule: true,
 	getApplicantActions: jest.fn(),
 }));
 
-jest.mock('../../hooks/useAssetActionHandler', () => ({
+vi.mock('../../hooks/useAssetActionHandler', () => ({
 	__esModule: true,
 	useAssetActionHandler: jest.fn(),
 }));
 
 // Mock Child Components to isolate Applicant logic
-jest.mock('../layout/SingleAssetPage', () => ({
+vi.mock('../layout/SingleAssetPage', () => ({
 	__esModule: true,
 	default: ({ children }) => <div data-testid='single-asset-page'>{children}</div>,
 	AssetCard: ({ children }) => <div data-testid='asset-card'>{children}</div>,
 }));
 
-jest.mock('../assets/Header', () => ({ children, title }) => (
+vi.mock('../assets/Header', () => ({ default: ({ children, title }) => (
 	<div data-testid='header'>
 		<h1>{title}</h1>
 		{children}
 	</div>
-));
+) }));
 
-jest.mock('../assets/InfoTable', () => () => <div>InfoTable</div>);
-jest.mock('../notes/NotesSection', () => () => <div>NotesSection</div>);
-jest.mock('../table/Table', () => () => <div>CollapsableTable</div>);
-jest.mock('../dynamicButtons/DynamicButtons', () => () => <div>DynamicButtons</div>);
-jest.mock('../../config/ui/tableConfig', () => ({
+vi.mock('../assets/InfoTable', () => ({ default: () => <div>InfoTable</div> }));
+vi.mock('../notes/NotesSection', () => ({ default: () => <div>NotesSection</div> }));
+vi.mock('../table/Table', () => ({ default: () => <div>CollapsableTable</div> }));
+vi.mock('../dynamicButtons/DynamicButtons', () => ({ default: () => <div>DynamicButtons</div> }));
+vi.mock('../../config/ui/tableConfig', () => ({
 	UserLastLogin: () => <span>Last Login Date</span>,
 }));
 

@@ -1,21 +1,22 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import GenericAdminForm from './GenericAdminForm';
+import { useAlert } from '../../context/AlertContext';
 
 // --- MOCKS ---
 const mockNavigate = jest.fn();
 const mockShowAlert = jest.fn();
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: () => mockNavigate,
 }));
 
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
 
 // Mock Child Components
-jest.mock('./DynamicField', () => ({
+vi.mock('./DynamicField', () => ({
 	__esModule: true,
 	default: ({ fieldConfig, onFieldUpdate, onErrorUpdate, application, sectionName }) => {
 		// Ensure value extraction handles potential undefineds gracefully during render
@@ -47,7 +48,7 @@ jest.mock('./DynamicField', () => ({
 	},
 }));
 
-jest.mock('./PermissionGroup', () => ({
+vi.mock('./PermissionGroup', () => ({
 	__esModule: true,
 	default: () => <div data-testid='permission-group'>Permissions</div>,
 }));
@@ -76,8 +77,7 @@ describe('GenericAdminForm Component', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-		const { useAlert } = require('../../context/AlertContext');
-		useAlert.mockReturnValue({ showAlert: mockShowAlert });
+				useAlert.mockReturnValue({ showAlert: mockShowAlert });
 	});
 
 	test('renders form fields from config', () => {

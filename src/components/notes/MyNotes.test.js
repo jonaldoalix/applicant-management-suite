@@ -9,37 +9,37 @@ import { generatePath } from '../../config/navigation/routeUtils';
 
 const mockNavigate = jest.fn();
 
-jest.mock('react-router-dom', async () => ({
+vi.mock('react-router-dom', async () => ({
 	...(await vi.importActual('react-router-dom')),
 	useNavigate: () => mockNavigate,
 }));
 
-jest.mock('../../context/AuthContext', () => ({
+vi.mock('../../context/AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	__esModule: true,
 	getNotesByAuthor: jest.fn(),
 }));
 
 // Define the mock shell here
-jest.mock('../../config/navigation/routeUtils', () => ({
+vi.mock('../../config/navigation/routeUtils', () => ({
 	__esModule: true,
 	generatePath: jest.fn(),
 }));
 
-jest.mock('../../config/navigation/paths', () => ({
+vi.mock('../../config/navigation/paths', () => ({
 	__esModule: true,
 	paths: { viewApp: '/app', viewApplicant: '/applicant' },
 }));
 
 // Define strict collection strings to match test data
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	__esModule: true,
 	collections: {
 		applications: 'applications_collection',
@@ -47,7 +47,7 @@ jest.mock('../../config/data/collections', () => ({
 	},
 }));
 
-jest.mock('../loader/Loader', () => () => <div>Loading...</div>);
+vi.mock('../loader/Loader', () => ({ default: () => <div>Loading...</div> }));
 
 describe('MyNotes Component', () => {
 	const mockDate = { toDate: () => new Date('2023-01-01') };

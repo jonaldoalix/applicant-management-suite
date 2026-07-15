@@ -7,11 +7,11 @@ import { useDialog } from '../../context/DialogContext';
 import { useNavigate } from 'react-router-dom';
 
 // --- MOCKS ---
-jest.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
-jest.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
-jest.mock('../../context/DialogContext', () => ({ useDialog: jest.fn() }));
-jest.mock('react-router-dom', () => ({ useNavigate: jest.fn() }));
-jest.mock('../../config/data/firebase', () => ({ logoutUser: jest.fn(), saveApplicantData: jest.fn() }));
+vi.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
+vi.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../context/DialogContext', () => ({ useDialog: jest.fn() }));
+vi.mock('react-router-dom', () => ({ useNavigate: jest.fn() }));
+vi.mock('../../config/data/firebase', () => ({ logoutUser: jest.fn(), saveApplicantData: jest.fn() }));
 
 describe('Breadcrumbs Component', () => {
 	const mockNavigate = jest.fn();

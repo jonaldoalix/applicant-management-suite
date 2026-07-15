@@ -3,7 +3,7 @@ import { collections, ApplicationType } from '../data/collections';
 import { templateApp, templateApp2 } from '../data/Validation';
 
 // Mock the dependencies
-jest.mock('../data/collections', () => ({
+vi.mock('../data/collections', () => ({
 	ApplicationType: {
 		newApplication: 'New Applicant',
 		returningGrant: 'Returning Grant',
@@ -22,7 +22,7 @@ jest.mock('../data/collections', () => ({
 	},
 }));
 
-jest.mock('../data/Validation', () => ({
+vi.mock('../data/Validation', () => ({
 	templateApp: { id: 'mockTemplateApp' },
 	templateApp2: { id: 'mockTemplateApp2' },
 }));

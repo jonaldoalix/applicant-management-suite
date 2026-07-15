@@ -6,18 +6,20 @@ import { collections } from '../data/collections';
 import { emailTemplates } from './emailTemplates';
 
 // Mock all dependencies
-jest.mock('../data/firebase', () => ({
+vi.mock('../data/firebase', () => ({
 	db: 'mockDb', // Provide a simple mock value
 	getConfigFromDb: jest.fn(),
 }));
 
-jest.mock('firebase/firestore', () => ({
+vi.mock('firebase/firestore', () => ({
 	doc: jest.fn(),
 	setDoc: jest.fn(),
 	collection: jest.fn(),
+	writeBatch: jest.fn(() => ({ set: jest.fn(), commit: jest.fn(() => Promise.resolve()) })),
+	serverTimestamp: jest.fn(() => 'SERVER_TIMESTAMP'),
 }));
 
-jest.mock('../Constants', () => ({
+vi.mock('../Constants', () => ({
 	brand: {
 		boardName: 'Test Board',
 		theOrganizationName: 'Test Org',
@@ -35,7 +37,7 @@ jest.mock('../Constants', () => ({
 	},
 }));
 
-jest.mock('../data/collections', () => ({
+vi.mock('../data/collections', () => ({
 	collections: {
 		emails: 'emails',
 		sms: 'sms',
@@ -43,7 +45,7 @@ jest.mock('../data/collections', () => ({
 }));
 
 // FIX: Use hardcoded strings instead of the ContactTemplate variable
-jest.mock('./emailTemplates', () => ({
+vi.mock('./emailTemplates', () => ({
 	emailTemplates: {
 		welcome: {
 			subject: 'Welcome {{name}}',

@@ -12,24 +12,24 @@ import { getDoc } from 'firebase/firestore';
 
 // --- Mocks ---
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: jest.fn(),
 }));
 
-jest.mock('@daily-co/daily-react', () => ({
+vi.mock('@daily-co/daily-react', () => ({
 	DailyProvider: ({ children }) => <div data-testid='daily-provider'>{children}</div>,
 }));
 
-jest.mock('firebase/functions', () => ({
+vi.mock('firebase/functions', () => ({
 	httpsCallable: jest.fn(),
 }));
 
-jest.mock('firebase/firestore', () => ({
+vi.mock('firebase/firestore', () => ({
 	doc: jest.fn(),
 	getDoc: jest.fn(),
 }));
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	functions: {},
 	db: {},
 	getRealTimeMeetings: jest.fn(),
@@ -37,7 +37,7 @@ jest.mock('../../config/data/firebase', () => ({
 	generateJoinToken: jest.fn(),
 }));
 
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	collections: {
 		interviews: 'interviews',
 		members: 'members',
@@ -50,35 +50,35 @@ jest.mock('../../config/data/collections', () => ({
 }));
 
 // Context Mocks
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 	handleError: jest.fn(),
 }));
 
-jest.mock('../../context/MeetingContext', () => ({
+vi.mock('../../context/MeetingContext', () => ({
 	useMeeting: jest.fn(),
 }));
 
-jest.mock('../../context/AuthContext', () => ({
+vi.mock('../../context/AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
 // Child Component Mocks
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader'>Loading...</div>);
-jest.mock('../../components/interviews/AdminDrawer', () => (props) => (
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader'>Loading...</div> }));
+vi.mock('../../components/interviews/AdminDrawer', () => ({ default: (props) => (
 	<div data-testid='admin-drawer'>
 		<button onClick={() => props.onStartNextInterview('next-id')} data-testid='start-next-btn'>
 			Start Next
 		</button>
 	</div>
-));
+) }));
 
-jest.mock('../../components/interviews/ApplicationViewer', () => () => <div data-testid='app-viewer'>App Viewer</div>);
-jest.mock('../../components/interviews/CallInterface', () => () => <div data-testid='call-ui'>Call UI</div>);
+vi.mock('../../components/interviews/ApplicationViewer', () => ({ default: () => <div data-testid='app-viewer'>App Viewer</div> }));
+vi.mock('../../components/interviews/CallInterface', () => ({ default: () => <div data-testid='call-ui'>Call UI</div> }));
 
 describe('DeliberationRoom Component', () => {
 	const mockNavigate = jest.fn();

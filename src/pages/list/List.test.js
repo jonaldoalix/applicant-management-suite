@@ -13,12 +13,12 @@ import { getRoomDetails } from '../../config/data/firebase';
 
 // 1. React Router
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: () => mockNavigate,
 }));
 
 // 2. Material UI & Theme
-jest.mock('@mui/material', async () => {
+vi.mock('@mui/material', async () => {
 	const actual = await vi.importActual('@mui/material');
 	return {
 		...actual,
@@ -30,7 +30,7 @@ jest.mock('@mui/material', async () => {
 });
 
 // 3. Config
-jest.mock('../../config/admin/lists', () => ({
+vi.mock('../../config/admin/lists', () => ({
 	adminLists: {
 		users: {
 			title: 'Users List',
@@ -63,45 +63,50 @@ jest.mock('../../config/admin/lists', () => ({
 }));
 
 // 4. Firebase
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	getRoomDetails: jest.fn(),
+	purgeUserRecords: jest.fn(),
+	sendToTestDB: jest.fn(),
+	wipeCollections: jest.fn(),
+	wipeTestCollections: jest.fn(),
+	backfillLastUpdated: jest.fn(),
 }));
 
 // 5. Contexts & Hooks
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
-jest.mock('../../context/AuthContext', () => ({
+vi.mock('../../context/AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
-jest.mock('../../context/MailboxContext', () => ({
+vi.mock('../../context/MailboxContext', () => ({
 	useMailbox: jest.fn(),
 }));
 
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
 
-jest.mock('../../hooks/useRealTimeList', () => ({
+vi.mock('../../hooks/useRealTimeList', () => ({
 	useRealTimeList: jest.fn(),
 }));
 
 // 6. Child Components
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader'>Loading...</div>);
-jest.mock('../../components/datatable/Datatable', () => (props) => (
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader'>Loading...</div> }));
+vi.mock('../../components/datatable/Datatable', () => ({ default: (props) => (
 	<div data-testid='datatable'>
 		<h1>{props.titleIn}</h1>
 		<div>Rows: {props.rows?.length}</div>
 	</div>
-));
-jest.mock('../../components/list/MobileListCard', () => ({ children }) => <div data-testid='mobile-card'>{children}</div>);
-jest.mock('../../components/list/LegacyFinancesTable', () => (props) => <div data-testid='legacy-table'>{props.titleIn}</div>);
+) }));
+vi.mock('../../components/list/MobileListCard', () => ({ default: ({ children }) => <div data-testid='mobile-card'>{children}</div> }));
+vi.mock('../../components/list/LegacyFinancesTable', () => ({ default: (props) => <div data-testid='legacy-table'>{props.titleIn}</div> }));
 
 describe('List Page Component', () => {
 	const mockHandleError = jest.fn();

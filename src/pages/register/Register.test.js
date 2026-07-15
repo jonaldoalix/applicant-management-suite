@@ -8,41 +8,41 @@ import { registerUser, saveApplicantData } from '../../config/data/firebase';
 import { pushNotice } from '../../config/content/push';
 
 // 1. MOCK DEPENDENCIES
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: jest.fn(),
 }));
 
-jest.mock('../../context/AuthContext', () => ({
+vi.mock('../../context/AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: () => ({ boxShadow: 'mock-shadow' }),
 }));
 
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: jest.fn(),
 }));
 
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	registerUser: jest.fn(),
 	saveApplicantData: jest.fn(),
 }));
 
-jest.mock('../../config/content/push', () => ({
+vi.mock('../../config/content/push', () => ({
 	pushNotice: jest.fn(),
 	ContactTemplate: { welcome: 'welcome-template' },
 }));
 
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader'>Loading...</div>);
-jest.mock('../../components/footer/CopyrightFooter', () => () => <div>Copyright</div>);
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader'>Loading...</div> }));
+vi.mock('../../components/footer/CopyrightFooter', () => ({ default: () => <div>Copyright</div> }));
 
 // 2. MOCK CONTENT CONFIG
-jest.mock('../../config/content/content', () => ({
+vi.mock('../../config/content/content', () => ({
 	applicantRegistrationContent: {
 		title: 'Mock Sign Up',
 		icon: 'Icon',

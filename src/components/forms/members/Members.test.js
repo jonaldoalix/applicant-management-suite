@@ -5,23 +5,23 @@ import { useAuth } from '../../../context/AuthContext';
 import { useAlert } from '../../../context/AlertContext';
 import { saveCollectionData, registerUser, saveFile } from '../../../config/data/firebase';
 
-jest.mock('../../../context/AuthContext', () => ({ useAuth: jest.fn() }));
-jest.mock('../../../context/AlertContext', () => ({ useAlert: jest.fn() }));
-jest.mock('../../../config/data/firebase', () => ({
+vi.mock('../../../context/AuthContext', () => ({ useAuth: jest.fn() }));
+vi.mock('../../../context/AlertContext', () => ({ useAlert: jest.fn() }));
+vi.mock('../../../config/data/firebase', () => ({
 	saveCollectionData: jest.fn(),
 	registerUser: jest.fn(),
 	saveFile: jest.fn(),
 	getDownloadLinkForFile: jest.fn(() => Promise.resolve('http://img.com')),
 }));
 
-jest.mock('../../loader/Loader', () => () => <div>Loading...</div>);
+vi.mock('../../loader/Loader', () => ({ default: () => <div>Loading...</div> }));
 
-jest.mock('../GenericAdminForm', () => ({ onSubmit, onFileUpload }) => (
+vi.mock('../GenericAdminForm', () => ({ default: ({ onSubmit, onFileUpload }) => (
 	<div>
 		<button onClick={() => onSubmit({ firstName: 'New', email: 'new@test.com' })}>Save</button>
 		<button onClick={() => onFileUpload('upload', 'path', { name: 'pic.jpg' })}>Upload</button>
 	</div>
-));
+) }));
 
 describe('MemberForm Component', () => {
 	const mockAlert = { showAlert: jest.fn(), handleError: jest.fn() };

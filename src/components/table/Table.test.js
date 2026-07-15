@@ -5,14 +5,14 @@ import { useTheme } from '../../context/ThemeContext';
 import * as firebase from '../../config/data/firebase';
 
 // --- Mocks ---
-jest.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../config/data/firebase', () => ({
 	getCollectionData: jest.fn(),
 	getApplication: jest.fn(),
 	getAwardsData: jest.fn(),
 }));
-jest.mock('../interviews/AttachmentViewer', () => () => <div data-testid='attachment-viewer' />);
-jest.mock('../notes/NotesSection', () => () => <div data-testid='notes-section' />);
+vi.mock('../interviews/AttachmentViewer', () => ({ default: () => <div data-testid='attachment-viewer' /> }));
+vi.mock('../notes/NotesSection', () => ({ default: () => <div data-testid='notes-section' /> }));
 
 const mockUseTheme = useTheme;
 const mockGetApplication = firebase.getApplication;

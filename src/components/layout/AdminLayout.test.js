@@ -9,19 +9,19 @@ import { useTheme } from '../../context/ThemeContext';
 // 1. Mock SidebarContext
 // We export useSidebar as a mock function so we can change return values in tests
 // We mock SidebarProvider to simply render children, so we can control the hook values manually
-jest.mock('../../context/SidebarContext', () => ({
+vi.mock('../../context/SidebarContext', () => ({
 	useSidebar: jest.fn(),
 	SidebarProvider: ({ children }) => <div data-testid='sidebar-provider'>{children}</div>,
 }));
 
 // 2. Mock ThemeContext
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
 // 3. Mock Child Components
-jest.mock('../sidebar/Sidebar', () => () => <div data-testid='mock-sidebar'>Sidebar</div>);
-jest.mock('../navbar/Navbar', () => () => <div data-testid='mock-navbar'>Navbar</div>);
+vi.mock('../sidebar/Sidebar', () => ({ default: () => <div data-testid='mock-sidebar'>Sidebar</div> }));
+vi.mock('../navbar/Navbar', () => ({ default: () => <div data-testid='mock-navbar'>Navbar</div> }));
 
 describe('AdminLayout Component', () => {
 	beforeEach(() => {

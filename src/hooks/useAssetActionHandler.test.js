@@ -4,28 +4,28 @@ import { changeUserEmail } from '../config/data/firebase';
 
 // Mock dependencies
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: () => mockNavigate,
 }));
 
 // Mock Contexts
 const mockShowDialog = jest.fn();
-jest.mock('../context/DialogContext', () => ({
+vi.mock('../context/DialogContext', () => ({
 	useDialog: () => ({ showDialog: mockShowDialog }),
 }));
 
 const mockShowAlert = jest.fn();
 const mockHandleError = jest.fn();
-jest.mock('../context/AlertContext', () => ({
+vi.mock('../context/AlertContext', () => ({
 	useAlert: () => ({ showAlert: mockShowAlert, handleError: mockHandleError }),
 }));
 
 // Mock Firebase Function
-jest.mock('../config/data/firebase', () => ({
+vi.mock('../config/data/firebase', () => ({
 	changeUserEmail: jest.fn(),
 }));
 
-jest.mock('../config/navigation/routeUtils', () => ({
+vi.mock('../config/navigation/routeUtils', () => ({
 	generatePath: (path, params) => `/mocked/${path}/${params.id}`,
 }));
 

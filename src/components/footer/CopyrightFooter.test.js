@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import CopyrightFooter from './CopyrightFooter';
 
 // 1. Minimal Mock for MUI to catch the 'href' attribute
-jest.mock('@mui/material', () => {
+vi.mock('@mui/material', () => {
 	return {
 		Link: ({ children, href, ...props }) => (
 			<a href={href} {...props} data-testid='copyright-link'>
@@ -16,8 +16,8 @@ jest.mock('@mui/material', () => {
 
 // 2. We don't even need to mock the config files anymore if we inject the prop!
 // (However, keep simple mocks to prevent import crashes if those files are complex)
-jest.mock('../../config/navigation/paths', () => ({ paths: { home: '/' } }));
-jest.mock('../../config/navigation/routeUtils', () => ({ generatePath: () => '/' }));
+vi.mock('../../config/navigation/paths', () => ({ paths: { home: '/' } }));
+vi.mock('../../config/navigation/routeUtils', () => ({ generatePath: () => '/'  }));
 
 describe('CopyrightFooter', () => {
 	test('renders with the provided link prop', () => {

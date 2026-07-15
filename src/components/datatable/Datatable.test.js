@@ -6,14 +6,14 @@ import { useDialog } from '../../context/DialogContext';
 import { useAlert } from '../../context/AlertContext';
 import { useConfig } from '../../context/ConfigContext';
 
-jest.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
-jest.mock('../../context/DialogContext', () => ({ useDialog: jest.fn() }));
-jest.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
-jest.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
+vi.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../context/DialogContext', () => ({ useDialog: jest.fn() }));
+vi.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
+vi.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
 
 // Simple mock to capture props and provide a trigger
 let lastGridProps = {};
-jest.mock('@mui/x-data-grid', async () => ({
+vi.mock('@mui/x-data-grid', async () => ({
 	...(await vi.importActual('@mui/x-data-grid')),
 	DataGrid: (props) => {
 		lastGridProps = props;

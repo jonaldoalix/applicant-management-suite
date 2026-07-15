@@ -19,10 +19,15 @@ globalThis.Headers = Headers;
 globalThis.Request = Request;
 globalThis.Response = Response;
 
-globalThis.matchMedia = globalThis.matchMedia || (() => ({
+globalThis.matchMedia = globalThis.matchMedia || ((query) => ({
   matches: false,
+  media: query,
+  onchange: null,
   addListener() {},
   removeListener() {},
+  addEventListener() {},
+  removeEventListener() {},
+  dispatchEvent() { return false; },
 }));
 
 vi.mock('axios', () => {

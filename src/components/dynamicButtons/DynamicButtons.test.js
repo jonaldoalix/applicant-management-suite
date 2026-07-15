@@ -6,17 +6,17 @@ import { useNavigate } from 'react-router-dom';
 import { generatePath } from '../../config/navigation/routeUtils'; // This imports the mock
 
 // Mock dependencies
-jest.mock('react-router-dom', async () => ({
+vi.mock('react-router-dom', async () => ({
 	...(await vi.importActual('react-router-dom')),
 	useNavigate: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
 // This mock factory now just creates the base jest.fn()
-jest.mock('../../config/navigation/routeUtils', () => ({
+vi.mock('../../config/navigation/routeUtils', () => ({
 	generatePath: jest.fn(),
 }));
 

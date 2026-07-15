@@ -15,12 +15,12 @@ if (typeof global.structuredClone === 'undefined') {
 // Mock Alert Context
 const mockShowAlert = jest.fn();
 const mockHandleError = jest.fn();
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: () => ({ showAlert: mockShowAlert, handleError: mockHandleError }),
 }));
 
 // Mock Firebase Services
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	saveFile: jest.fn(),
 	getDownloadLinkForFile: jest.fn(),
 	deleteFile: jest.fn(),
@@ -28,13 +28,13 @@ jest.mock('../../config/data/firebase', () => ({
 }));
 
 // Mock UUID
-jest.mock('uuid', () => ({
+vi.mock('uuid', () => ({
 	v4: () => 'test-uuid',
 }));
 
 // Mock DynamicField
-jest.mock('./DynamicField', () => {
-	return function MockDynamicField({ fieldConfig, onFieldUpdate, onFileAction, sectionName }) {
+vi.mock('./DynamicField', () => ({
+	default: function MockDynamicField({ fieldConfig, onFieldUpdate, onFileAction, sectionName }) {
 		const fieldPath = sectionName === 'temp' ? fieldConfig.name : `${sectionName}.${fieldConfig.name}`;
 
 		return (
@@ -72,14 +72,14 @@ jest.mock('./DynamicField', () => {
 				</button>
 			</div>
 		);
-	};
-});
+	},
+}));
 
 // Mock Loader
-jest.mock('../loader/Loader', () => () => <div data-testid='loader'>Loading...</div>);
+vi.mock('../loader/Loader', () => ({ default: () => <div data-testid='loader'>Loading...</div> }));
 
 // Mock Config
-jest.mock('../../config/ui/formConfig', () => ({
+vi.mock('../../config/ui/formConfig', () => ({
 	appFormConfig: {
 		personal: {
 			name: 'personal',

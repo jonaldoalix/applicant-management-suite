@@ -3,10 +3,10 @@ import { useAuth } from '../../context/AuthContext';
 import { useSidebarMenu } from './sidebarConfig';
 
 // Mock useAuth
-jest.mock('../../context/AuthContext');
+vi.mock('../../context/AuthContext');
 
 // Mock route utils
-jest.mock('./routeUtils', () => ({
+vi.mock('./routeUtils', () => ({
 	generatePath: (path, params) => {
 		// FIX: Add a check to ensure path is not undefined
 		if (!path) {
@@ -24,7 +24,7 @@ jest.mock('./routeUtils', () => ({
 }));
 
 // Mock paths (simplified)
-jest.mock('./paths', () => ({
+vi.mock('./paths', () => ({
 	paths: {
 		memberDash: '/members/dashboard',
 		inbox: '/inbox',

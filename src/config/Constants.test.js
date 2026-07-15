@@ -5,11 +5,11 @@ import CryptoJS from 'crypto-js';
 import * as pdfjsLib from 'pdfjs-dist/webpack.mjs';
 
 // Mock dependencies
-jest.mock('./data/firebase', () => ({
+vi.mock('./data/firebase', () => ({
 	getConfigFromDb: jest.fn(),
 }));
 
-jest.mock('crypto-js', () => ({
+vi.mock('crypto-js', () => ({
 	__esModule: true,
 	default: {
 		HmacSHA256: jest.fn(),
@@ -17,7 +17,7 @@ jest.mock('crypto-js', () => ({
 }));
 
 // FIX 2: Mock the specific webpack path used in Constants.js
-jest.mock('pdfjs-dist/webpack.mjs', () => ({
+vi.mock('pdfjs-dist/webpack.mjs', () => ({
 	__esModule: true,
 	GlobalWorkerOptions: { workerSrc: '' },
 	getDocument: jest.fn(),

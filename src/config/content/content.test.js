@@ -1,6 +1,6 @@
 import { paths } from '../navigation/paths.js';
 
-jest.mock('../navigation/paths', () => ({
+vi.mock('../navigation/paths', () => ({
 	paths: {
 		registerApplicant: '/register',
 		login: '/login',
@@ -9,7 +9,7 @@ jest.mock('../navigation/paths', () => ({
 	},
 }));
 
-jest.mock('../Constants', () => ({
+vi.mock('../Constants', () => ({
 	Assets: {
 		heroLM: 'light-hero.jpg',
 		heroDM: 'dark-hero.jpg',

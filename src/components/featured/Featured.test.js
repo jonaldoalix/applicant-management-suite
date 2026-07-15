@@ -6,22 +6,22 @@ import * as firebase from '../../config/data/firebase';
 import { ApplicationType } from '../../config/data/collections';
 
 // Mock Context
-jest.mock('../../context/ConfigContext', () => ({
+vi.mock('../../context/ConfigContext', () => ({
 	useConfig: jest.fn(),
 }));
 
 // Mock Firebase
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	getCurrentlyEligibleApplicationsCountByType: jest.fn(),
 	getBenchmarkedAwardCounts: jest.fn(),
 	getAverageApplicationsPerYearByType: jest.fn(),
 }));
 
 // Mock Timer component
-jest.mock('../timer/Timer', () => () => <div data-testid='timer'>Timer</div>);
+vi.mock('../timer/Timer', () => ({ default: () => <div data-testid='timer'>Timer</div> }));
 
 // Mock ApplicationType
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	ApplicationType: {
 		newApplication: 'New',
 		returningGrant: 'Returning',

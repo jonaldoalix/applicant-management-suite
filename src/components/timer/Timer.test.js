@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import Timer from './Timer';
 import { useConfig } from '../../context/ConfigContext';
 
-jest.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
+vi.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
 const mockOnModeChange = jest.fn();
 
 describe('Timer', () => {
@@ -18,7 +18,7 @@ describe('Timer', () => {
 
 	test('displays deadline countdown correctly', async () => {
 		// useConfig.mockReturnValue must be set before render
-		require('../../context/ConfigContext').useConfig.mockReturnValue({
+		useConfig.mockReturnValue({
 			APPLICATION_DEADLINE: '2025-12-31T23:59:59Z',
 			NEXT_APPLICATION_OPEN_DATE: null,
 		});
@@ -42,7 +42,7 @@ describe('Timer', () => {
 	});
 
 	test('displays closed message when past deadline', async () => {
-		require('../../context/ConfigContext').useConfig.mockReturnValue({
+		useConfig.mockReturnValue({
 			APPLICATION_DEADLINE: '2025-12-31T23:59:59Z',
 		});
 		// Set time AFTER deadline

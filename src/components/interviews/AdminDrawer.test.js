@@ -10,28 +10,28 @@ import { useAuth } from '../../context/AuthContext';
 import * as firebase from '../../config/data/firebase';
 
 // Mock Dependencies
-jest.mock('@daily-co/daily-react', () => ({
+vi.mock('@daily-co/daily-react', () => ({
 	useParticipantIds: jest.fn(),
 	useDaily: jest.fn(),
 }));
-jest.mock('firebase/functions', () => ({
+vi.mock('firebase/functions', () => ({
 	httpsCallable: jest.fn(),
 }));
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	functions: { app: 'mock-functions' },
 	db: { app: 'mock-db' },
 	endInterview: jest.fn(),
 	markInterviewAsMissed: jest.fn(),
 }));
-jest.mock('firebase/firestore', () => ({
+vi.mock('firebase/firestore', () => ({
 	doc: jest.fn(),
 	updateDoc: jest.fn(),
 	onSnapshot: jest.fn(),
 }));
-jest.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
-jest.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
-jest.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
-jest.mock('./ParticipantRow', () => (props) => <div data-testid='participant-row'>{props.id}</div>);
+vi.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
+vi.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
+vi.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
+vi.mock('./ParticipantRow', () => ({ default: (props) => <div data-testid='participant-row'>{props.id}</div> }));
 
 
 describe('AdminDrawer Component', () => {

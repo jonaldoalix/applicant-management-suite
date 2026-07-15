@@ -8,7 +8,7 @@ import { useAlert } from '../../context/AlertContext';
 import { useMeeting } from '../../context/MeetingContext';
 
 // Mock all hooks from @daily-co/daily-react
-jest.mock('@daily-co/daily-react', () => ({
+vi.mock('@daily-co/daily-react', () => ({
 	useDailyEvent: jest.fn(),
 	useParticipantProperty: jest.fn(),
 	useLocalSessionId: jest.fn(),
@@ -18,13 +18,13 @@ jest.mock('@daily-co/daily-react', () => ({
 }));
 
 // Mock Contexts
-jest.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
-jest.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
-jest.mock('../../context/MeetingContext', () => ({ useMeeting: jest.fn() }));
+vi.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
+vi.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
+vi.mock('../../context/MeetingContext', () => ({ useMeeting: jest.fn() }));
 
 // Mock react-router-dom
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', async () => ({
+vi.mock('react-router-dom', async () => ({
 	...(await vi.importActual('react-router-dom')),
 	useNavigate: () => mockNavigate,
 }));

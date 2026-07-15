@@ -3,7 +3,7 @@ import { attachmentFields } from '../Constants';
 import { ApplicationType } from '../data/collections';
 
 // Mock dependencies
-jest.mock('../Constants', () => ({
+vi.mock('../Constants', () => ({
 	attachmentFields: [
 		{ key: 'field1', label: 'Field 1', requiredBy: ['New Applicant', 'Returning Grant'] },
 		{ key: 'field2', label: 'Field 2', requiredBy: ['New Applicant'] },
@@ -12,7 +12,7 @@ jest.mock('../Constants', () => ({
 	],
 }));
 
-jest.mock('../data/collections', () => ({
+vi.mock('../data/collections', () => ({
 	ApplicationType: {
 		newApplication: 'New Applicant',
 		returningGrant: 'Returning Grant',

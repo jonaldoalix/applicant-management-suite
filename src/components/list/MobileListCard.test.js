@@ -4,7 +4,7 @@ import MobileListCard from './MobileListCard';
 import { useTheme } from '../../context/ThemeContext';
 
 // --- Mocks ---
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 

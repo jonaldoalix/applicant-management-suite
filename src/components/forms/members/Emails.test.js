@@ -12,18 +12,18 @@ import { sendZohoEmail } from '../../../config/data/firebase';
 const mockNavigate = jest.fn();
 const mockLocation = { state: {} };
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: () => mockNavigate,
 	useLocation: () => mockLocation,
 }));
 
-jest.mock('../../../context/AuthContext', () => ({ useAuth: jest.fn() }));
-jest.mock('../../../context/MailboxContext', () => ({ useMailbox: jest.fn() }));
-jest.mock('../../../context/AlertContext', () => ({ useAlert: jest.fn() }));
-jest.mock('../../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
-jest.mock('../../../hooks/useComposeEmailOptions', () => ({ useComposeEmailOptions: jest.fn() }));
+vi.mock('../../../context/AuthContext', () => ({ useAuth: jest.fn() }));
+vi.mock('../../../context/MailboxContext', () => ({ useMailbox: jest.fn() }));
+vi.mock('../../../context/AlertContext', () => ({ useAlert: jest.fn() }));
+vi.mock('../../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
+vi.mock('../../../hooks/useComposeEmailOptions', () => ({ useComposeEmailOptions: jest.fn() }));
 
-jest.mock('../../../config/data/firebase', () => ({
+vi.mock('../../../config/data/firebase', () => ({
 	sendZohoEmail: jest.fn(),
 }));
 

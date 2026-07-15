@@ -32,20 +32,20 @@ import { generatePath } from '../navigation/routeUtils';
 // 1. Robust Router Mock
 const mockNavigate = jest.fn();
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', async () => ({
 	__esModule: true,
 	...(await vi.importActual('react-router-dom')),
 	useNavigate: () => mockNavigate,
 }));
 
 // 2. Mock Route Utils
-jest.mock('../navigation/routeUtils', () => ({
+vi.mock('../navigation/routeUtils', () => ({
 	__esModule: true,
 	generatePath: jest.fn(),
 }));
 
 // 3. Mock Paths
-jest.mock('../navigation/paths', () => ({
+vi.mock('../navigation/paths', () => ({
 	__esModule: true,
 	paths: {
 		viewApp: 'viewApp',
@@ -61,7 +61,7 @@ jest.mock('../navigation/paths', () => ({
 }));
 
 // 4. Mock Collections (Crucial for Validation.js and Firestore calls)
-jest.mock('../data/collections', () => ({
+vi.mock('../data/collections', () => ({
 	__esModule: true,
 	collections: {
 		requests: 'requests',
@@ -98,30 +98,30 @@ const mockHandleForward = jest.fn();
 const mockBatchUpdate = jest.fn();
 const mockBatchCommit = jest.fn().mockResolvedValue(true);
 
-jest.mock('../../context/DialogContext', () => ({
+vi.mock('../../context/DialogContext', () => ({
 	useDialog: () => ({ showDialog: mockShowDialog }),
 }));
 
-jest.mock('../../context/AlertContext', () => ({
+vi.mock('../../context/AlertContext', () => ({
 	useAlert: () => ({ showAlert: mockShowAlert, handleError: mockHandleError }),
 }));
 
-jest.mock('../../context/AuthContext', () => ({
+vi.mock('../../context/AuthContext', () => ({
 	useAuth: () => ({
 		user: { uid: 'test-user', permissions: { admin: true, interviews: { canAccess: true, canHost: true } } },
 		member: { id: 'test-member', permissions: { email: true, interviews: { canAccess: true, canHost: true, canSchedule: true }, admin: true } },
 	}),
 }));
 
-jest.mock('../../context/ConfigContext', () => ({
+vi.mock('../../context/ConfigContext', () => ({
 	useConfig: () => ({ APPLICATION_DEADLINE: '2024-01-01', DEFAULT_AVATAR: 'default.jpg' }),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: () => ({ darkMode: false, dispatch: mockDispatch }),
 }));
 
-jest.mock('../../hooks/useEmailActions', () => ({
+vi.mock('../../hooks/useEmailActions', () => ({
 	useEmailActions: () => ({
 		handleReply: mockHandleReply,
 		handleReplyAll: mockHandleReplyAll,
@@ -129,7 +129,7 @@ jest.mock('../../hooks/useEmailActions', () => ({
 	}),
 }));
 
-jest.mock('../data/firebase', () => ({
+vi.mock('../data/firebase', () => ({
 	__esModule: true,
 	getUserAuthRecord: jest.fn(),
 	getCollectionData: jest.fn(),
@@ -147,19 +147,19 @@ jest.mock('../data/firebase', () => ({
 	functions: {},
 }));
 
-jest.mock('firebase/functions', () => ({
+vi.mock('firebase/functions', () => ({
 	__esModule: true,
 	httpsCallable: jest.fn(),
 }));
 
-jest.mock('firebase/firestore', () => ({
+vi.mock('firebase/firestore', () => ({
 	__esModule: true,
 	// Initialize as basic fn to avoid hoisting issues. Implementation is set in beforeEach.
 	writeBatch: jest.fn(),
 	doc: jest.fn((db, col, id) => `${col}/${id}`),
 }));
 
-jest.mock('../Constants', () => ({
+vi.mock('../Constants', () => ({
 	__esModule: true,
 	attachmentFields: [
 		{ key: 'testKey', label: 'Test Label' },
@@ -170,7 +170,7 @@ jest.mock('../Constants', () => ({
 	generateUploadLink: () => Promise.resolve('http://upload.link'),
 }));
 
-jest.mock('../content/push', () => ({
+vi.mock('../content/push', () => ({
 	__esModule: true,
 	sendRequest: jest.fn(),
 }));

@@ -9,29 +9,29 @@ import { useDialog } from '../../context/DialogContext';
 import { useNavigate } from 'react-router-dom';
 
 // --- MOCKS ---
-jest.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
-jest.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
-jest.mock('../../context/MailboxContext', () => ({ useMailbox: jest.fn() }));
-jest.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
-jest.mock('../../context/DialogContext', () => ({ useDialog: jest.fn() }));
-jest.mock('react-router-dom', () => ({
+vi.mock('../../context/AuthContext', () => ({ useAuth: jest.fn() }));
+vi.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../context/MailboxContext', () => ({ useMailbox: jest.fn() }));
+vi.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
+vi.mock('../../context/DialogContext', () => ({ useDialog: jest.fn() }));
+vi.mock('react-router-dom', () => ({
 	useNavigate: jest.fn(),
 }));
-jest.mock('firebase/functions', () => ({ httpsCallable: jest.fn() }));
+vi.mock('firebase/functions', () => ({ httpsCallable: jest.fn() }));
 import * as firebase from '../../config/data/firebase';
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	functions: {},
 	saveCollectionData: jest.fn(),
 	globalSearch: jest.fn(),
 }));
 
 // Mock child component to verify search results rendering logic
-jest.mock('./SearchResultsDropdown', () => ({ results, loading }) => (
+vi.mock('./SearchResultsDropdown', () => ({ default: ({ results, loading }) => (
 	<div data-testid='search-dropdown'>
 		{loading ? 'Loading...' : 'Results Loaded'}
 		{results?.error && <span data-testid='search-error'>{results.error}</span>}
 	</div>
-));
+) }));
 
 describe('Navbar Component', () => {
 	const mockDispatch = jest.fn();

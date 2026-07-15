@@ -4,18 +4,19 @@ import ManualUploader from './ManualUploader';
 import { useTheme } from '../../../context/ThemeContext';
 import { useAlert } from '../../../context/AlertContext';
 import * as firebaseConfig from '../../../config/data/firebase';
+import { useTitle } from '../../../context/HelmetContext';
 
 const mockNavigate = jest.fn();
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: () => mockNavigate,
 }));
 
-jest.mock('../../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
-jest.mock('../../../context/AlertContext', () => ({ useAlert: jest.fn() }));
-jest.mock('../../../context/HelmetContext', () => ({ useTitle: jest.fn() }));
+vi.mock('../../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../../context/AlertContext', () => ({ useAlert: jest.fn() }));
+vi.mock('../../../context/HelmetContext', () => ({ useTitle: jest.fn() }));
 
-jest.mock('../../../config/data/firebase', () => ({
+vi.mock('../../../config/data/firebase', () => ({
 	__esModule: true,
 	getRealTimeCollection: jest.fn(),
 	getApplicationsForApplicant: jest.fn(),
@@ -25,7 +26,7 @@ jest.mock('../../../config/data/firebase', () => ({
 	saveCollectionData: jest.fn(),
 }));
 
-jest.mock('../GenericAdminForm', () => ({ onSubmit }) => (
+vi.mock('../GenericAdminForm', () => ({ default: ({ onSubmit }) => (
 	<div data-testid='admin-form'>
 		<button
 			onClick={() =>
@@ -39,17 +40,15 @@ jest.mock('../GenericAdminForm', () => ({ onSubmit }) => (
 			Submit Mock
 		</button>
 	</div>
-));
+) }));
 
-jest.mock('../../loader/Loader', () => () => <div>Loading...</div>);
+vi.mock('../../loader/Loader', () => ({ default: () => <div>Loading...</div> }));
 
 describe('ManualUploader Component', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		useTheme.mockReturnValue({ darkMode: false, boxShadow: 'none' });
-		const { useAlert } = require('../../../context/AlertContext');
 		useAlert.mockReturnValue({ showAlert: jest.fn(), handleError: jest.fn() });
-		const { useTitle } = require('../../../context/HelmetContext');
 		useTitle.mockImplementation(() => {});
 
 		firebaseConfig.getRealTimeCollection.mockImplementation((col, callback) => {

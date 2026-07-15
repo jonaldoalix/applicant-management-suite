@@ -8,28 +8,28 @@ import { isAdminPath } from '../../config/navigation/routeUtils';
 // --- Mocks ---
 
 // 1. Mock Auth Context
-jest.mock('../../context/AuthContext', () => ({
+vi.mock('../../context/AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
 // 2. Minimal mocks for config files
-jest.mock('../../config/navigation/routeUtils', () => ({
+vi.mock('../../config/navigation/routeUtils', () => ({
 	isAdminPath: jest.fn(),
 	generatePath: () => '/',
 }));
-jest.mock('../../config/navigation/paths', () => ({
+vi.mock('../../config/navigation/paths', () => ({
 	paths: { home: 'default', redirect: 'default' },
 }));
 
 // 3. Mock Lottie
-jest.mock('lottie-react', () => {
-	return function MockLottie() {
+vi.mock('lottie-react', () => ({
+	default: function MockLottie() {
 		return <div data-testid='lottie-animation'>Lottie Animation</div>;
-	};
-});
+	},
+}));
 
 // 4. Mock Constants
-jest.mock('../../config/Constants', () => ({
+vi.mock('../../config/Constants', () => ({
 	Assets: { accessDeniedLottie: 'mock-animation-data' },
 }));
 

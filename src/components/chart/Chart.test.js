@@ -4,12 +4,12 @@ import Chart from './Chart';
 import * as firebase from '../../config/data/firebase';
 
 // Mock firebase
-jest.mock('../../config/data/firebase', () => ({
+vi.mock('../../config/data/firebase', () => ({
 	getApplicationsByYear: jest.fn(),
 }));
 
 // Mock recharts
-jest.mock('recharts', () => ({
+vi.mock('recharts', () => ({
 	AreaChart: ({ children }) => <div data-testid='area-chart'>{children}</div>,
 	Area: () => <div data-testid='area' />,
 	XAxis: () => <div data-testid='x-axis' />,

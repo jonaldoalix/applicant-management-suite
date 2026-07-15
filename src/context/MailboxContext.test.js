@@ -5,12 +5,12 @@ import { useAuth } from './AuthContext';
 import * as firestore from 'firebase/firestore';
 
 // Mock Auth
-jest.mock('./AuthContext', () => ({
+vi.mock('./AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
 // Mock Firestore
-jest.mock('firebase/firestore', () => ({
+vi.mock('firebase/firestore', () => ({
 	collection: jest.fn(),
 	query: jest.fn(),
 	where: jest.fn(),
@@ -19,7 +19,7 @@ jest.mock('firebase/firestore', () => ({
 	getFirestore: jest.fn(),
 }));
 
-jest.mock('../config/data/firebase', () => ({
+vi.mock('../config/data/firebase', () => ({
 	db: {},
 }));
 

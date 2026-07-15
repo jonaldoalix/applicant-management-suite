@@ -8,64 +8,64 @@ import { getMemberActions } from '../../config/ui/buttonActions';
 import { useAssetActionHandler } from '../../hooks/useAssetActionHandler';
 
 // --- Mocks ---
-jest.mock('react-router-dom', async () => ({
+vi.mock('react-router-dom', async () => ({
 	...(await vi.importActual('react-router-dom')),
 	useNavigate: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
-jest.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
-jest.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
+vi.mock('../../context/ThemeContext', () => ({ useTheme: jest.fn() }));
+vi.mock('../../context/AlertContext', () => ({ useAlert: jest.fn() }));
+vi.mock('../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
 
-jest.mock('../../config/ui/buttonActions', () => ({
+vi.mock('../../config/ui/buttonActions', () => ({
 	__esModule: true,
 	getMemberActions: jest.fn(() => []),
 }));
 
-jest.mock('../../hooks/useAssetActionHandler', () => ({
+vi.mock('../../hooks/useAssetActionHandler', () => ({
 	__esModule: true,
 	useAssetActionHandler: jest.fn(),
 }));
 
-jest.mock('../../config/navigation/routeUtils', () => ({
+vi.mock('../../config/navigation/routeUtils', () => ({
 	__esModule: true,
 	generatePath: jest.fn(),
 }));
 
-jest.mock('../../config/navigation/paths', () => ({
+vi.mock('../../config/navigation/paths', () => ({
 	__esModule: true,
 	paths: { editMember: 'edit' },
 }));
 
-jest.mock('../../config/ui/tableConfig', () => ({
+vi.mock('../../config/ui/tableConfig', () => ({
 	__esModule: true,
 	UserLastLogin: () => <span>2 days ago</span>,
 }));
 
-jest.mock('../../config/ui/formConfig', () => ({
+vi.mock('../../config/ui/formConfig', () => ({
 	__esModule: true,
 	memberFormConfig: { fields: [] },
 }));
 
 // Mock Children
-jest.mock('../layout/SingleAssetPage', () => ({
+vi.mock('../layout/SingleAssetPage', () => ({
 	__esModule: true,
 	default: ({ children }) => <div>{children}</div>,
 	AssetCard: ({ children }) => <div>{children}</div>,
 }));
 
 // FIXED: Header mock now accepts and renders 'children'
-jest.mock('../assets/Header', () => ({ title, children }) => (
+vi.mock('../assets/Header', () => ({ default: ({ title, children }) => (
 	<div>
 		<h1>{title}</h1>
 		{children}
 	</div>
-));
+) }));
 
-jest.mock('../assets/InfoTable', () => () => <div>InfoTable</div>);
-jest.mock('../dynamicButtons/DynamicButtons', () => () => <div>DynamicButtons</div>);
-jest.mock('../forms/PermissionGroup', () => () => <div>PermissionGroup</div>);
-jest.mock('../notes/MyNotes', () => () => <div>MyNotes</div>);
+vi.mock('../assets/InfoTable', () => ({ default: () => <div>InfoTable</div> }));
+vi.mock('../dynamicButtons/DynamicButtons', () => ({ default: () => <div>DynamicButtons</div> }));
+vi.mock('../forms/PermissionGroup', () => ({ default: () => <div>PermissionGroup</div> }));
+vi.mock('../notes/MyNotes', () => ({ default: () => <div>MyNotes</div> }));
 
 describe('Member Card', () => {
 	const mockMember = {

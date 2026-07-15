@@ -13,38 +13,38 @@ import Login from '../../pages/login/Login';
 import NotFound from '../../components/layout/NotFound';
 
 // Mock all page/layout components imported by siteManifest.js
-jest.mock('../../pages/new/New', () => () => <div data-testid='New' />);
-jest.mock('../../pages/home/Home', () => () => <div data-testid='Home' />);
-jest.mock('../../pages/list/List', () => () => <div data-testid='List' />);
-jest.mock('../../pages/edit/Edit', () => () => <div data-testid='Edit' />);
-jest.mock('../../pages/login/Login', () => () => <div data-testid='Login' />);
-jest.mock('../../pages/apply/Apply', () => () => <div data-testid='Apply' />);
-jest.mock('../../pages/interviews/RSVP', () => () => <div data-testid='Rsvp' />);
-jest.mock('../../pages/logout/Logout', () => () => <div data-testid='Logout' />);
-jest.mock('../../pages/review/Review', () => () => <div data-testid='Review' />);
-jest.mock('../../pages/single/Single', () => () => <div data-testid='Single' />);
-jest.mock('../../pages/redirect/Redirect', () => () => <div data-testid='Redirect' />);
-jest.mock('../../pages/register/Register', () => () => <div data-testid='Register' />);
-jest.mock('../../pages/unsub/Unsubscribe', () => () => <div data-testid='Unsubscribe' />);
-jest.mock('../../pages/settings/Settings', () => () => <div data-testid='SiteSettings' />);
-jest.mock('../../pages/memberDash/MemberDash', () => () => <div data-testid='MemberDash' />);
-jest.mock('../../components/layout/AdminLayout', () => ({ children }) => <div data-testid='AdminLayout'>{children}</div>);
-jest.mock('../../components/layout/AccessDenied', () => () => <div data-testid='AccessDenied' />);
-jest.mock('../../pages/contactCenter/ContactCenter', () => () => <div data-testid='ContactCenter' />);
-jest.mock('../../components/forms/members/ManualUploader', () => () => <div data-testid='ManualUploader' />);
-jest.mock('../../components/forms/applications/ApplicationController', () => () => <div data-testid='ApplicationController' />);
-jest.mock('../../context/ApplicationContext', () => ({ ApplicationContextProvider: ({ children }) => <div data-testid='ApplicationContextProvider'>{children}</div> }));
-jest.mock('../../components/cards/Application', () => ({ PDFApplication: () => <div data-testid='PDFApplication' /> }));
-jest.mock('../../pages/uploadCenter/UploadCenter', () => () => <div data-testid='UploadCenter' />);
-jest.mock('../../pages/register/Onboard', () => () => <div data-testid='Onboard' />);
-jest.mock('../../components/layout/NotFound', () => () => <div data-testid='NotFound' />);
-jest.mock('../../pages/interviews/WaitingRoom', () => () => <div data-testid='WaitingRoom' />);
-jest.mock('../../components/layout/InterviewLayout', () => ({ children }) => <div data-testid='InterviewLayout'>{children}</div>);
-jest.mock('../../pages/interviews/InterviewRoom', () => () => <div data-testid='InterviewRoom' />);
-jest.mock('../../pages/interviews/DeliberationRoom', () => () => <div data-testid='DeliberationRoom' />);
+vi.mock('../../pages/new/New', () => ({ default: () => <div data-testid='New' /> }));
+vi.mock('../../pages/home/Home', () => ({ default: () => <div data-testid='Home' /> }));
+vi.mock('../../pages/list/List', () => ({ default: () => <div data-testid='List' /> }));
+vi.mock('../../pages/edit/Edit', () => ({ default: () => <div data-testid='Edit' /> }));
+vi.mock('../../pages/login/Login', () => ({ default: () => <div data-testid='Login' /> }));
+vi.mock('../../pages/apply/Apply', () => ({ default: () => <div data-testid='Apply' /> }));
+vi.mock('../../pages/interviews/RSVP', () => ({ default: () => <div data-testid='Rsvp' /> }));
+vi.mock('../../pages/logout/Logout', () => ({ default: () => <div data-testid='Logout' /> }));
+vi.mock('../../pages/review/Review', () => ({ default: () => <div data-testid='Review' /> }));
+vi.mock('../../pages/single/Single', () => ({ default: () => <div data-testid='Single' /> }));
+vi.mock('../../pages/redirect/Redirect', () => ({ default: () => <div data-testid='Redirect' /> }));
+vi.mock('../../pages/register/Register', () => ({ default: () => <div data-testid='Register' /> }));
+vi.mock('../../pages/unsub/Unsubscribe', () => ({ default: () => <div data-testid='Unsubscribe' /> }));
+vi.mock('../../pages/settings/Settings', () => ({ default: () => <div data-testid='SiteSettings' /> }));
+vi.mock('../../pages/memberDash/MemberDash', () => ({ default: () => <div data-testid='MemberDash' /> }));
+vi.mock('../../components/layout/AdminLayout', () => ({ default: ({ children }) => <div data-testid='AdminLayout'>{children}</div> }));
+vi.mock('../../components/layout/AccessDenied', () => ({ default: () => <div data-testid='AccessDenied' /> }));
+vi.mock('../../pages/contactCenter/ContactCenter', () => ({ default: () => <div data-testid='ContactCenter' /> }));
+vi.mock('../../components/forms/members/ManualUploader', () => ({ default: () => <div data-testid='ManualUploader' /> }));
+vi.mock('../../components/forms/applications/ApplicationController', () => ({ default: () => <div data-testid='ApplicationController' /> }));
+vi.mock('../../context/ApplicationContext', () => ({ ApplicationContextProvider: ({ children }) => <div data-testid='ApplicationContextProvider'>{children}</div> }));
+vi.mock('../../components/pdf/PDFApplication', () => ({ PDFApplication: () => <div data-testid='PDFApplication' /> }));
+vi.mock('../../pages/uploadCenter/UploadCenter', () => ({ default: () => <div data-testid='UploadCenter' /> }));
+vi.mock('../../pages/register/Onboard', () => ({ default: () => <div data-testid='Onboard' /> }));
+vi.mock('../../components/layout/NotFound', () => ({ default: () => <div data-testid='NotFound' /> }));
+vi.mock('../../pages/interviews/WaitingRoom', () => ({ default: () => <div data-testid='WaitingRoom' /> }));
+vi.mock('../../components/layout/InterviewLayout', () => ({ default: ({ children }) => <div data-testid='InterviewLayout'>{children}</div> }));
+vi.mock('../../pages/interviews/InterviewRoom', () => ({ default: () => <div data-testid='InterviewRoom' /> }));
+vi.mock('../../pages/interviews/DeliberationRoom', () => ({ default: () => <div data-testid='DeliberationRoom' /> }));
 
 // Mock config/context dependencies
-jest.mock('../data/collections', () => ({
+vi.mock('../data/collections', () => ({
 	UserType: {
 		applicant: 'applicant',
 		member: 'member',
@@ -65,7 +65,7 @@ jest.mock('../data/collections', () => ({
 	},
 }));
 
-jest.mock('../Constants', () => ({
+vi.mock('../Constants', () => ({
 	Pages: {
 		root: 'root',
 		login: 'login',
@@ -127,7 +127,7 @@ jest.mock('../Constants', () => ({
 	},
 }));
 
-jest.mock('./paths', () => ({
+vi.mock('./paths', () => ({
 	paths: {
 		root: '/',
 		login: '/login',
@@ -189,7 +189,7 @@ jest.mock('./paths', () => ({
 	},
 }));
 
-jest.mock('./router', () => ({
+vi.mock('./router', () => ({
 	RouteGuard: ({ children }) => <div data-testid='RouteGuard'>{children}</div>,
 }));
 

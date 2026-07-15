@@ -5,15 +5,15 @@ import { useAlert } from '../../../context/AlertContext';
 import { useConfig } from '../../../context/ConfigContext';
 import { getCollectionData, saveCollectionData, getRealTimeApplications } from '../../../config/data/firebase';
 
-jest.mock('../../../context/AlertContext', () => ({ useAlert: jest.fn() }));
-jest.mock('../../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
-jest.mock('../../../config/data/firebase', () => ({
+vi.mock('../../../context/AlertContext', () => ({ useAlert: jest.fn() }));
+vi.mock('../../../context/ConfigContext', () => ({ useConfig: jest.fn() }));
+vi.mock('../../../config/data/firebase', () => ({
 	getCollectionData: jest.fn(),
 	saveCollectionData: jest.fn(),
 	getRealTimeApplications: jest.fn(),
 }));
 
-jest.mock('../GenericAdminForm', () => ({ onSubmit }) => <button onClick={() => onSubmit({ applicationID: 'app1', attachmentType: 'letter' })}>Submit Request</button>);
+vi.mock('../GenericAdminForm', () => ({ default: ({ onSubmit }) => <button onClick={() => onSubmit({ applicationID: 'app1', attachmentType: 'letter' })}>Submit Request</button> }));
 
 describe('RequestForm Component', () => {
 	const mockAlert = { showAlert: jest.fn(), handleError: jest.fn() };

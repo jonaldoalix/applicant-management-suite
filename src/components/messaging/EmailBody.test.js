@@ -4,7 +4,7 @@ import EmailBody from './EmailBody';
 import { useProcessedEmailContent } from '../../hooks/useProcessedEmailContent';
 
 // Mock the hook
-jest.mock('../../hooks/useProcessedEmailContent');
+vi.mock('../../hooks/useProcessedEmailContent');
 
 const mockEmail = {
 	id: 'email123',

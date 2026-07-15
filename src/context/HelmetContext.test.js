@@ -5,7 +5,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { PageTitleProvider, useTitle } from './HelmetContext';
 
 // Mock constants
-jest.mock('../config/Constants', () => ({
+vi.mock('../config/Constants', () => ({
 	brand: {
 		organizationShortName: 'Org',
 		metaDescription: 'Desc',

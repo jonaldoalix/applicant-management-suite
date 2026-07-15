@@ -5,16 +5,16 @@ import { useAuth } from './AuthContext';
 import { updateUserPreferences } from '../config/data/firebase';
 
 // Mock Auth
-jest.mock('./AuthContext', () => ({
+vi.mock('./AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
 // Mock Firebase Config
-jest.mock('../config/data/firebase', () => ({
+vi.mock('../config/data/firebase', () => ({
 	updateUserPreferences: jest.fn(),
 }));
 
-jest.mock('../config/data/collections', () => ({
+vi.mock('../config/data/collections', () => ({
 	collections: { members: 'members' },
 }));
 

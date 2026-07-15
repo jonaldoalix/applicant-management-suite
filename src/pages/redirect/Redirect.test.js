@@ -10,25 +10,25 @@ import { paths } from '../../config/navigation/paths';
 import { UserType } from '../../config/data/collections';
 
 // 1. MOCK DEPENDENCIES
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
 	useNavigate: jest.fn(),
 }));
 
-jest.mock('../../context/AuthContext', () => ({
+vi.mock('../../context/AuthContext', () => ({
 	useAuth: jest.fn(),
 }));
 
-jest.mock('../../context/ThemeContext', () => ({
+vi.mock('../../context/ThemeContext', () => ({
 	useTheme: jest.fn(),
 }));
 
-jest.mock('../../context/HelmetContext', () => ({
+vi.mock('../../context/HelmetContext', () => ({
 	useTitle: jest.fn(),
 }));
 
 // 2. MOCK CONFIGURATION FILES
 // We mock these to ensure our tests don't break if the actual path strings change
-jest.mock('../../config/data/collections', () => ({
+vi.mock('../../config/data/collections', () => ({
 	UserType: {
 		applicant: 'applicant',
 		member: 'member',
@@ -36,7 +36,7 @@ jest.mock('../../config/data/collections', () => ({
 	},
 }));
 
-jest.mock('../../config/navigation/paths', () => ({
+vi.mock('../../config/navigation/paths', () => ({
 	paths: {
 		apply: '/apply-path',
 		memberDash: '/dashboard-path',
@@ -44,13 +44,13 @@ jest.mock('../../config/navigation/paths', () => ({
 	},
 }));
 
-jest.mock('../../config/navigation/routeUtils', () => ({
+vi.mock('../../config/navigation/routeUtils', () => ({
 	generatePath: jest.fn((path) => path), // Simple pass-through mock
 }));
 
 // 3. MOCK CHILD COMPONENTS
-jest.mock('../../components/loader/Loader', () => () => <div data-testid='loader'>Loading...</div>);
-jest.mock('../../components/footer/CopyrightFooter', () => () => <div data-testid='copyright'>Copyright</div>);
+vi.mock('../../components/loader/Loader', () => ({ default: () => <div data-testid='loader'>Loading...</div> }));
+vi.mock('../../components/footer/CopyrightFooter', () => ({ default: () => <div data-testid='copyright'>Copyright</div> }));
 
 describe('Redirect Component', () => {
 	const mockNavigate = jest.fn();
