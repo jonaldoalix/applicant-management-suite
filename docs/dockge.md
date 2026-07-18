@@ -8,8 +8,8 @@ Goal: start the stack with **no extra Dockge configuration**, then point an NPM 
    - `git@github.com:jonaldoalix/ams-demo.git` or
    - `git@github.com:Full-Stack-Boston/ams-demo.git`
 2. In Dockge, create a stack pointing at that folder (compose file: `compose.yaml`).
-3. Deploy / start. App listens on **http://\<host\>:3001**.
-4. In NPM: Proxy Host → `http://\<dockge-host-or-ip\>:3001` (or the Docker network alias if colocated).
+3. Deploy / start. App listens on **http://\<host\>:10000**.
+4. In NPM: Proxy Host → `http://\<dockge-host-or-ip\>:10000` (or the Docker network alias if colocated).
 
 Stop: `docker compose down` (or Dockge stop).
 

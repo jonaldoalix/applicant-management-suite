@@ -165,7 +165,7 @@ See [`docs/dockge.md`](docs/dockge.md) and `compose.yaml` for a temporary contai
 
 ## Dockge demo
 
-See [`docs/dockge.md`](docs/dockge.md). For a **zero-config** working demo, Dockge should clone **private `ams-demo`**, not this public template. Then NPM Proxy Host → host port **3001**.
+See [`docs/dockge.md`](docs/dockge.md). For a **zero-config** working demo, Dockge should clone **private `ams-demo`**, not this public template. Then NPM Proxy Host → host port **10000**.
 
 ## Related
 

@@ -9,9 +9,9 @@ RUN npm ci
 COPY . .
 
 ENV HOST=0.0.0.0
-ENV PORT=3001
+ENV PORT=10000
 ENV HTTPS=false
 
-EXPOSE 3001
+EXPOSE 10000
 
-CMD ["npm", "start", "--", "--host", "0.0.0.0", "--port", "3001"]
+CMD ["npm", "start", "--", "--host", "0.0.0.0", "--port", "10000"]
