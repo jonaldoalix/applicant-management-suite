@@ -1,9 +1,7 @@
-# Dockge / Compose — AMS Vite preview (HTTP).
-# Intended path for a WORKING demo: clone private ams-demo (includes .env), then:
+# Optional Docker Compose — local AMS Vite preview (HTTP).
+# Requires a root .env (copy from .env.example). Then:
 #   docker compose up --build
-# Point Nginx Proxy Manager at host:10000.
-#
-# Public clones need a root .env (see README / .env.example). Compose will not start cleanly without it.
+# App listens on http://localhost:10000
 
 services:
   ams-web:
@@ -19,7 +17,7 @@ services:
     environment:
       HOST: "0.0.0.0"
       PORT: "10000"
-      # Force HTTP so host .env HTTPS=true never breaks the container listener for NPM.
+      # Force HTTP so a host .env with HTTPS=true does not break the container listener.
       HTTPS: "false"
       CHOKIDAR_USEPOLLING: "true"
     volumes:

@@ -1,4 +1,4 @@
-# AMS local/dev image for Dockge (Vite on Node 24)
+# AMS local/dev image for optional Docker Compose (Vite on Node 24)
 FROM node:24-bookworm-slim
 
 WORKDIR /app

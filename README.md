@@ -44,8 +44,8 @@ Client sources are TypeScript (`.ts` / `.tsx`). Cloud Functions remain modular J
 src/                 React app (pages, components, context, config)
 functions/           Cloud Functions + seed / migration scripts
 scripts/             build-static.js (env-driven HTML / manifest)
-docs/dockge.md       Optional Docker Compose notes for Dockge
-compose.yaml         Local Docker/Vite helper for temporary hosting
+compose.yaml         Optional Docker Compose helper for local Vite preview
+Dockerfile           Image used by compose.yaml
 ```
 
 ---
@@ -71,7 +71,7 @@ cd functions && npm install && cd ..
 
 The app will not build without a root `.env`. `scripts/build-static.js` runs before `npm start` / `npm run build` and regenerates `public/index.html` and `public/manifest.json` from `.env` and `package.json`.
 
-Copy `.env.example` to `.env` (or use the template below) and replace every `REPLACE_…` value. **Never commit a filled `.env` to this public repository.** Working demo credentials live only on the private `ams-demo` remotes.
+Copy `.env.example` to `.env` (or use the template below) and replace every `REPLACE_…` value. **Never commit a filled `.env`.**
 
 ```ini
 # --- Firebase & Google ---
@@ -149,23 +149,11 @@ Use only on disposable / demo Firebase projects.
 
 Do not hand-edit branding in `public/index.html` for lasting changes. Update `.env` or `package.json` and restart so `scripts/build-static.js` regenerates HTML and the web manifest.
 
-### Dockge / Compose
+### Optional Docker preview
 
-See [`docs/dockge.md`](docs/dockge.md) and `compose.yaml` for a temporary containerized Vite spin-up (useful on a Dockge host). Force HTTP in compose when host env would otherwise inject HTTPS.
+`compose.yaml` / `Dockerfile` run a local Vite preview on port **10000** after you create a root `.env`. Production hosting remains Firebase Hosting.
 
 ---
-
-## Remotes
-
-| Remote | Visibility | Purpose |
-|--------|------------|---------|
-| `origin` (`jonaldoalix/applicant-management-suite`) | Public | Portfolio + client-facing template |
-| `business` (`Full-Stack-Boston/applicant-management-suite`) | Public | Org mirror clients clone / fork |
-| Private `ams-demo` (personal + `Full-Stack-Boston`) | Private | Fully working backup with `.env` for Dockge demos and home-lab DR |
-
-## Dockge demo
-
-See [`docs/dockge.md`](docs/dockge.md). For a **zero-config** working demo, Dockge should clone **private `ams-demo`**, not this public template. Then NPM Proxy Host → host port **10000**.
 
 ## Related
 
