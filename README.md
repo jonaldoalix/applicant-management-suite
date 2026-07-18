@@ -71,7 +71,7 @@ cd functions && npm install && cd ..
 
 The app will not build without a root `.env`. `scripts/build-static.js` runs before `npm start` / `npm run build` and regenerates `public/index.html` and `public/manifest.json` from `.env` and `package.json`.
 
-Copy the template below and replace every `REPLACE_…` value. Never commit a filled `.env`.
+Copy `.env.example` to `.env` (or use the template below) and replace every `REPLACE_…` value. **Never commit a filled `.env` to this public repository.** Working demo credentials live only on the private `ams-demo` remotes.
 
 ```ini
 # --- Firebase & Google ---
