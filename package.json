@@ -14,7 +14,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "@wojtekmaj/react-timerange-picker": "^5.0.3",
+    "@wojtekmaj/react-timerange-picker": "^7.0.0",
     "autosuggest-highlight": "^3.3.4",
     "axios": "^1.16.0",
     "core-js": "^3.45.1",
