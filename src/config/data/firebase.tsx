@@ -755,11 +755,19 @@ export const getAllApplicantsSimple = async () => {
 	}));
 };
 
-export const getApplicationsForApplicant = async (applicantId: string) => {
+export const getApplicationsForApplicant = async (
+	applicantId: string,
+	statuses: ApplicationStatusValue[] | null = [ApplicationStatus.eligible, ApplicationStatus.completed],
+) => {
 	const appsRef = collection(db, collections.applications);
-	const q = query(appsRef, where('completedBy', '==', applicantId), where('status', 'in', ['Eligible', 'Completed']));
+	const q =
+		statuses === null
+			? query(appsRef, where('completedBy', '==', applicantId))
+			: query(appsRef, where('completedBy', '==', applicantId), where('status', 'in', statuses));
 	const snapshot = await getDocs(q);
-	return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+	return snapshot.docs
+		.map((doc) => ({ id: doc.id, ...doc.data() }))
+		.filter((app) => (app as DocumentData).status !== ApplicationStatus.deleted);
 };
 
 // --- 8. Applications (CRUD & Status) ---

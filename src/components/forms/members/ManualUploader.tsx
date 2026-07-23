@@ -38,6 +38,7 @@ import {
 	adminFormGridSx,
 } from '../../../config/ui/adminFormStyles';
 import { maybePromoteApplicationToCompleted } from '../../../config/data/applicationAttachments';
+import { v4 as uuid } from 'uuid';
 import AdminFormField from '../AdminFormField';
 import Loader from '../../loader/Loader';
 import { VisuallyHiddenInput } from '../../visuallyHiddenInput/VisuallyHiddenInput';
@@ -94,6 +95,37 @@ const formatFileSize = (bytes: number) => {
 	return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 };
 
+
+const ensureApplicationAttachmentsId = async (
+	applicationId: string,
+	application: Record<string, unknown>,
+	applicantId: string,
+): Promise<string> => {
+	const existingId = typeof application.attachments === 'string' ? application.attachments.trim() : '';
+	if (existingId) {
+		const existing = await getCollectionData(existingId, collections.attachments, existingId);
+		if (existing) return existingId;
+	}
+
+	const attachmentsId = uuid();
+	const ownerId =
+		(typeof application.completedBy === 'string' && application.completedBy) || applicantId;
+	const created = await saveCollectionData(collections.attachments, attachmentsId, {
+		attachmentsID: attachmentsId,
+		completedBy: ownerId,
+	});
+	if (created === false) throw new Error('Could not create an attachment record for this application.');
+
+	const linked = await saveCollectionData(collections.applications, applicationId, {
+		attachments: attachmentsId,
+	});
+	if (linked === false) {
+		throw new Error('Created attachment record, but could not link it to the application.');
+	}
+
+	return attachmentsId;
+};
+
 const ManualUploader: React.FC = () => {
 	const navigate = useNavigate();
 	const { darkMode, boxShadow } = useTheme();
@@ -143,7 +175,7 @@ const ManualUploader: React.FC = () => {
 			if (!applicantId) return;
 
 			try {
-				const apps = await getApplicationsForApplicant(applicantId);
+				const apps = await getApplicationsForApplicant(applicantId, null);
 				const appOptions = (apps as Record<string, unknown>[]).map((app) => {
 					const year = resolveApplicationCycleYear(app);
 					const status = typeof app.status === 'string' ? app.status : '';
@@ -193,13 +225,18 @@ const ManualUploader: React.FC = () => {
 
 		setSubmitting(true);
 		try {
-			const application = (await getCollectionData(applicationId, collections.applications, applicationId)) as Record<string, unknown>;
-			if (!application?.attachments) throw new Error("Could not find the application's attachment record.");
+			const application = (await getCollectionData(applicationId, collections.applications, applicationId)) as Record<string, unknown> | null;
+			if (!application) throw new Error('Could not load the selected application.');
+
+			const attachmentsId = await ensureApplicationAttachmentsId(applicationId, application, applicantId);
 
 			const savedFileRef = await saveFile(UploadType.applicationAttachment, applicationId, attachmentType, file);
-			const downloadLink = await getDownloadLinkForFile(savedFileRef);
+			if (!savedFileRef) throw new Error('File upload failed. Please try again.');
 
-			await saveCollectionData(collections.attachments, application.attachments as string, {
+			const downloadLink = await getDownloadLinkForFile(savedFileRef);
+			if (!downloadLink) throw new Error('Could not generate a download link for the uploaded file.');
+
+			const saved = await saveCollectionData(collections.attachments, attachmentsId, {
 				[attachmentType]: {
 					displayName: file.name,
 					home: downloadLink,
@@ -207,6 +244,7 @@ const ManualUploader: React.FC = () => {
 					uploadedBy: 'admin',
 				},
 			});
+			if (saved === false) throw new Error('File uploaded to storage, but attaching it to the application failed.');
 
 			const promoted = await maybePromoteApplicationToCompleted(applicationId);
 
@@ -220,7 +258,7 @@ const ManualUploader: React.FC = () => {
 			setSelectedApplication(null);
 			setApplicantApplications([]);
 		} catch (error) {
-			handleError(error, 'manual-upload-submit');
+			handleError(error, 'manual-upload-submit', true);
 		} finally {
 			setSubmitting(false);
 		}

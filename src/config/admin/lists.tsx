@@ -150,6 +150,7 @@ export const adminLists: Record<string, AdminListEntry> = {
 		actions: appActions,
 		fetcher: (handler, cycleYear, type) => getRealTimeApplicationsByStatus(type as ApplicationStatusValue, handler, cycleYear as number),
 		enrich: true,
+		getToolbarActions: getApplicationToolbarActions,
 	},
 	[ApplicationStatus.awarded]: {
 		title: `Awarded Applications`,
