@@ -15,7 +15,7 @@ import './datatable.scss';
 import React, { useState, useMemo } from 'react';
 
 // UI Components
-import { DataGrid, GridToolbarExport, GridToolbarFilterButton, GridToolbarContainer, type GridColDef, type GridRowSelectionModel, type GridRowId } from '@mui/x-data-grid';
+import { DataGrid, GridToolbarExport, GridToolbarFilterButton, GridToolbarContainer, type GridColDef, type GridRowSelectionModel, type GridRowId, useGridApiContext, useGridSelector, gridRowSelectionIdsSelector } from '@mui/x-data-grid';
 import { Box, Typography, Select, MenuItem, Button, FormControl, InputLabel, type SelectChangeEvent, type ButtonProps } from '@mui/material';
 import { MarkEmailReadOutlined, MarkEmailUnreadOutlined } from '@mui/icons-material';
 import DatatableQuickFilter from './DatatableQuickFilter';
@@ -26,7 +26,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { useDialog } from '../../context/DialogContext';
 import { useAlert } from '../../context/AlertContext';
 import { useConfig } from '../../context/ConfigContext';
-import { createEmptyRowSelectionModel, getSelectedRowIds } from '../../utils/gridRowSelectionModel';
+import { createEmptyRowSelectionModel } from '../../utils/gridRowSelectionModel';
 import { adminPageHeaderSx, adminPageTitleSx, datatableContainerSx, datatableGridShellSx, datatableGridSx, getAdminPageTitleColor } from '../../config/ui/adminPageStyles';
 
 // =============================================================================
@@ -59,7 +59,6 @@ export interface DataRow {
 
 interface CustomToolbarProps {
 	toolbarActions: ToolbarAction[];
-	selectionModel: GridRowId[];
 	allRows: DataRow[];
 	permittedFolders?: string[];
 	selectedFolderId?: string;
@@ -77,11 +76,15 @@ declare module '@mui/x-data-grid' {
 //  CUSTOM TOOLBAR
 // =============================================================================
 
-const MemoizedCustomToolbar = React.memo(({ toolbarActions, selectionModel, allRows, permittedFolders, selectedFolderId, onFolderChange, permittedAliases, selectedAliasFilter, onAliasFilterChange }: CustomToolbarProps) => {
+const CustomToolbar = ({ toolbarActions, allRows, permittedFolders, selectedFolderId, onFolderChange, permittedAliases, selectedAliasFilter, onAliasFilterChange }: CustomToolbarProps) => {
 	// --- Contexts ---
 	const { showDialog } = useDialog();
 	const { showAlert, handleError } = useAlert();
 	const config = useConfig();
+	// Read selection from the grid store so toolbar enables immediately (include + exclude).
+	const apiRef = useGridApiContext();
+	const selectedRowsMap = useGridSelector(apiRef, gridRowSelectionIdsSelector);
+	const selectionModel = useMemo(() => Array.from(selectedRowsMap.keys()) as GridRowId[], [selectedRowsMap]);
 
 	// Helper bundle passed to action handlers
 	const helpers = { showDialog, showAlert, handleError, config };
@@ -213,9 +216,9 @@ const MemoizedCustomToolbar = React.memo(({ toolbarActions, selectionModel, allR
 			)}
 		</GridToolbarContainer>
 	);
-});
+};
 
-MemoizedCustomToolbar.displayName = 'CustomToolbar';
+CustomToolbar.displayName = 'CustomToolbar';
 
 // =============================================================================
 //  MAIN COMPONENT
@@ -244,7 +247,14 @@ const Datatable = ({ titleIn, rows, columns, actions, toolbarActions = [], permi
 	const [selectedData, setSelectedData] = useState<GridRowSelectionModel>(() => createEmptyRowSelectionModel() as GridRowSelectionModel);
 	const actionColumn = actions || []; // Row-level actions (Edit/Delete buttons)
 	const { darkMode, boxShadow } = useTheme();
-	const selectedIds = useMemo(() => getSelectedRowIds(selectedData), [selectedData]);
+
+	const handleRowSelectionModelChange = React.useCallback((model: GridRowSelectionModel) => {
+		// Clone so controlled state always gets a new reference (Set mutations must not be missed).
+		setSelectedData({
+			type: model.type,
+			ids: new Set(model.ids),
+		} as GridRowSelectionModel);
+	}, []);
 
 	return (
 		<Box className='datatable' sx={datatableContainerSx}>
@@ -259,13 +269,12 @@ const Datatable = ({ titleIn, rows, columns, actions, toolbarActions = [], permi
 					rows={data}
 					columns={columns.concat(actionColumn)}
 					slots={{
-						toolbar: MemoizedCustomToolbar,
+						toolbar: CustomToolbar,
 						noRowsOverlay: DatatableEmptyOverlay,
 					}}
 					slotProps={{
 						toolbar: {
 							toolbarActions: toolbarActions,
-							selectionModel: selectedIds,
 							allRows: data,
 							permittedFolders,
 							selectedFolderId,
@@ -292,9 +301,7 @@ const Datatable = ({ titleIn, rows, columns, actions, toolbarActions = [], permi
 					pageSizeOptions={[15, 25, 50, 100]}
 					checkboxSelection
 					disableRowSelectionOnClick
-					onRowSelectionModelChange={(newRowSelectionModel) => {
-						setSelectedData(newRowSelectionModel);
-					}}
+					onRowSelectionModelChange={handleRowSelectionModelChange}
 					loading={loading}
 					rowSelectionModel={selectedData}
 					getRowClassName={(params) => {
