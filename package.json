@@ -113,7 +113,7 @@
   "devDependencies": {
     "@mui/codemod": "^9.1.0",
     "@mui/x-codemod": "^9.7.0",
-    "@types/lodash": "^4.17.24",
+    "@types/lodash": "^4.17.25",
     "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^6.0.3",
