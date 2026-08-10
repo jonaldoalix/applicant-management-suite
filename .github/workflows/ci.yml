@@ -43,7 +43,7 @@ jobs:
       GENERATE_SOURCEMAP: "false"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -74,7 +74,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Scan lockfiles with OSV-Scanner
         uses: google/osv-scanner-action/osv-scanner-action@v2.3.8
         with:
@@ -91,7 +91,7 @@ jobs:
       image: semgrep/semgrep
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Trust workspace for git (container UID)
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Scan
